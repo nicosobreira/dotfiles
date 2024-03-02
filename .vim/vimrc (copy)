@@ -1,2 +1,0 @@
-set nocompatible
-let g:polyglot_disabled = ['markdown']

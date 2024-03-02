@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Custom alias
+
+alias pyt='python3.12 -m pytest -s'
+alias pip='python3.12 -m pip'
+alias py='python3.12'
+alias c='clear'
+alias xtar='tar -xvf'
+alias nala='sudo nala'
+alias mdir='mkdir -p'
+alias svim='sudoedit'
+alias remove='rm -rfdv'
+alias execute='chmod u+x'
+alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias copy='cp -r'
+alias protontricks='flatpak run com.github.Matoking.protontricks'
+alias protontricks-launch='flatpak run --command=protontricks-launch com.github.Matoking.protontricks'

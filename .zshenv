@@ -1,7 +1,7 @@
 skip_global_compinit=1
 
-export DOTFILES=$HOME/.dotfiles
-for FILE in $DOTFILES/terminal/* ; do source $FILE ; done
+export DOTFILES=$HOME/dotfiles
+for FILE in $DOTFILES/terminal-conf/* ; do source $FILE ; done
 # Source variables
 #source "$DOTFILES/terminal/variables.sh"
 
