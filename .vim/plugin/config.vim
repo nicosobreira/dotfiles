@@ -1,3 +1,6 @@
+set nocompatible
+let g:polyglot_disabled = ['markdown']
+
 " -- Configurations for '~/.vimrc' --
 set wrap
 set mouse=a	
