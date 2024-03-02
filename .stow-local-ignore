@@ -1,4 +1,5 @@
 zsh-conf
 terminal-conf
-utils.sh
 .git
+utils
+.git/
