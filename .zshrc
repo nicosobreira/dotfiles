@@ -11,7 +11,6 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-alias cd="z"
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -133,5 +132,4 @@ compctl -K    _pyenv pyenv
 # `znap install` adds new commands and completions.
 znap install aureliojargas/clitest zsh-users/zsh-completions
 
-source $DOTFILES/zsh/plugins.sh
 eval "$(zoxide init zsh)"
