@@ -1,0 +1,5 @@
+set nocompatible
+let g:polyglot_disabled = ['markdown']
+
+let VIMFOLDER ~/dotfiles/.vim
+:runtime! ~/.vim/*.vim
