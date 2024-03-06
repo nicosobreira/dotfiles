@@ -77,3 +77,5 @@ set ttimeout
 set ttimeoutlen=1
 set ttyfast
 
+" Adds fzf
+set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
