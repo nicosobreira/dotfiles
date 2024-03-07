@@ -6,5 +6,4 @@ eval "$(pyenv init -)"
 
 # Variables
 export VIMCONF="$HOME/.vim/config"
-export VISUAL=vim
-export EDITOR="$VISUAL"
+export EDITOR=vim
