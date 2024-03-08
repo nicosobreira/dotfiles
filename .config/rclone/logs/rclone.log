@@ -106,3 +106,23 @@ Use "rclone help backends" for a list of supported services.
 Command bisync needs 2 arguments maximum: you provided 4 non flag arguments: ["google:/games/data" "/home/acerola/Games/games/data" "ls" "/home/acerola/Games/games/data"]
 2024/03/07 18:49:15 NOTICE: bisync is EXPERIMENTAL. Don't use in production!
 2024/03/07 18:49:43 NOTICE: saves/ParaLLEl N64/Banjo-Kazooie (USA).srm: Duplicate object found in source - ignoring
+2024/03/08 09:03:05 NOTICE: bisync is EXPERIMENTAL. Don't use in production!
+2024/03/08 09:03:08 ERROR : : error listing: directory not found
+2024/03/08 09:03:08 NOTICE: Bisync aborted. Please try again.
+2024/03/08 09:03:08 Failed to bisync with 2 errors: last error was: directory not found
+2024/03/08 09:03:16 NOTICE: bisync is EXPERIMENTAL. Don't use in production!
+2024/03/08 09:03:19 ERROR : : error listing: directory not found
+2024/03/08 09:03:19 NOTICE: Bisync aborted. Please try again.
+2024/03/08 09:03:19 Failed to bisync with 2 errors: last error was: directory not found
+2024/03/08 09:06:56 NOTICE: bisync is EXPERIMENTAL. Don't use in production!
+2024/03/08 09:06:58 ERROR : : error listing: directory not found
+2024/03/08 09:06:58 NOTICE: Bisync aborted. Please try again.
+2024/03/08 09:06:58 Failed to bisync with 2 errors: last error was: directory not found
+2024/03/08 09:07:52 NOTICE: bisync is EXPERIMENTAL. Don't use in production!
+2024/03/08 09:07:54 ERROR : : error listing: directory not found
+2024/03/08 09:07:54 NOTICE: Bisync aborted. Please try again.
+2024/03/08 09:07:54 Failed to bisync with 2 errors: last error was: directory not found
+2024/03/08 09:11:04 NOTICE: bisync is EXPERIMENTAL. Don't use in production!
+2024/03/08 09:11:08 NOTICE: saves/ParaLLEl N64/Banjo-Kazooie (USA).srm: Duplicate object found in source - ignoring
+2024/03/08 11:06:05 NOTICE: bisync is EXPERIMENTAL. Don't use in production!
+2024/03/08 11:06:09 NOTICE: saves/ParaLLEl N64/Banjo-Kazooie (USA).srm: Duplicate object found in source - ignoring
