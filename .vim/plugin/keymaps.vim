@@ -29,7 +29,6 @@ nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
 
 " - Run Commads -
-" :Py run python file
 "command Py :w<CR>:exec  '! clear; python3.12' shellescape(@%, 1)<CR>
 command Cd :cd %:h  " :Cd go to current folder
 command Term :term ++curwin " :Term opens a terminal

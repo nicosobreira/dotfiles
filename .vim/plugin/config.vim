@@ -1,5 +1,4 @@
 set nocompatible
-let g:polyglot_disabled = ['markdown']
 
 " -- Configurations for '~/.vimrc' --
 set wrap
@@ -7,12 +6,9 @@ set mouse=a
 
 set ignorecase
 set smartcase
-set termguicolors
-set background=dark
 set termencoding=utf-8
 set encoding=utf-8
 
-set ruler
 set showmode
 
 set nobackup
@@ -20,8 +16,14 @@ set noswapfile
 
 set scrolloff=5
 filetype plugin indent on
-syntax on
+syntax enable
 set list lcs=tab:\|\
+
+" - Colorsheme -
+" Use the same background color
+"highlight Normal guibg=none guifg=none
+set termguicolors
+set background=dark
 
 " - Tabs -
 "set expandtab
@@ -33,7 +35,7 @@ set noexpandtab
 "set copyindent
 
 " - Use system clipborad -
-set clipboard+=unnamedplus
+set clipboard=unnamedplus
 
 " - Auto-comment -
 set formatoptions=cro
@@ -46,9 +48,9 @@ set laststatus=2
 set confirm
 set title
 
-" - Show lines - 
-set number
-"set relativenumber
+" - Show lines on
+set number relativenumber
+set nu rnu
 
 " - Hightlight text -
 set hlsearch
@@ -68,9 +70,9 @@ au!
 autocmd VimEnter * silent !echo -ne "\e[2 q"
 augroup END
 
-" When in InsertMode the line will apper
-:autocmd InsertEnter * set cursorline
-:autocmd InsertLeave * set nocursorline
+" When in InsertMode a line will apper
+":autocmd InsertEnter * set cursorline
+":autocmd InsertLeave * set nocursorline
 
 " Fix slow when presse <ESC>
 set ttimeout

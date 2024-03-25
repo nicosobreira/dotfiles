@@ -135,4 +135,3 @@ znap install aureliojargas/clitest zsh-users/zsh-completions
 eval "$(zoxide init zsh)"
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-. "$HOME/.config/asdf/asdf.sh"

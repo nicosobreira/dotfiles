@@ -6,3 +6,7 @@ utils
 git
 .git
 README.md
+autoload
+bundle
+pack
+plugged
