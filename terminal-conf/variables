@@ -7,3 +7,8 @@ eval "$(pyenv init -)"
 # Variables
 export VIMCONF="$HOME/.vim/config"
 export EDITOR=vim
+
+if command -v alacritty > /dev/null 2>&1;
+then
+  export TERM=alacritty
+fi

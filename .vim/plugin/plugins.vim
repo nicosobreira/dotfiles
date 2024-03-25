@@ -26,6 +26,7 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'tpope/vim-obsession'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'nanotee/zoxide.vim'
+Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 
