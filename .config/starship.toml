@@ -15,9 +15,9 @@ style = "blue"
 read_only = " 🔒"
 
 [character]
-success_symbol = "[↳](green)"
-error_symbol = "[↳](red)"
-vimcmd_symbol = "[↳](purple)"
+success_symbol = "[➜](green) "
+error_symbol = "[➜](red) "
+vimcmd_symbol = "[➜](purple) "
 
 [git_branch]
 format = "[$branch]($style)"
