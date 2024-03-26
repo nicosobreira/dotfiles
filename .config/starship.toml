@@ -12,11 +12,12 @@ $character"""
 
 [directory]
 style = "blue"
+read_only = " 🔒"
 
 [character]
-success_symbol = "[❯](green)"
-error_symbol = "[❯](red)"
-vimcmd_symbol = "[❮](purple)"
+success_symbol = "[↳](green)"
+error_symbol = "[↳](red)"
+vimcmd_symbol = "[↳](purple)"
 
 [git_branch]
 format = "[$branch]($style)"
@@ -38,7 +39,7 @@ format = '\([$state( $progress_current/$progress_total)]($style)\) '
 style = "bright-black"
 
 [cmd_duration]
-format = " [$duration]($style) "
+format = """[$duration]($style)"""
 style = "yellow"
 
 [python]

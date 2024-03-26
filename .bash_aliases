@@ -26,8 +26,21 @@ alias svim="sudoedit"
 alias remove="rm -rfdv"
 alias execute="chmod u+x"
 alias copy="cp -r"
-alias la="ls -la"
-alias ls="ls --color=auto"
+
+# la and exa
+if command -v exa > /dev/null; then
+	alias ls="exa"
+	alias la="exa -al"
+	alias tree="exa --tree"
+else
+	alias ls="ls --color=auto"
+	alias la="ls -la"
+fi
+
+# cat and bat
+if command -v bat > /dev/null; then
+	alias cat="bat -pp --tabs 4"
+fi
 alias dir="dir --color=auto"
 alias vdir="vdir --color=auto"
 alias grep="grep --color=auto"
