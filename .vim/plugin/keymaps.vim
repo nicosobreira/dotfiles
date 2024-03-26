@@ -8,7 +8,7 @@ let mapleader=" "
 map q :q!<CR>
 map <C-s> :w<CR>
 
-map <M-z> <C-R>
+map <M-z> <C-r>
 
 nnoremap <leader>h :split<Space>
 nnoremap <leader>v :vsplit<Space>
