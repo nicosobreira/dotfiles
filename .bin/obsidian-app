@@ -1,0 +1,166 @@
+#!/usr/bin/env bash
+init () {
+	DESKTOP_FOLDER="$HOME/.local/share/applications/custom/obsidian-app"
+	NAME="Obsidian-App"
+	DESKTOP="obsidian-app.desktop"
+	WORK_FOLDER="$HOME/.local/share/obsidian-app"
+	APP_NAME="Obsidian.AppImage"
+	CONFIG="config.txt"
+	ICON="icon.svg"
+	if [[ ! -d $WORK_FOLDER ]]; then
+		mkdir -p $WORK_FOLDER
+		echo "Folder create: $WORK_FOLDER"
+	fi
+	if [[ ! -e $WORK_FOLDER/$CONFIG ]]; then
+		touch $WORK_FOLDER/$CONFIG
+		echo "File create: $WORK_FOLDER/$CONFIG"
+	fi
+	if [[ ! -e $DESKTOP_FOLDER ]]; then
+		mkdir -p $DESKTOP_FOLDER
+		echo "Folder create: $DESKTOP_FOLDER"
+	fi
+	if [[ ! -e $DESKTOP_FOLDER/$DESKTOP ]]; then
+		touch $DESKTOP_FOLDER/$DESKTOP
+		echo "File create: $DESKTOP_FOLDER/$DESKTOP"
+	fi
+}
+
+# Get icon if icon.svg not exist
+get_icon () {
+	if [[ -e $WORK_FOLDER/$ICON ]]; then
+		echo "$ICON is already downloaded" 
+	else
+		ICON_LINK="https://obsidian.md/images/obsidian-logo-gradient.svg"
+		wget -q $ICON_LINK -O $WORK_FOLDER/$ICON
+		echo "Download: obsidian-logo-gradient.svg as icon.svg"
+	fi
+}
+
+get_version () {
+	VERSION="$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' https://github.com/obsidianmd/obsidian-releases.git | tail --lines=1 | cut --delimiter='/' --fields=3 )"
+	VERSION_N=${VERSION//v}
+	VERSION_OLD=$(< $WORK_FOLDER/$CONFIG)
+	APP_LINK="https://github.com/obsidianmd/obsidian-releases/releases/download/$VERSION/Obsidian-$VERSION_N.AppImage"
+		
+}
+get_app () {
+	get_version
+	# If the same version quit
+	if [[ ! -e $WORK_FOLDER/$APP_NAME || $VERSION != $VERSION_OLD ]]; then
+		echo "Downloading..."
+		wget -q $APP_LINK -O $WORK_FOLDER/$APP_NAME
+		echo "Download: Obsidian-${VERSION_N}.AppImage"
+	else
+		echo "$APP_NAME is already update"
+	fi
+
+	# If the output is diffent then "v{x}.{y}.{z}"
+	if [[ ${VERSION:0:1} != "v" && $VERSION != "" ]]; then
+		echo "An error occur when getting the most recent file"
+		exit 1
+	fi
+	echo $VERSION > $WORK_FOLDER/$CONFIG
+}
+
+make_app () {
+	if [[ -x $WORK_FOLDER/$APP_NAME ]]; then
+		echo "$APP_NAME file permission is set"
+	else
+		chmod +x $WORK_FOLDER/$APP_NAME
+		echo "Change: $APP_NAME to be executed"
+	fi
+	}
+
+make_desktop () {
+	if [[ $VERSION != $VERSION_OLD ]]; then
+		cat > $WORK_FOLDER/$DESKTOP << EOF
+[Desktop Entry]
+Type=Application
+Name=$NAME
+Path=$WORK_FOLDER
+Exec=$WORK_FOLDER/$APP_NAME
+Icon=$WORK_FOLDER/$ICON
+Terminal=false
+EOF
+		echo "Make: $DESKTOP"
+		chmod +x $WORK_FOLDER/$DESKTOP
+		
+		#rm $DESKTOP_FOLDER/*.desktop
+		cp $WORK_FOLDER/$DESKTOP $DESKTOP_FOLDER/$DESKTOP 
+		echo "Copy: $DESKTOP to $DESKTOP_FOLDER"
+	else
+		echo "$DESKTOP is already create and up to date"
+	fi
+}
+
+run () {
+	update
+	if [[ -e $WORK_FOLDER/$APP_NAME ]]; then
+		echo "Running $APP_NAME"
+		# Runs the command in the background (No nohup output)
+		nohup $WORK_FOLDER/$APP_NAME > /dev/null 2>&1 &
+	else
+		echo "$WORK_FOLDER/$APP_NAME couldn't be found"
+		exit 1
+	fi
+}
+
+update () {
+		get_icon
+		get_app
+		make_app
+		make_desktop
+}
+
+delete () {
+	echo "This will delete folders in:"
+	echo $WORK_FOLDER
+	echo $DESKTOP_FOLDER
+	read -p "Want to continue? [Y/N] " choice
+	case $choice in
+		[yYsS])
+			rm -r $WORK_FOLDER/*
+			rm -r $DESKTOP_FOLDER/*
+			echo "Delete folders"
+			;;
+		[nN])
+			echo "No folders deleted"
+			exit 0
+			;;
+		*)
+			echo "Need a valid option"
+			exit 1
+			;;
+	esac
+}
+
+init
+case $1 in
+	help | h)
+		cat << EOF
+Obsidian-app
+Use to install and setup obsidian.AppImage
+Usage: obsidian-app [options]
+
+Options:
+	help or h		Display help
+	update or u		Use to update or install obsidian
+	run or r		Run the Obsidian.AppImage
+	delete			Delete all folders and files!!!
+Default is run
+EOF
+		;;
+	update | u)
+		update
+		;;
+	run | r | '')
+		run
+		;;
+	delete | d)
+		delete
+		;;
+	*)
+		echo "$1 is a invalid option"
+		exit 2
+		;;
+esac
