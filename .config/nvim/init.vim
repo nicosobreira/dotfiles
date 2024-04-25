@@ -122,15 +122,10 @@ nmap j gj
 nmap k gk
 
 " Remove search highlights
-nmap <F9> :nohl
+nmap <F9> :nohl<CR>
 
 " - Run Commads -
 command Cd :cd %:h  " :Cd go to current folder
-
-" - No indent on paste -
-set pastetoggle=<F2>
-nnoremap <F2> :set invpaste paste?<CR>
-set pastetoggle=<F2>
 
 " - White space characters -
 set nolist
@@ -156,7 +151,7 @@ Plug 'OmniSharp/omnisharp-vim'
 Plug 'jlcrochet/vim-cs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tc50cal/vim-terminal'
-Plug 'https://github.com/preservim/tagbar'
+Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 
@@ -173,7 +168,6 @@ nnoremap <leader>n :NERDTreeToggle<CR>
 
 let NERDTreeShowHidden=1
 let g:NERDTreeWinSize=20
-
 " - Coc -
 let g:coc_global_extensions = ['coc-clangd', 'coc-sh', 'coc-snippets', 'coc-python']
 inoremap <expr> <TAB> pumvisible() ? coc#_select_confirm() : "<Tab>"

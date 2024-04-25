@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+[[ -z $1 ]] && echo "No parameter" && exit 1 || file_c=$1
+[[ -z $2 ]] && file_x=${file_c%.*} || file_x=$2
+
+if [[ $(which entr) == "" ]]; then
+	echo "Need to install entr"
+	echo "https://github.com/clibs/entr"
+	exit 1
+fi
+ls *.c | entr -c sh -c "gcc $file_c -o $file_x && ./$file_x"

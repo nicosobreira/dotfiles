@@ -10,6 +10,8 @@ fi
 # -- Variables --
 export VISUAL=$(which vim)
 export EDITOR="$VISUAL"
+export REPOS="$HOME/.local/share/Repos"
+export NV_CONFIG="$HOME/.config/nvim"
 
 ## -- Commands --
 tabs 4
@@ -66,3 +68,4 @@ alias egrep="egrep --color=auto"
 #	- Flatpak -
 alias protontricks="flatpak run com.github.Matoking.protontricks"
 alias protontricks-launch="flatpak run --command=protontricks-launch com.github.Matoking.protontricks"
+alias flatpak-list="flatpak list --columns=name,app,size"
