@@ -66,7 +66,6 @@ set title
 
 " - Show lines on
 set number relativenumber
-set nu rnu
 
 " - Hightlight search text -
 set hlsearch
@@ -169,5 +168,5 @@ nnoremap <leader>n :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
 let g:NERDTreeWinSize=20
 " - Coc -
-let g:coc_global_extensions = ['coc-clangd', 'coc-sh', 'coc-snippets', 'coc-python']
+let g:coc_global_extensions = ['coc-clangd', 'coc-sh', 'coc-snippets', 'coc-python', 'coc-markdownlint']
 inoremap <expr> <TAB> pumvisible() ? coc#_select_confirm() : "<Tab>"
