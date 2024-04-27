@@ -1,5 +1,4 @@
-# -- Basic --
-# - Profile -
+# -- Basic -- # - Profile -
 profile="$HOME/.profile"
 if [ -f $profile ]; then
 	source $profile
@@ -29,7 +28,6 @@ source "$znap_folder/znap.zsh"  # Start Znap
 # -- Plugins --
 # - Source -
 znap source marlonrichert/zsh-autocomplete
-
 # - Function -
 # Lazy-load some features
 znap function _pyenv pyenv "znap eval pyenv 'pyenv init - --no-rehash'"
@@ -39,6 +37,7 @@ compctl -K    _pyenv pyenv
 znap eval starship 'starship init zsh'
 znap eval zoxide 'zoxide init zsh'
 znap eval iterm2 'curl -fsSL https://iterm2.com/shell_integration/zsh'
+#znap eval fzf '$(fzf --zsh)'
 
 # - Other -
 # Sytax highlight
@@ -46,3 +45,5 @@ file="/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 if [ -f $file ]; then
 	source $file
 fi
+
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
