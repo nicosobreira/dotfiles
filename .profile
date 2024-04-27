@@ -11,12 +11,14 @@ fi
 export VISUAL=$(which vim)
 export EDITOR="$VISUAL"
 export REPOS="$HOME/.local/share/Repos"
-export NV_CONFIG="$HOME/.config/nvim"
+export NVCONF="$HOME/.config/nvim"
 
 ## -- Commands --
 tabs 4
 
 # -- Custom alias --
+# - Nvim Layouts -
+alias vv="NVIM_APPNAME=nvim-lua nvim"
 # - Code -
 # Python
 alias pyt="python3.12 -m pytest -s"
@@ -44,6 +46,8 @@ alias svim="sudoedit"
 alias remove="rm -rfd"
 alias execute="chmod u+x"
 alias copy="cp -r"
+alias duh="du --human-readable"
+alias tkill="tmux kill-session"
 
 # la and exa
 if command -v exa > /dev/null; then
