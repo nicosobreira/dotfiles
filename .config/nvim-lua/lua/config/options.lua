@@ -1,9 +1,10 @@
-	-- Config --
+-- Config --
 opt.clipboard = "unnamed"
 opt.backup = false
 opt.swapfile = false
 
---o.termguicolors = true
+o.termguicolors = true
+cmd.colorscheme "desert"
 
 opt.linebreak = true
 opt.scrolloff = 5
@@ -18,3 +19,5 @@ opt.shiftwidth = tap_space
 opt.autoindent = true
 opt.smarttab = true
 opt.expandtab = false
+
+vim.loader.enable()
