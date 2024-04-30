@@ -1,11 +1,11 @@
 # set PATH so it includes user's private bin if it exists
 if [[ -d $HOME/.bin ]]; then
-    PATH="$HOME/.bin:$PATH"
+	PATH="$HOME/.bin:$PATH"
 fi
 
 # set PATH so it includes user's private bin if it exists
 if [[ -d $HOME/.local/bin ]]; then
-    PATH="$HOME/.local/bin:$PATH"
+	PATH="$HOME/.local/bin:$PATH"
 fi
 # -- Variables --
 export VISUAL=$(which vim)
@@ -14,7 +14,7 @@ export REPOS="$HOME/.local/share/Repos"
 export NVCONF="$HOME/.config/nvim"
 
 ## -- Commands --
-tabs 4
+##tabs 4
 
 # -- Custom alias --
 # - Nvim Layouts -
