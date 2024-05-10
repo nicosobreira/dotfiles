@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+full_name=$(realpath "$1")
+folder="${full_name%/*}"
+extension="${full_name##*.}"
+echo -e "$full_name\n$folder\n$name\n$extension"
+ls -a $folder | entr $extension $full_name

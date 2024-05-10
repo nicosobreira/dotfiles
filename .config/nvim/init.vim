@@ -14,6 +14,9 @@
 " '---'                   ---`-'                   
 " --- Config ---
 " -- Configurations for '~/.vimrc' --
+colo slate
+set background=dark
+
 set nocompatible
 set wrap
 set linebreak
@@ -32,16 +35,20 @@ filetype plugin indent on
 syntax enable
 set list lcs=tab:\|\
 
-" - Colorsheme -
+" - Color scheme -
 " Use the same background color
-set termguicolors
-set background=dark
 
-if exists('+termguicolors')
+if (has("termguicolors"))
 	let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 	let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-	set termguicolors
+	set notermguicolors
 endif
+
+" Spell checks will be colored
+hi SpellBad cterm=underline
+hi SpellLocal cterm=underline
+hi SpellRare cterm=underline
+hi SpellCap cterm=underline
 
 " - Tabs -
 set tabstop=2 "Sets indent size of tabs"
@@ -50,7 +57,7 @@ set autoindent "Turns on auto-indenting"
 set smartindent "Remembers previous indent when creating new lines"
 set noexpandtab
 
-" - Use system clipborad -
+" - Use system clipboard -
 set clipboard=unnamedplus
 
 " - Auto-comment -
@@ -63,11 +70,12 @@ set splitbelow splitright
 set laststatus=2
 set confirm
 set title
+set nolist
 
 " - Show lines on
 set number relativenumber
 
-" - Hightlight search text -
+" - Highlight search text -
 set hlsearch
 "set incsearch
 
@@ -75,7 +83,7 @@ set hlsearch
 set ignorecase
 "set smartcase
 
-" - Menu, mais opções -
+" - Menu -
 set wildmenu
 set wildmode=list:full
 
@@ -89,7 +97,7 @@ au!
 autocmd VimEnter * silent !echo -ne "\e[2 q"
 augroup END
 
-" Fix slow when presse <ESC>
+" Fix slow when press <ESC>
 set ttimeout
 set ttimeoutlen=1
 set ttyfast
@@ -100,38 +108,37 @@ nnoremap <leader>; ;
 map ; :
 let mapleader=" "
 
-map q :q!<CR>
+"map q :q!<CR>
 map <C-s> :w<CR>
 
 nnoremap <leader>h :split<Space>
 nnoremap <leader>v :vsplit<Space>
 
 " - Split Navigation -
-nmap <C-h> <C-w>h
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
-nmap <C-l> <C-w>l
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
 
-" H and L for begginning/end of line
+" H and L for beginning/end of line
 nmap H ^
 nmap L $
 
-" Navegate visual lines
+" Navigate visual lines
 nmap j gj
 nmap k gk
 
 " Remove search highlights
 nmap <F9> :nohl<CR>
 
-" - Run Commads -
+" Toggle spell check
+map <F5> :setlocal spell!<CR>
+
+" - Run Commands -
 command Cd :cd %:h  " :Cd go to current folder
 
-" - White space characters -
-set nolist
-set listchars=eol:$,tab:.\ ,trail:.,extends:>,precedes:<,nbsp:_
-highlight SpecialKey term=standout ctermfg=darkgray guifg=darkgray
-" display white space characters with F3
-nnoremap <F3> :set list! list?<CR>
+" Exit terminal with ESC
+tnoremap <Esc> <C-\><C-n>
 
 " --- Plugins ---
 " -- Plug --
@@ -144,7 +151,6 @@ endif
 call plug#begin()
 
 Plug 'preservim/nerdtree'
-Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 Plug 'tpope/vim-obsession'
 Plug 'OmniSharp/omnisharp-vim'
 Plug 'jlcrochet/vim-cs'
@@ -155,12 +161,6 @@ Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 " -- Config --
-" - Catppuccin -
-colo catppuccin_frappe
-
-" - TagBar -
-nmap <F8> :TagbarToggle<CR>
-
 " - NERDTree Option -
 nnoremap <leader>n :NERDTreeToggle<CR>
 "nnoremap <C-n> :NERDTreeToggle<CR>
@@ -168,5 +168,5 @@ nnoremap <leader>n :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
 let g:NERDTreeWinSize=20
 " - Coc -
-let g:coc_global_extensions = ['coc-clangd', 'coc-sh', 'coc-snippets', 'coc-python', 'coc-markdownlint']
+let g:coc_global_extensions = ['coc-clangd', 'coc-sh', 'coc-snippets', 'coc-python']
 inoremap <expr> <TAB> pumvisible() ? coc#_select_confirm() : "<Tab>"

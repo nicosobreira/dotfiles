@@ -8,7 +8,7 @@ if [[ -d $HOME/.local/bin ]]; then
 	PATH="$HOME/.local/bin:$PATH"
 fi
 # -- Variables --
-export VISUAL=$(which vim)
+export VISUAL=$(which nvim)
 export EDITOR="$VISUAL"
 export REPOS="$HOME/.local/share/Repos"
 export NVCONF="$HOME/.config/nvim"
@@ -17,8 +17,11 @@ export NVCONF="$HOME/.config/nvim"
 ##tabs 4
 
 # -- Custom alias --
+# - Get multiple config files -
+
 # - Nvim Layouts -
 alias vv="NVIM_APPNAME=nvim-lua nvim"
+alias v="nvim"
 # - Code -
 # Python
 alias pyt="python3.12 -m pytest -s"
@@ -38,7 +41,7 @@ alias remote="git remote add origin"
 
 # - Terminal -
 # Basic
-alias v="vim"
+alias v="nvim"
 alias c="clear"
 alias xtar="tar -xvf"
 alias nala="sudo nala"
@@ -52,7 +55,7 @@ alias tkill="tmux kill-session"
 # la and exa
 if command -v exa > /dev/null; then
 	alias ls="exa"
-	alias la="exa -al"
+	alias la="exa -lah --no-time --no-user --no-permissions"
 	alias tree="exa --tree"
 else
 	alias ls="ls --color=auto"
