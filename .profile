@@ -20,7 +20,7 @@ export NVCONF="$HOME/.config/nvim"
 # - Get multiple config files -
 
 # - Nvim Layouts -
-alias vv="NVIM_APPNAME=nvim-lua nvim"
+alias vv="NVIM_APPNAME=nvim-lazy nvim"
 alias v="nvim"
 # - Code -
 # Python
@@ -55,17 +55,13 @@ alias tkill="tmux kill-session"
 # la and exa
 if command -v exa > /dev/null; then
 	alias ls="exa"
-	alias la="exa -lah --no-time --no-user --no-permissions"
+	alias la="exa -lah --no-time --no-user --no-permissions --sort=type"
 	alias tree="exa --tree"
 else
 	alias ls="ls --color=auto"
 	alias la="ls -la"
 fi
 
-# cat and bat
-if command -v bat > /dev/null; then
-	alias cat="bat -pp --tabs 4"
-fi
 alias dir="dir --color=auto"
 alias vdir="vdir --color=auto"
 alias grep="grep --color=auto"
