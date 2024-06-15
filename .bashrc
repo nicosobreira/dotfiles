@@ -73,7 +73,7 @@ case "$TERM" in
 esac
 
 # enable color support of ls and also add handy aliases
-if [[-f ~/.profile ]]; then
+if [[ -f ~/.profile ]]; then
 	source ~/.profile
 fi
 
@@ -89,7 +89,7 @@ if ! shopt -oq posix; then
 fi
 
 # "Plugins"
-#eval "$(zoxide init bash)"
+eval "$(zoxide init bash)"
 eval "$(starship init bash)"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
