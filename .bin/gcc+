@@ -1,10 +1,24 @@
 #!/usr/bin/env bash
-[[ -z $1 ]] && echo "No parameter" && exit 1 || file_c=$1
-[[ -z $2 ]] && file_x=${file_c%.*} || file_x=$2
+# If the 1th or 2th parameter is unset exit
+if [[ -z $1 ]]; then
+	echo "No name to compile"
+	exit 1
+else
+	file_x=$1
+fi
+if [[ -z $2 ]]; then
+	echo "No .c files"
+	exit 1
+else
+	all_param=$@
+fi
+
+# If there is multiple .c files
+file_c="${all_param##$file_x }"
 
 if [[ $(which entr) == "" ]]; then
 	echo "Need to install entr"
 	echo "https://github.com/clibs/entr"
 	exit 1
 fi
-ls *.c | entr -c sh -c "gcc $file_c -o $file_x && ./$file_x"
+ls | entr -c sh -c "gcc -o $file_x $file_c && ./$file_x"
