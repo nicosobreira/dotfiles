@@ -4,7 +4,7 @@ opt.backup = false
 opt.swapfile = false
 
 o.termguicolors = true
-cmd.colorscheme "desert"
+cmd.colorscheme "slate"
 
 opt.linebreak = true
 opt.scrolloff = 5

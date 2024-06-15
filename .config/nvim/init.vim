@@ -111,22 +111,23 @@ let mapleader=" "
 "map q :q!<CR>
 map <C-s> :w<CR>
 
-nnoremap <leader>h :split<Space>
-nnoremap <leader>v :vsplit<Space>
-
 " - Split Navigation -
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+" Move buffers
+map <leader>l :bn<CR>
+map <leader>h :bp<CR>
+
 " H and L for beginning/end of line
 nmap H ^
 nmap L $
 
 " Navigate visual lines
-nmap j gj
-nmap k gk
+map j gj
+map k gk
 
 " Remove search highlights
 nmap <F9> :nohl<CR>
@@ -168,5 +169,5 @@ nnoremap <leader>n :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
 let g:NERDTreeWinSize=20
 " - Coc -
-let g:coc_global_extensions = ['coc-clangd', 'coc-sh', 'coc-snippets', 'coc-python']
+let g:coc_global_extensions = ['coc-clangd', 'coc-sh', 'coc-snippets', 'coc-pyright']
 inoremap <expr> <TAB> pumvisible() ? coc#_select_confirm() : "<Tab>"
