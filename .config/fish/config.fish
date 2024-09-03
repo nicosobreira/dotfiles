@@ -1,9 +1,8 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
-  
+  bind \cC backward-kill-word
   # -- Alias --
 	alias vv="NVIM_APPNAME=nvim-lazy nvim"
-	alias vc="NVIM_APPNAME=nvim-chad nvim"
 
   # - Code -
   # Python
