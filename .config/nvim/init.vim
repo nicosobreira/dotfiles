@@ -51,8 +51,8 @@ hi SpellRare cterm=underline
 hi SpellCap cterm=underline
 
 " - Tabs -
-set tabstop=2 "Sets indent size of tabs"
-set shiftwidth=2 "Sets auto-indent size"
+set tabstop=4 "Sets indent size of tabs"
+set shiftwidth=4 "Sets auto-indent size"
 set autoindent "Turns on auto-indenting"
 set smartindent "Remembers previous indent when creating new lines"
 set noexpandtab
@@ -129,6 +129,9 @@ nmap L $
 map j gj
 map k gk
 
+" Ctrl+Backspace delete word
+imap <C-BS> <C-W>
+
 " Remove search highlights
 nmap <F9> :nohl<CR>
 
@@ -156,7 +159,6 @@ Plug 'tpope/vim-obsession'
 Plug 'OmniSharp/omnisharp-vim'
 Plug 'jlcrochet/vim-cs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'tc50cal/vim-terminal'
 Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()

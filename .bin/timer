@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+ASCII_FG="\\033[38;05;"
+COLOR_RESET=""
+
+ascii_text () {
+	text=${1}
+	color_code=${2:-255}
+	echo -e "${ASCII_FG}${color_code}m"
+	figlet -w $COLUMNS -c $text
+	echo -e "$COLOR_RESET"
+}
+
+# -- Timer --
+seconds=0
+minutes=0
+hours=0
+case $# in
+	1) seconds=$1;;
+	2) minutes=$1 ; seconds=$2;;
+	3) hours=$1 ; minutes=$2 ; seconds=$3;;
+	*) echo "At least one argument"; exit;;
+esac
+
+while [ $hours -ge 0 ]; do
+	while [ $minutes -ge 0 ]; do
+		while [ $seconds -ge 0 ]; do
+			ascii_text $(printf "%02d:%02d:%02d" $hours $minutes $seconds) 34
+			seconds=$((seconds-1))
+			sleep 1
+			clear
+		done
+		seconds=59
+		minutes=$((minutes-1))
+	done
+	minutes=59
+	hours=$((hours-1))
+done
+ascii_text "DONE"
+play -nq synth 3 sin 960 fade l 0 3 2.8 trim 0 1 repeat 2

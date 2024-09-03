@@ -13,7 +13,7 @@ opt.relativenumber = true
 opt.hlsearch = true
 opt.ignorecase = true
 
-local tap_space = 2
+local tap_space = 4
 opt.tabstop = tap_space
 opt.shiftwidth = tap_space
 opt.autoindent = true

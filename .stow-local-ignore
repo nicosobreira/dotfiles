@@ -2,6 +2,7 @@
 /.git
 git
 .git
+.gitignore
 README.md
 autoload
 bundle

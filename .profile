@@ -21,7 +21,8 @@ export NVCONF="$HOME/.config/nvim"
 
 # - Nvim Layouts -
 alias vv="NVIM_APPNAME=nvim-lazy nvim"
-alias v="nvim"
+alias vc="NVIM_APPNAME=nvim-chad nvim"
+
 # - Code -
 # Python
 alias pyt="python3.12 -m pytest -s"
