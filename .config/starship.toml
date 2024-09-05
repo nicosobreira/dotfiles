@@ -10,6 +10,7 @@ $character"""
 [directory]
 style = "blue"
 truncation_length = 8
+truncation_symbol = "../"
 
 [character]
 success_symbol = " [➜](green) "
