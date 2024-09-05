@@ -1,11 +1,12 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
-  bind \cC backward-kill-word
+  set -U CONFIG $HOME/.config/fish/config.fish
+  function fish_user_key_bindings
+    bind \b backward-kill-word
+  end
   # -- Alias --
-	alias vv="NVIM_APPNAME=nvim-lazy nvim"
-
-  # - Code -
-  # Python
+  
+   # - Code -
 	alias pyt="python3.12 -m pytest -s"
 	alias pip="python3.12 -m pip"
 	alias py="python3.12"
@@ -32,7 +33,7 @@ if status is-interactive
 
   # la and exa
 	if type -q exa
-    	alias ls="exa"
+    alias ls="exa"
 		alias la="exa -lah --no-time --no-user --no-permissions --sort=type"
 		alias tree="exa --tree"
 	else
