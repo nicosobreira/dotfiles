@@ -1,6 +1,10 @@
 if status is-interactive
-    # Commands to run in interactive sessions can go here
-  set -U CONFIG $HOME/.config/fish/config.fish
+  # -- Variables --
+  set -U NVIM $HOME/.config/nvim
+  set -U CONFIG $HOME/.config/fish/
+  set -gx PAGER less
+
+  # -- Shortcuts
   function fish_user_key_bindings
     bind \b backward-kill-word
   end
@@ -53,5 +57,5 @@ if status is-interactive
 	
   # -- Source --
   zoxide init fish | source
-	starship init fish | source
+	#starship init fish | source
 end
