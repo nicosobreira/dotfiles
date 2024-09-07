@@ -30,12 +30,21 @@ function fish_prompt --description 'Write out the prompt'
     echo -n -s $status_color $suffix ' ' $normal
 end
 
-# https://stackoverflow.com/questions/12199631/convert-seconds-to-hours-minutes-seconds
 function fish_right_prompt --description "Write out the right prompt"
   set -l total_seconds (math ceil $CMD_DURATION / 1000)
-  #set -l hours (math ceil "$total_seconds / 3600") 'h'
-  #set -l minutes (math "($total_seconds % 3600) / 60") 'm'
-  #set -l seconds (math "$total_seconds % 60") 's'
-  
-  echo -s (set_color yellow) $total_seconds 's'
+  #set -l total_seconds 3600
+  set -l hours (math -s0 "$total_seconds / 3600")'h'
+  set -l minutes (math -s0 "($total_seconds % 3600) / 60")'m'
+  set -l seconds (math -s0 "$total_seconds % 60")'s'
+
+  echo -s (set_color yellow)
+
+  switch $hours[1]
+    case 0
+      echo -n $minutes
+    case '*'
+      echo -n $hours
+      echo -n $minutes
+  end
+  echo -n $seconds
 end
