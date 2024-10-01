@@ -39,9 +39,11 @@ function fish_right_prompt --description "Write out the right prompt"
 
   echo -s (set_color yellow)
 
-  switch $hours[1]
-    case 0
-      echo -n $minutes
+  switch $hours
+    case "0h"
+      if test $minutes != 0m 
+        echo -n $minutes
+      end
     case '*'
       echo -n $hours
       echo -n $minutes

@@ -56,6 +56,7 @@ if status is-interactive
 	alias flatpak-list="flatpak list --columns=name,app,size"
 	
   # -- Source --
+  fzf --fish | source
   zoxide init fish | source
-	#starship init fish | source
+  #starship init fish | source
 end
