@@ -20,7 +20,7 @@ if status is-interactive
 
   # - Git -
 	alias commit="git commit -m"
-	alias push="git push origin"
+	alias push="git pull origin; git push origin"
 	alias pull="git pull origin"
 	alias add="git add"
 	alias remote="git remote add origin"

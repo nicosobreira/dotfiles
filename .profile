@@ -38,7 +38,7 @@ alias cscript="dotnet script"
 # - Git -
 alias status="git status"
 alias commit="git commit -m"
-alias push="git push origin"
+alias push="git pull origin && git push origin"
 alias pull="git pull origin"
 alias add="git add"
 alias remote="git remote add origin"
