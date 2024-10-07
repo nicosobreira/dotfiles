@@ -30,9 +30,9 @@ function fish_prompt --description 'Write out the prompt'
     echo -n -s $status_color $suffix ' ' $normal
 end
 
-function fish_right_prompt --description "Write out the right prompt"
+function fish_right_prompt --description "Write the right prompt"
   set -l total_seconds (math ceil $CMD_DURATION / 1000)
-  #set -l total_seconds 3600
+  
   set -l hours (math -s0 "$total_seconds / 3600")'h'
   set -l minutes (math -s0 "($total_seconds % 3600) / 60")'m'
   set -l seconds (math -s0 "$total_seconds % 60")'s'

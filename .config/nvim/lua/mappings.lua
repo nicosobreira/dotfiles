@@ -4,10 +4,12 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
-map("n", ";", ":", { desc = "CMD enter command mode" })
+map({"n", "v"}, ";", ":", { desc = "CMD enter command mode" })
 map("n", "<F9>", ":noh<CR>", { desc = "Clear highlight" })
 map("i", "<C-H>", "<C-W>", { desc = "Ctrl + Backspace delete previous word" })
 map("n", "<leader>c", ":Telescope colorscheme<CR>")
+map({"v", "n"}, "H", "0")
+map({"v", "n"}, "L", "$")
 
 -- Vim-tmux-navigator
 map("n", "<C-k>", ":wincmd k<CR>")

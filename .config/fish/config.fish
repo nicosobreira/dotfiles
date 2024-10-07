@@ -1,9 +1,9 @@
 if status is-interactive
   # -- Variables --
   set -U NVIM $HOME/.config/nvim
-  set -U CONFIG $HOME/.config/fish/
+  set -U FISH $HOME/.config/fish/
   set -gx PAGER less
-
+  set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
   # -- Shortcuts
   function fish_user_key_bindings
     bind \b backward-kill-word
