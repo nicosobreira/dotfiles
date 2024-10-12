@@ -1,6 +1,7 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR CONFIG:/home/acerola/\x2econfig/fish/
+SETUVAR FISH:/home/acerola/\x2econfig/fish/
 SETUVAR FISHCONFIG:/home/acerola/\x2econfig/fish/config\x2efish
 SETUVAR NVIM:/home/acerola/\x2econfig/nvim
 SETUVAR __fish_initialized:3400

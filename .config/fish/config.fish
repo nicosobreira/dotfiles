@@ -12,7 +12,7 @@ if status is-interactive
   
    # - Code -
 	alias pyt="python3.12 -m pytest -s"
-	alias pip="python3.12 -m pip"
+	#alias pip="python3.12 -m pip"
 	alias py="python3.12"
 
   # CSharp
