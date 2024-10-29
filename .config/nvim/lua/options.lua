@@ -3,6 +3,11 @@ require "nvchad.options"
 -- add yours here!
 
 local o = vim.o
+
+-- o.tabstop = 8
+-- o.shiftwidth = 8
+-- o.expandtab = true
+
 o.relativenumber = true
 o.scrolloff = 5
 o.breakindent = true

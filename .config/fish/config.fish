@@ -3,24 +3,24 @@ if status is-interactive
   set -U NVIM $HOME/.config/nvim
   set -U FISH $HOME/.config/fish/
   set -gx PAGER less
-  set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
+  set -gx MANPAGER "nvim +Man!"
+  
   # -- Shortcuts
   function fish_user_key_bindings
     bind \b backward-kill-word
   end
   # -- Alias --
-  
-   # - Code -
-	alias pyt="python3.12 -m pytest -s"
-	#alias pip="python3.12 -m pip"
-	alias py="python3.12"
+  # - Code -
+  alias pyt="python3.12 -m pytest -s"
+  #alias pip="python3.12 -m pip"
+  alias py="python3.12"
 
   # CSharp
-	alias cscript="dotnet script"
+  alias cscript="dotnet script"
 
   # - Git -
 	alias commit="git commit -m"
-	alias push="git pull origin; git push origin"
+	alias push="git push origin"
 	alias pull="git pull origin"
 	alias add="git add"
 	alias remote="git remote add origin"
