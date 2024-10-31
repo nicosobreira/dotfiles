@@ -1,6 +1,17 @@
-local map = vim.api.nvim_set_keymap
-
 return {
+  {
+    dir = "~/code/lua/nvim-plugins/nvimrc",
+    name = "nvimrc",
+    -- dev = true,
+    lazy = false,
+    opts = {
+      file_name = ".nvim",
+    },
+  },
+  {
+    "folke/which-key.nvim",
+    lazy = false,
+  },
   {
     "mfussenegger/nvim-dap",
     dependencies = {
@@ -8,23 +19,7 @@ return {
       "nvim-neotest/nvim-nio",
     },
     config = function()
-      local dap = require "dap"
-      local dapui = require "dapui"
-
-      dapui.setup()
-
-      map("n", "<leader>dx", ":DapTerminate<CR>", { desc = "Toggle Ui" })
-      map("n", "<leader>db", ":DapToggleBreakpoint<CR>", { desc = "Toggle breakpoint" })
-      map("n", "<leader>dc", ":DapContinue<CR>", { desc = "Continue debbuging" })
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
+      require "configs.dap"
     end,
   },
   {

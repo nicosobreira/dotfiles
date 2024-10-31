@@ -15,4 +15,4 @@ o.linebreak = true
 o.swapfile = false
 o.spell = true
 -- o.spelllang = "en_us"
--- o.cursorlineopt ='both' -- to enable cursorline!
+-- o.cursorlineopt ="both' -- to enable cursorline!
