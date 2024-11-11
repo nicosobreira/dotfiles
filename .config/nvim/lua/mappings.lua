@@ -8,6 +8,10 @@ map("i", "<C-H>", "<C-W>", { desc = "Ctrl + Backspace delete previous word" })
 map({ "v", "n" }, "H", "0")
 map({ "v", "n" }, "L", "$")
 
+map("n", "<leader>d", function()
+  vim.diagnostic.open_float()
+end, { desc = "Unfold diagnostic", silent = true })
+
 -- Vim-tmux-navigator
 map("n", "<C-k>", ":wincmd k<CR>", { silent = true })
 map("n", "<C-j>", ":wincmd j<CR>", { silent = true })
@@ -21,4 +25,4 @@ map({ "n", "v" }, "<Down>", "gj")
 map({ "n", "v" }, "<Up>", "gk")
 
 -- Terminal
-map("t", "<ESC>", "<C-\\><C-n>", { desc = "ESC quits terminal" })
+map("t", "<ESC>", "<C-\\><C-n>", { desc = "ESC enter normal mode" })
