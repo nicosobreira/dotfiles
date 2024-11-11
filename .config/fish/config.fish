@@ -4,14 +4,15 @@ if status is-interactive
   set -U FISH $HOME/.config/fish/
   set -gx PAGER less
   set -gx MANPAGER "nvim +Man!"
+  set -gx fish_greeting ""
   
   # -- Shortcuts
   function fish_user_key_bindings
     bind \b backward-kill-word
   end
+  
   # -- Alias --
   # - Code -
-  alias pyt="python3.12 -m pytest -s"
   #alias pip="python3.12 -m pip"
   alias py="python3.12"
 
@@ -37,7 +38,6 @@ if status is-interactive
 
   # la and exa
 	if type -q exa
-    alias ls="exa"
 		alias la="exa -lah --no-time --no-user --no-permissions --sort=type"
 		alias tree="exa --tree"
 	else
@@ -58,5 +58,4 @@ if status is-interactive
   # -- Source --
   fzf --fish | source
   zoxide init fish | source
-  #starship init fish | source
 end
