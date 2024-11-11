@@ -1,2 +1,3 @@
 .bin/retroarch
+lazy-lock.json
 *.AppImage
