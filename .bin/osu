@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-folder="$HOME/Games"
-name="osu.AppImage"
-osu="$folder/$name"
-[[ -x $osu ]] || chmod u+x $osu
-$osu
