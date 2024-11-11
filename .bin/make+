@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-
-file_x=$1
-ls | entr -c sh -c "make && ./$file_x"
