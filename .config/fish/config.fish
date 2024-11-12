@@ -1,7 +1,9 @@
 if status is-interactive
   # -- Variables --
-  set -U NVIM $HOME/.config/nvim
-  set -U FISH $HOME/.config/fish/
+  set -gx NVIM $HOME/.config/nvim
+  set -gx FISH $HOME/.config/fish/
+  set -gx VISUAL (which nvim)
+  set -gx EDITOR $VISUAL
   set -gx PAGER less
   set -gx MANPAGER "nvim +Man!"
   set -gx fish_greeting ""
@@ -12,43 +14,15 @@ if status is-interactive
   end
   
   # -- Alias --
-  # - Code -
-  #alias pip="python3.12 -m pip"
-  alias py="python3.12"
-
-  # CSharp
-  alias cscript="dotnet script"
-
-  # - Git -
-	alias commit="git commit -m"
-	alias push="git push origin"
-	alias pull="git pull origin"
-	alias add="git add"
-	alias remote="git remote add origin"
-
-  # - Terminal -
-  # Basic
-	alias c="clear"
-	alias nala="sudo nala"
-
+  source ~/.alias
   # la and exa
-	if type -q exa
-		alias la="exa -lah --no-user --no-permissions --sort=type"
-		alias tree="exa --tree"
-	else
-		alias ls="ls --color=auto"
-		alias la="ls -la"
-	end
-	alias dir="dir --color=auto"
-	alias vdir="vdir --color=auto"
-	alias grep="grep --color=auto"
-	alias fgrep="fgrep --color=auto"
-	alias egrep="egrep --color=auto"
-
-  #	- Flatpak -
-	alias protontricks="flatpak run com.github.Matoking.protontricks"
-	alias protontricks-launch="flatpak run --command=protontricks-launch com.github.Matoking.protontricks"
-	alias flatpak-list="flatpak list --columns=name,app,size"
+  if type -q exa
+    alias la="exa -lah --no-user --no-permissions --sort=type"
+    alias tree="exa --tree"
+  else
+    alias ls="ls --color=auto"
+    alias la="ls -la"
+  end
 	
   # -- Source --
   fzf --fish | source
