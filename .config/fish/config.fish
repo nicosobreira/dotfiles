@@ -28,17 +28,12 @@ if status is-interactive
 
   # - Terminal -
   # Basic
-	alias v="nvim"
 	alias c="clear"
-	alias xtar="tar -xvf"
 	alias nala="sudo nala"
-	alias remove="rm -rfd"
-	alias duh="du --human-readable"
-	alias tkill="tmux kill-session"
 
   # la and exa
 	if type -q exa
-		alias la="exa -lah --no-time --no-user --no-permissions --sort=type"
+		alias la="exa -lah --no-user --no-permissions --sort=type"
 		alias tree="exa --tree"
 	else
 		alias ls="ls --color=auto"
