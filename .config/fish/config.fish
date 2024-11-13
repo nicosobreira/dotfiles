@@ -18,7 +18,7 @@ if status is-interactive
   # la and exa
   if type -q exa
     alias la="exa -lah --no-user --no-permissions --sort=type"
-    alias tree="exa --tree"
+    alias tree="exa --tree --sort=type"
   else
     alias ls="ls --color=auto"
     alias la="ls -la"
