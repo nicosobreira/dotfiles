@@ -13,18 +13,19 @@ M.base46 = {
   },
 }
 
-M.mason.pkgs = {
-  "clangd",
-  "codelldb",
-  "css-lsp",
-  "debugpy",
-  "html-lsp",
-  "js-debug-adapter",
-  "lua-language-server",
-  "pyright",
-  "stylua",
-  "typescript-language-server",
-}
+-- M.mason.pkgs = {
+--   "clangd",
+--   "codelldb",
+--   "css-lsp",
+--   "debugpy",
+--   "html-lsp",
+--   "js-debug-adapter",
+--   "lua-language-server",
+--   "pyright",
+--   "stylua",
+--   "typescript-language-server",
+--   "bash-language-server",
+-- }
 
 M.ui = {
   tabufline = {
