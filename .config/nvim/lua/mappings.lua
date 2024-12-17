@@ -17,27 +17,20 @@ map("n", "<C-l>", "<cmd>wincmd l<CR>", { desc = "Move to window right" })
 -- Navigate in wrap lines
 map({ "n", "v" }, "j", "gj")
 map({ "n", "v" }, "k", "gk")
-map({ "n", "v", "i" }, "<Down>", "<ESC>gji")
-map({ "n", "v", "i" }, "<Up>", "<ESC>gki")
+map({ "n", "v" }, "<Down>", "gj")
+map({ "n", "v" }, "<Up>", "gk")
 
 -- Terminal
-vim.api.nvim_create_autocmd("TermOpen", {
-  group = vim.api.nvim_create_augroup("custom-term-open", { clear = true }),
-  callback = function()
-    vim.opt.number = false
-    vim.opt.relativenumber = false
-  end,
-})
 map("t", "<ESC>", "<C-\\><C-n>", { desc = "ESC enter normal mode" })
 
 -- Tab management
 map("n", "<Tab>", "gt", { desc = "Go to next tab" })
 map("n", "<S-Tab>", "gT", { desc = "Go to previous tab" })
-map("n", "<leader>n", "<cmd>$tabnew<CR>", { desc = "Create a tab after last one" })
-map("n", "<leader>N", "<cmd>0tabnew<CR>", { desc = "Create a tab before first one" })
-map("n", "<leader>x", "<cmd>tabclose<CR>", { desc = "Close current tab" })
+map("n", "<space>n", "<cmd>$tabnew<CR>", { desc = "Create a tab after last one" })
+map("n", "<space>N", "<cmd>0tabnew<CR>", { desc = "Create a tab before first one" })
+map("n", "<space>x", "<cmd>tabclose<CR>", { desc = "Close current tab" })
 
 -- LSP
-map("n", "<leader>d", function()
+map("n", "<space>d", function()
   vim.diagnostic.open_float()
 end, { desc = "Unfold diagnostic" })
