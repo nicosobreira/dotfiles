@@ -20,10 +20,10 @@ export NVCONF="$HOME/.config/nvim"
 ##tabs 4
 
 # -- Alias --
-source ~/.alias
+[[ -f ~/.alias ]] && source ~/.alias
 
 # la and exa
-if [[ ! -x $(command -v exa) ]]; then
+if [[ -x $(command -v exa) ]]; then
   alias la="exa -lah --no-user --no-permissions --sort=type"
   alias tree="exa --tree"
 else
