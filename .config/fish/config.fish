@@ -5,7 +5,7 @@ if status is-interactive
   set -gx VISUAL (which nvim)
   set -gx EDITOR $VISUAL
   set -gx PAGER less
-  set -gx MANPAGER "nvim +Man!"
+  set -gx MANPAGER "nvim -c 'setlocal nospell' +Man!"
   set -gx fish_greeting ""
   
   # -- Shortcuts

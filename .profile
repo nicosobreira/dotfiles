@@ -14,7 +14,7 @@ export PATH="/opt/nvim-linux64/bin:$PATH"
 if [[ -x $(command -v nvim) ]]; then
   export VISUAL=$(which nvim)
   export EDITOR="$VISUAL"
-  export MANPAGER="nvim +Man!"
+  export MANPAGER="nvim -c 'setlocal nospell' +Man!"
 fi
 
 # -- Alias --
