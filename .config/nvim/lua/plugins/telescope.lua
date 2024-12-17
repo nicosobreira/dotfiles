@@ -100,5 +100,17 @@ return {
       end,
       desc = "Telescope nvim config",
     },
+    {
+      "<space>ed",
+      function()
+        require("telescope.builtin").find_files {
+          cwd = "~/dotfiles",
+          follow = true,
+          no_ignore = true,
+          hidden = true,
+        }
+      end,
+      desc = "Telescope dotfiles",
+    },
   },
 }
