@@ -11,10 +11,11 @@ fi
 export PATH="/opt/nvim-linux64/bin:$PATH"
 
 # -- Variables --
-export VISUAL=$(which nvim)
-export EDITOR="$VISUAL"
-export REPOS="$HOME/.local/share/Repos"
-export NVCONF="$HOME/.config/nvim"
+if [[ -x $(command -v nvim) ]]; then
+  export VISUAL=$(which nvim)
+  export EDITOR="$VISUAL"
+  export MANPAGER="nvim +Man!"
+fi
 
 # -- Alias --
 [[ -f ~/.alias ]] && source ~/.alias
