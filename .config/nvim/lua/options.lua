@@ -2,15 +2,15 @@ require "nvchad.options"
 
 -- add yours here!
 
-local o = vim.o
+local opt = vim.opt
 
 -- o.tabstop = 4
 -- o.shiftwidth = 4
 -- o.expandtab = true
 
-o.relativenumber = true
-o.scrolloff = 5
-o.breakindent = true
-o.linebreak = true
-o.swapfile = false
-o.spell = true
+opt.relativenumber = true
+opt.scrolloff = 5
+opt.breakindent = true
+opt.linebreak = true
+opt.swapfile = false
+opt.spell = true
