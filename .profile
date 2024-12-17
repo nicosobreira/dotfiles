@@ -16,9 +16,6 @@ export EDITOR="$VISUAL"
 export REPOS="$HOME/.local/share/Repos"
 export NVCONF="$HOME/.config/nvim"
 
-## -- Commands --
-##tabs 4
-
 # -- Alias --
 [[ -f ~/.alias ]] && source ~/.alias
 
