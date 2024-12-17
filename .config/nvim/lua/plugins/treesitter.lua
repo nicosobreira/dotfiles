@@ -12,6 +12,7 @@ return {
       "c",
       "cpp",
       "bash",
+      "markdown",
     },
   },
 }
