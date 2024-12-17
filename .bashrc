@@ -85,11 +85,3 @@ if ! shopt -oq posix; then
 		. /etc/bash_completion
 	fi
 fi
-
-# Plugins
-#eval "$(zoxide init bash)"
-#eval "$(starship init bash)"
-
-[[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
-# Set up fzf key bindings and fuzzy completion
-#eval "$(fzf --bash)"
