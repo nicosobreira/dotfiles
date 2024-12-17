@@ -1,45 +1,104 @@
 return {
+  lazy = false,
   "nvim-telescope/telescope.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "BurntSushi/ripgrep",
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    { "telescope-fzf-native.nvim", build = "make" },
   },
   keys = {
-    { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "Telescope find files" },
-    { "<leader>fw", "<cmd>Telescope live_grep<CR>", desc = "Telescope live grep" },
-    { "<leader>fb", "<cmd>Telescope buffers<CR>", desc = "Telescope find buffers" },
-    { "<leader>fh", "<cmd>Telescope help_tags<CR>", desc = "Telescope help page" },
-    { "<leader>ma", "<cmd>Telescope marks<CR>", desc = "Telescope find marks" },
-    { "<leader>fo", "<cmd>Telescope oldfiles<CR>", desc = "Telescope find oldfiles" },
     {
-      "<leader>fz",
-      "<cmd>Telescope current_buffer_fuzzy_find<CR>",
+      "<space>ff",
+      function()
+        require("telescope.builtin").find_files()
+      end,
+      desc = "Telescope find files",
+    },
+    {
+      "<space>fw",
+      function()
+        require("telescope.builtin").live_grep()
+      end,
+      desc = "Telescope live grep",
+    },
+    {
+      "<space>fb",
+      function()
+        require("telescope.builtin").buffers()
+      end,
+      desc = "Telescope find buffers",
+    },
+    {
+      "<space>fh",
+      function()
+        require("telescope.builtin").help_tags()
+      end,
+      desc = "Telescope help page",
+    },
+    {
+      "<space>ma",
+      function()
+        require("telescope.builtin").marks()
+      end,
+      desc = "Telescope find marks",
+    },
+    {
+      "<space>fo",
+      function()
+        require("telescope.builtin").oldfiles()
+      end,
+      desc = "Telescope find oldfiles",
+    },
+    {
+      "<space>fz",
+      function()
+        require("telescope.builtin").current_buffer_fuzzy_find()
+      end,
       desc = "Telescope find in current buffer",
     },
-    { "<leader>cm", "<cmd>Telescope git_commits<CR>", desc = "Telescope git commits" },
-    { "<leader>gt", "<cmd>Telescope git_status<CR>", desc = "Telescope git status" },
-    { "<leader>pt", "<cmd>Telescope terms<CR>", desc = "Telescope pick hidden term" },
     {
-      "<leader>fa",
-      "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
-      desc = "Telescope find all files",
+      "<space>cm",
+      function()
+        require("telescope.builtin").git_commits()
+      end,
+      desc = "Telescope git commits",
     },
     {
-      "<leader>th",
+      "<space>gt",
+      function()
+        require("telescope.builtin").git_status()
+      end,
+      desc = "Telescope git status",
+    },
+    {
+      "<space>pt",
+      function()
+        require("telescope.builtin").terms()
+      end,
+      desc = "Telescope pick hidden term",
+    },
+    {
+      "<space>fa",
+      function()
+        require("telescope.builtin").find_files { follow = true, no_ignore = true, hidden = true }
+      end,
+      desc = "Telescope find all files",
+    },
+
+    {
+      "<space>th",
       function()
         require("nvchad.themes").open()
       end,
       desc = "Telescope nvchad themes",
     },
     {
-      "<leader>en",
+      "<space>en",
       function()
         require("telescope.builtin").find_files {
           cwd = vim.fn.stdpath "config",
         }
       end,
-      desc = "Telescope open nvim config",
+      desc = "Telescope nvim config",
     },
   },
 }
