@@ -1,17 +1,16 @@
-# set PATH so it includes user's private bin if it exists
-if [[ -d $HOME/.bin ]]; then
+if [[ -d "$HOME/.bin" ]]; then
 	export PATH="$HOME/.bin:$PATH"
 fi
 
-# set PATH so it includes user's private bin if it exists
-if [[ -d $HOME/.local/bin ]]; then
+if [[ -d "$HOME/.local/bin" ]]; then
 	export PATH="$HOME/.local/bin:$PATH"
 fi
 
-export PATH="/opt/nvim-linux64/bin:$PATH"
-
+if [[ -d "/opt/nvim-linux64/bin" ]]; then
+	export PATH="/opt/nvim-linux64/bin:$PATH"
+fi
 # -- Variables --
-if [[ -x $(command -v nvim) ]]; then
+if [[ `command -v nvim` ]]; then
   export VISUAL=$(which nvim)
   export EDITOR="$VISUAL"
   export MANPAGER="nvim -c 'setlocal nospell' +Man!"
@@ -20,11 +19,18 @@ fi
 # -- Alias --
 [[ -f ~/.alias ]] && source ~/.alias
 
-# la and exa
-if [[ -x $(command -v exa) ]]; then
-  alias la="exa -lah --no-user --no-permissions --sort=type"
-  alias tree="exa --tree"
-else
-  alias ls="ls --color=auto"
-  alias la="ls -la"
-fi
+# -- PS1 --
+_ERROR_COUNT=0
+function nonzero_return() {
+	RETVAL=$?
+	if [[ $RETVAL != 0 ]]; then
+		if [[ $_ERROR_COUNT != 0 ]]; then
+			_ERROR_COUNT=0
+		else
+			echo " [$RETVAL]"
+			_ERROR_COUNT=$((_ERROR_COUNT+1))
+		fi
+	fi
+}
+
+#export PS1="\w\`nonzero_return\`\\$ "
