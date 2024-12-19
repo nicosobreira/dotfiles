@@ -14,7 +14,7 @@ if status is-interactive
   end
   
   # -- Alias --
-  source ~/.alias
+  [ -f ~/.alias ] && source ~/.alias
   # la and exa
   if type -q exa
     alias la="exa -lah --no-user --no-permissions --sort=type"
