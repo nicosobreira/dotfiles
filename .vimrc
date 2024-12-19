@@ -12,7 +12,6 @@
 "              ---`-'                   
 
 " --- Config ---
-" -- Configurations for '~/.vimrc' --
 filetype plugin indent on
 syntax enable
 
@@ -32,13 +31,11 @@ set noswapfile
 set scrolloff=5
 
 " - Colorsheme -
-" Use the same background color
 set termguicolors
-set background=dark
 
 " - Tabs -
-set tabstop=8 "Sets indent size of tabs"
-set shiftwidth=8 "Sets auto-indent size"
+set tabstop=4 "Sets indent size of tabs"
+set shiftwidth=4 "Sets auto-indent size"
 set autoindent "Turns on auto-indenting"
 set smartindent "Remembers previous indent when creating new lines"
 
@@ -55,7 +52,6 @@ set title
 
 " - Show lines on
 set number relativenumber
-set nu rnu
 
 " - Hightlight search text -
 set hlsearch
@@ -81,7 +77,6 @@ set ttyfast
 " - Remap space - 
 nnoremap <space>; ;
 map ; :
-let mapspace=" "
 
 map <C-s> <cmd>w<CR>
 map <space>s <cmd>so $MYVIMRC<CR>
@@ -103,30 +98,4 @@ nmap k gk
 nmap <ESC> <cmd>nohl<CR>
 
 " - Run Commads -
-command Cd <cmd>cd %:h<CR>  "Cd go to current folder
-
-" --- Plugins ---
-" -- Plug --
-"let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
-"if empty(glob(data_dir . '/autoload/plug.vim'))
-  "silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --CReate-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  "autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-"endif
-"
-"call plug#begin()
-"
-"Plug 'preservim/nerdtree'
-"Plug 'catppuccin/vim', { 'as': 'catppuccin' }
-"Plug 'tpope/vim-obsession'
-"Plug 'OmniSharp/omnisharp-vim'
-"Plug 'jlcrochet/vim-cs'
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"
-"call plug#end()
-"
-" -- Config --
-" - Catppuccin -
-"colo catppuccin_frappe
-"
-" - NERDTree Option -
-"let NERDTreeShowHidden=1
+command Cd <cmd>cd %:h<CR>
