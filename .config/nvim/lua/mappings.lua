@@ -9,10 +9,10 @@ map({ "v", "n" }, "L", "$")
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "Save current file" })
 
 -- Vim-tmux-navigator
-map("n", "<C-k>", "<cmd>wincmd k<CR>", { desc = "Move to window up" })
-map("n", "<C-j>", "<cmd>wincmd j<CR>", { desc = "Move to window down" })
-map("n", "<C-h>", "<cmd>wincmd h<CR>", { desc = "Move to window left" })
-map("n", "<C-l>", "<cmd>wincmd l<CR>", { desc = "Move to window right" })
+map({ "n", "t" }, "<C-k>", "<cmd>wincmd k<CR>", { desc = "Move to window up" })
+map({ "n", "t" }, "<C-j>", "<cmd>wincmd j<CR>", { desc = "Move to window down" })
+map({ "n", "t" }, "<C-h>", "<cmd>wincmd h<CR>", { desc = "Move to window left" })
+map({ "n", "t" }, "<C-l>", "<cmd>wincmd l<CR>", { desc = "Move to window right" })
 
 -- Navigate in wrap lines
 map({ "n", "v" }, "j", "gj")
