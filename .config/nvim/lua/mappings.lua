@@ -21,7 +21,7 @@ map({ "n", "v" }, "<Down>", "gj")
 map({ "n", "v" }, "<Up>", "gk")
 
 -- Terminal
-map("t", "<ESC>", "<C-\\><C-n>", { desc = "ESC enter normal mode" })
+map("t", "<ESC><ESC>", "<C-\\><C-n>", { desc = "ESC enter normal mode" })
 
 -- Tab management
 map("n", "<Tab>", "gt", { desc = "Go to next tab" })
