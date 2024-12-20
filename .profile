@@ -1,16 +1,13 @@
-if [[ -d "$HOME/.bin" ]]; then
-	export PATH="$HOME/.bin:$PATH"
-fi
+_MY_PATH=(~/.bin ~/.local/bin /opt/nvim-linux64/bin)
 
-if [[ -d "$HOME/.local/bin" ]]; then
-	export PATH="$HOME/.local/bin:$PATH"
-fi
+for dir in "${_MY_PATH[@]}"; do
+	if [[ -d "$dir" ]]; then
+		export PATH="$dir:$PATH"
+	fi
+done
 
-if [[ -d "/opt/nvim-linux64/bin" ]]; then
-	export PATH="/opt/nvim-linux64/bin:$PATH"
-fi
 # -- Variables --
-if [[ `command -v nvim` ]]; then
+if [[ $(command -v nvim) ]]; then
   export VISUAL=$(which nvim)
   export EDITOR="$VISUAL"
   export MANPAGER="nvim -c 'setlocal nospell' +Man!"
@@ -19,18 +16,33 @@ fi
 # -- Alias --
 [[ -f ~/.alias ]] && source ~/.alias
 
+if [[ $(command -v exa) ]]; then
+    alias la="exa -lah --no-user --no-permissions --sort=type"
+    alias tree="exa --tree"
+else
+    alias ls="ls --color=auto"
+    alias la="ls -la"
+fi
+
 # -- PS1 --
-_ERROR_COUNT=0
-function nonzero_return() {
-	RETVAL=$?
-	if [[ $RETVAL != 0 ]]; then
-		if [[ $_ERROR_COUNT != 0 ]]; then
-			_ERROR_COUNT=0
-		else
-			echo " [$RETVAL]"
-			_ERROR_COUNT=$((_ERROR_COUNT+1))
-		fi
+# https://ezprompt.net/
+# Current branch in git repo
+function parse_git_branch() {
+	BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+	if [ ! "${BRANCH}" == "" ]
+	then
+		#STAT=`parse_git_dirty`
+		echo -e " (\033[0;35m${BRANCH}${STAT}\033[m)"
+	else
+		echo ""
 	fi
 }
 
-#export PS1="\w\`nonzero_return\`\\$ "
+function nonzero_return() {
+	RETVAL=$?
+	if [[ $RETVAL != 0 ]]; then
+        echo -e " [\033[0;31m$RETVAL\033[m]"
+	fi
+}
+
+export PS1="\[\e[32m\]\u\[\e[m\]:\[\e[34m\]\w\[\e[m\]\[\e[37m\]\`nonzero_return\`\[\e[m\]\`parse_git_branch\`\\$ "
