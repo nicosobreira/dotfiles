@@ -14,5 +14,7 @@ return {
       "bash",
       "markdown",
     },
+    -- fold = { enable = true },
+    -- highlight = { enable = true },
   },
 }
