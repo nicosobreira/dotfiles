@@ -1,6 +1,6 @@
-.AppImage
-\.tmux
+.*\.(bak|tmp|old)
 
+\.tmux
 RCS
 .+,v
 CVS
