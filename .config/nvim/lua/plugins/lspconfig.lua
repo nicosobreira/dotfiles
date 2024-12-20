@@ -1,40 +1,69 @@
 return {
-  "neovim/nvim-lspconfig",
-  config = function()
-    require("nvchad.configs.lspconfig").defaults()
+	"neovim/nvim-lspconfig",
+	config = function()
+		require("nvchad.configs.lspconfig").defaults()
 
-    local lspconfig = require "lspconfig"
-    local nvlsp = require "nvchad.configs.lspconfig"
-    nvlsp.defaults()
+		local lspconfig = require("lspconfig")
+		local nvlsp = require("nvchad.configs.lspconfig")
+		nvlsp.defaults()
 
-    local servers = { "ts_ls", "html", "cssls", "pyright", "clangd", "bashls" }
+		local servers = { "ts_ls", "html", "cssls", "bashls" }
 
-    -- lsps with default config
-    for _, lsp in ipairs(servers) do
-      lspconfig[lsp].setup {
-        on_attach = nvlsp.on_attach,
-        on_init = nvlsp.on_init,
-        capabilities = nvlsp.capabilities,
-      }
-    end
+		-- lsps with default config
+		for _, lsp in ipairs(servers) do
+			lspconfig[lsp].setup({
+				on_attach = nvlsp.on_attach,
+				on_init = nvlsp.on_init,
+				capabilities = nvlsp.capabilities,
+			})
+		end
 
-    lspconfig.clangd.setup {
-      settings = {
-        clangd = {
-          diagnostics = true,
-        },
-      },
-    }
-
-    lspconfig.pyright.setup {
-      settings = {
-        python = {
-          analysis = {
-            autoSearchPaths = true,
-            typeCheckingMode = "basic",
-          },
-        },
-      },
-    }
-  end,
+		lspconfig.clangd.setup({
+			on_attach = nvlsp.on_attach,
+			on_init = nvlsp.on_init,
+			capabilities = nvlsp.capabilities,
+			settings = {
+				clangd = {
+					diagnostics = true,
+				},
+			},
+		})
+		-- lspconfig.lua_ls.setup({
+		-- 	on_attach = nvlsp.on_attach,
+		-- 	on_init = nvlsp.on_init,
+		-- 	capabilities = nvlsp.capabilities,
+		-- 	settings = {
+		-- 		Lua = {
+		-- 			diagnostics = {
+		-- 				disable = { "missing-parameter" },
+		-- 				globals = { "vim" },
+		-- 			},
+		-- 			workspace = {
+		-- 				library = {
+		-- 					vim.fn.expand("$VIMRUNTIME/lua"),
+		-- 					vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
+		-- 					vim.fn.stdpath("data") .. "/lazy/ui/nvchad_types",
+		-- 					vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy",
+		-- 					"${3rd}/luv/library",
+		-- 				},
+		-- 				maxPreload = 100000,
+		-- 				preloadFileSize = 10000,
+		-- 			},
+		-- 		},
+		-- 	},
+		-- })
+		lspconfig.pyright.setup({
+			on_attach = nvlsp.on_attach,
+			on_init = nvlsp.on_init,
+			capabilities = nvlsp.capabilities,
+			settings = {
+				python = {
+					analysis = {
+						autoSearchPaths = true,
+						typeCheckingMode = "basic",
+					},
+				},
+			},
+		})
+	end,
 }
