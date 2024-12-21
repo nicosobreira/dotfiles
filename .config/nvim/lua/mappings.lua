@@ -32,5 +32,5 @@ map("n", "<space>x", "<cmd>tabclose<CR>", { desc = "Close current tab" })
 
 -- LSP
 map("n", "<space>d", function()
-  vim.diagnostic.open_float()
+	vim.diagnostic.open_float()
 end, { desc = "Unfold diagnostic" })
