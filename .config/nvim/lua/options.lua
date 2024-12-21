@@ -25,3 +25,5 @@ autocmd("TermOpen", {
 		opt.spell = false
 	end,
 })
+
+dofile(vim.fn.stdpath("config") .. "/lua/" .. "floating-terminal.lua")
