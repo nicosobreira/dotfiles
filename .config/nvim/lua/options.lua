@@ -15,6 +15,7 @@ opt.breakindent = true
 opt.linebreak = true
 opt.swapfile = false
 opt.spell = true
+opt.spelllang = {"en", "pt_br"}
 
 -- Auto commands --
 autocmd("TermOpen", {
