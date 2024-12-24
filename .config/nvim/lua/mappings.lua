@@ -21,7 +21,7 @@ map({ "n", "v" }, "<Down>", "gj")
 map({ "n", "v" }, "<Up>", "gk")
 
 -- Terminal
-map("t", "<ESC><ESC>", "<C-\\><C-n>", { desc = "ESC enter normal mode" })
+map("t", "<ESC>", "<C-\\><C-n>", { desc = "ESC enter normal mode" })
 
 -- Tab management
 map("n", "<Tab>", "gt", { desc = "Go to next tab" })
@@ -34,3 +34,7 @@ map("n", "<space>x", "<cmd>tabclose<CR>", { desc = "Close current tab" })
 map("n", "<space>d", function()
 	vim.diagnostic.open_float()
 end, { desc = "Unfold diagnostic" })
+
+vim.api.nvim_create_user_command("Diagnostics", function()
+	vim.diagnostic.setqflist()
+end, {})
