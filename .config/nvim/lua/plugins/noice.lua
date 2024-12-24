@@ -2,10 +2,14 @@ return {
 	"folke/noice.nvim",
 	lazy = false,
 	dependencies = { "MunifTanjim/nui.nvim" },
+	enabled = false,
 	config = function()
 		require("noice").setup({
 			lsp = {
 				signature = {
+					enabled = false,
+				},
+				hover = {
 					enabled = false,
 				},
 			},
