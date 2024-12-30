@@ -6,7 +6,7 @@ local autocmd = vim.api.nvim_create_autocmd
 opt.softtabstop = 4
 opt.tabstop = 4
 opt.shiftwidth = 4
-opt.expandtab = true
+opt.expandtab = false
 
 -- Options --
 opt.relativenumber = true
@@ -15,7 +15,7 @@ opt.breakindent = true
 opt.linebreak = true
 opt.swapfile = false
 opt.spell = true
-opt.spelllang = {"en", "pt_br"}
+opt.spelllang = { "en", "pt_br" }
 
 -- Auto commands --
 autocmd("TermOpen", {

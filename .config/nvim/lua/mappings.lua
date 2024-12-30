@@ -8,7 +8,7 @@ map({ "v", "n" }, "H", "0")
 map({ "v", "n" }, "L", "$")
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "Save current file" })
 
--- Vim-tmux-navigator
+-- Vim tmux navigator
 map({ "n", "t" }, "<C-k>", "<cmd>wincmd k<CR>", { desc = "Move to window up" })
 map({ "n", "t" }, "<C-j>", "<cmd>wincmd j<CR>", { desc = "Move to window down" })
 map({ "n", "t" }, "<C-h>", "<cmd>wincmd h<CR>", { desc = "Move to window left" })
@@ -38,3 +38,40 @@ end, { desc = "Unfold diagnostic" })
 vim.api.nvim_create_user_command("Diagnostics", function()
 	vim.diagnostic.setqflist()
 end, {})
+
+-- Folding
+local function toggleFoldLines(expression)
+	-- Get the current cursor position
+	local current_line = vim.fn.line(".")
+
+	-- Iterate over all lines in the buffer
+	for i = 1, vim.fn.line("$") do
+		-- Get the content of the line
+		local line = vim.fn.getline(i)
+
+		-- Check if the line starts with "---@"
+		if line:match(expression) then
+			-- Check if the line is folded
+			local folded = vim.fn.foldclosed(i) ~= -1
+
+			if folded then
+				-- If the line is folded, unfold it
+				vim.cmd(i .. "foldopen")
+			else
+				-- If the line is not folded, fold it
+				vim.cmd(i .. "fold")
+			end
+		end
+	end
+
+	-- Move the cursor back to the original position
+	vim.fn.cursor(current_line, 0)
+end
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "lua",
+	callback = function()
+		map("n", "<space>zc", function()
+			toggleFoldLines("^---@")
+		end, { desc = "Toggle fold in lines with ---@" })
+	end,
+})
