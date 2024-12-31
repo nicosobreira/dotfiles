@@ -7,7 +7,35 @@ return {
 		local nvlsp = require("nvchad.configs.lspconfig")
 		nvlsp.defaults()
 
-		local servers = { "ts_ls", "html", "cssls", "bashls" }
+		local servers = {
+			ts_ls = {},
+			html = {},
+			cssls = {},
+			bashls = {},
+		}
+		servers.clangd = {
+			on_attach = nvlsp.on_attach,
+			on_init = nvlsp.on_init,
+			capabilities = nvlsp.capabilities,
+			settings = {
+				clangd = {
+					diagnostics = true,
+				},
+			},
+		}
+		servers.pyright = {
+			on_attach = nvlsp.on_attach,
+			on_init = nvlsp.on_init,
+			capabilities = nvlsp.capabilities,
+			settings = {
+				python = {
+					analysis = {
+						autoSearchPaths = true,
+						typeCheckingMode = "basic",
+					},
+				},
+			},
+		}
 
 		-- lsps with default config
 		for _, lsp in ipairs(servers) do
@@ -18,16 +46,6 @@ return {
 			})
 		end
 
-		lspconfig.clangd.setup({
-			on_attach = nvlsp.on_attach,
-			on_init = nvlsp.on_init,
-			capabilities = nvlsp.capabilities,
-			settings = {
-				clangd = {
-					diagnostics = true,
-				},
-			},
-		})
 		-- lspconfig.lua_ls.setup({
 		-- 	on_attach = nvlsp.on_attach,
 		-- 	on_init = nvlsp.on_init,
@@ -52,18 +70,6 @@ return {
 		-- 		},
 		-- 	},
 		-- })
-		lspconfig.pyright.setup({
-			on_attach = nvlsp.on_attach,
-			on_init = nvlsp.on_init,
-			capabilities = nvlsp.capabilities,
-			settings = {
-				python = {
-					analysis = {
-						autoSearchPaths = true,
-						typeCheckingMode = "basic",
-					},
-				},
-			},
-		})
+		lspconfig.pyright.setup({})
 	end,
 }
