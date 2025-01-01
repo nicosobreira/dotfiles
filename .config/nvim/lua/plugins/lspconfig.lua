@@ -12,38 +12,32 @@ return {
 			html = {},
 			cssls = {},
 			bashls = {},
-		}
-		servers.clangd = {
-			on_attach = nvlsp.on_attach,
-			on_init = nvlsp.on_init,
-			capabilities = nvlsp.capabilities,
-			settings = {
-				clangd = {
-					diagnostics = true,
+
+			clangd = {
+				settings = {
+					clangd = {
+						diagnostics = true,
+					},
 				},
 			},
-		}
-		servers.pyright = {
-			on_attach = nvlsp.on_attach,
-			on_init = nvlsp.on_init,
-			capabilities = nvlsp.capabilities,
-			settings = {
-				python = {
-					analysis = {
-						autoSearchPaths = true,
-						typeCheckingMode = "basic",
+			pyright = {
+				settings = {
+					python = {
+						analysis = {
+							autoSearchPaths = true,
+							typeCheckingMode = "basic",
+						},
 					},
 				},
 			},
 		}
 
 		-- lsps with default config
-		for _, lsp in ipairs(servers) do
-			lspconfig[lsp].setup({
-				on_attach = nvlsp.on_attach,
-				on_init = nvlsp.on_init,
-				capabilities = nvlsp.capabilities,
-			})
+		for name, opts in pairs(servers) do
+			opts.on_attach = nvlsp.on_attach
+			opts.on_init = nvlsp.on_init
+			opts.capabilities = nvlsp.capabilities
+			lspconfig[name].setup(opts)
 		end
 
 		-- lspconfig.lua_ls.setup({
