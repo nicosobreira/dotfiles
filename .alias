@@ -18,7 +18,6 @@ alias remote="git remote add origin"
 # - Terminal -
 # Basic
 alias c="clear"
-alias nala="sudo nala"
 alias duh="du --human-readable"
 
 alias dir="dir --color=auto"
