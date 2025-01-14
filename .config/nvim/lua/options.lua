@@ -10,6 +10,7 @@ opt.expandtab = false
 
 -- Options --
 opt.relativenumber = true
+opt.clipboard = "unnamed,unnamedplus"
 opt.scrolloff = 5
 opt.breakindent = true
 opt.linebreak = true
