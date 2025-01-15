@@ -28,3 +28,6 @@ if status is-interactive
   fzf --fish | source
   zoxide init fish | source
 end
+
+# Generated for envman. Do not edit.
+test -s ~/.config/envman/load.fish; and source ~/.config/envman/load.fish
