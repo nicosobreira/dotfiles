@@ -31,7 +31,7 @@ set noswapfile
 set scrolloff=5
 
 " - Colorsheme -
-set t_Co=256
+"set t_Co=256
 
 " - Tabs -
 set tabstop=4 "Sets indent size of tabs"
@@ -96,6 +96,3 @@ nmap k gk
 
 " Remove search highlights
 nmap <ESC> <cmd>nohl<CR>
-
-" - Run Commads -
-command Cd <cmd>cd %:h<CR>
