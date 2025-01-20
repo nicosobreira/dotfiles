@@ -25,7 +25,6 @@ if status is-interactive
   end
 	
   # -- Source --
-  fzf --fish | source
   zoxide init fish | source
 end
 
