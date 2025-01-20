@@ -31,7 +31,6 @@ case "$TERM" in
 		;;
 esac
 
-[[ -f ~/.profile ]] && source ~/.profile
 
 # enable programmable completion features
 if ! shopt -oq posix; then
@@ -41,6 +40,10 @@ if ! shopt -oq posix; then
 		. /etc/bash_completion
 	fi
 fi
+
+shopt -s extglob
+
+[[ -f ~/.profile ]] && source ~/.profile
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
