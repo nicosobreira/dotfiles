@@ -47,4 +47,3 @@ function nonzero_return() {
 export PS1="\[\e[32m\]\u\[\e[m\]:\[\e[34m\]\w\[\e[m\]\[\e[37m\]\`nonzero_return\`\[\e[m\]\`parse_git_branch\`\\$ "
 
 # Generated for envman. Do not edit.
-[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
