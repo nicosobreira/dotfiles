@@ -16,7 +16,6 @@ alias add="git add"
 alias remote="git remote add origin"
 
 alias make="make -j$(nproc)"
-alias ls="ls -h --color=auto"
 
 # - Terminal -
 # Basic
