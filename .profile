@@ -20,7 +20,7 @@ if [[ $(command -v exa) ]]; then
     alias la="exa -lah --no-user --no-permissions --sort=type"
     alias tree="exa --tree"
 else
-    alias ls="ls --color=auto"
+    alias ls="ls -h --color=auto"
     alias la="ls -la"
 fi
 
