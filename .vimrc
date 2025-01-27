@@ -56,6 +56,10 @@ set number relativenumber
 " - Hightlight search text -
 set hlsearch
 
+" - Fix spliting -
+set splitbelow
+set splitright
+
 " - enable smart search sensitivity -
 set ignorecase
 set smartcase
