@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =8
+let g:netrw_dirhist_8='/home/acerola/dotfiles'
+let g:netrw_dirhist_7='/home/acerola'
+let g:netrw_dirhist_6='/home/acerola/dotfiles'
+let g:netrw_dirhist_5='/home/acerola/code/lua/Tetris/src'
+let g:netrw_dirhist_4='/home/acerola'
+let g:netrw_dirhist_3='/home/acerola/code'
+let g:netrw_dirhist_2='/home/acerola/code/Advent-code'
+let g:netrw_dirhist_1='/home/acerola/code/Advent-code/bash'
+let g:netrw_dirhist_0='/home/acerola/code/Advent-code/bash/01'
+let g:netrw_dirhist_9='/'
