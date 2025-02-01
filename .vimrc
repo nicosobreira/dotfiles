@@ -98,5 +98,11 @@ nmap <C-l> <C-w>l
 nmap j gj
 nmap k gk
 
+" Tabs
+nmap <Tab> gt
+nmap <S-Tab> gT
+nmap <space>n <cmd>$tabnew<CR>
+nmap <space>N <cmd>0tabnew<CR>
+
 " Remove search highlights
 nmap <ESC> <cmd>nohl<CR>
