@@ -15,6 +15,8 @@
 filetype plugin indent on
 syntax enable
 
+set omnifunc=syntaxcomplete#Complete
+
 set nocompatible
 set wrap
 set linebreak
