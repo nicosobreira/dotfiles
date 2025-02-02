@@ -11,6 +11,9 @@ if [[ $(command -v nvim) ]]; then
   export VISUAL=$(which nvim)
   export EDITOR="$VISUAL"
   export MANPAGER="nvim -c 'setlocal nospell' +Man!"
+else
+	export VISUAL=$(which vim)
+	export EDITOR="$VISUAL"
 fi
 
 # -- Alias --
