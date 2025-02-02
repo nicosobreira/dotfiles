@@ -29,24 +29,33 @@ fi
 
 # -- PS1 --
 # https://ezprompt.net/
-function parse_git_branch() {
-	BRANCH=`git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+__BLACK="\[\033[30m\]"
+__RED="\[\033[31m\]"
+__GREEN="\[\033[32m\]"
+__YELLOW="\[\033[33m\]"
+__BLUE="\[\033[34m\]"
+__MAGENTA="\[\033[35m\]"
+__CYAN="\[\033[36m\]"
+__WHITE="\[\033[37m\]"
+__RESET="\[\033[m\]"
+
+function __parse_git_branch() {
+	BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
 	if [ ! "${BRANCH}" == "" ]
 	then
-		#STAT=`parse_git_dirty`
-		echo -e " (\033[0;35m${BRANCH}${STAT}\033[m)"
-	else
-		echo ""
+		echo -e " \033[0;35m(${BRANCH})\033[m"
 	fi
 }
 
-function nonzero_return() {
-	RETVAL=$?
-	if [[ $RETVAL != 0 ]]; then
-        echo -e " [\033[0;31m$RETVAL\033[m]"
+function __nonzero_return() {
+	if [[ $? != 0 ]]; then
+        echo -e " [\033[0;31m$?\033[m]"
 	fi
 }
 
-export PS1="\[\e[32m\]\u\[\e[m\]:\[\e[34m\]\w\[\e[m\]\[\e[37m\]\`nonzero_return\`\[\e[m\]\`parse_git_branch\`\\$ "
+PS1="${__BLUE}\w${__RESET}"
+PS1+='$(__parse_git_branch)'
+PS1+='$(__nonzero_return)\n'
+PS1+="$ "
 
 # Generated for envman. Do not edit.
