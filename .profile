@@ -1,23 +1,40 @@
 _MY_PATH=(~/.bin ~/.local/bin /opt/nvim-linux64/bin)
 
 for dir in "${_MY_PATH[@]}"; do
-	if [[ -d "$dir" ]]; then
-		export PATH="$dir:$PATH"
+	if [[ ! -d "$dir" ]]; then
+		continue
 	fi
+	if [[ $PATH == *"$dir"* ]]; then
+		continue
+	fi
+	PATH="$dir:$PATH"
 done
 
 # -- Variables --
 if [[ $(command -v nvim) ]]; then
   export VISUAL=$(which nvim)
   export EDITOR="$VISUAL"
-  export MANPAGER="nvim -c 'setlocal nospell' +Man!"
 else
 	export VISUAL=$(which vim)
 	export EDITOR="$VISUAL"
 fi
+export MANPAGER="less -R"
 
 # -- Alias --
-[[ -f ~/.alias ]] && source ~/.alias
+# - Code -
+alias make='make -j$(nproc)'
+
+# - Terminal -
+# Basic
+alias c="clear"
+alias duh="du --human-readable"
+alias mkdir="mkdir -p"
+
+alias dir="dir --color=auto"
+alias vdir="vdir --color=auto"
+alias grep="grep --color=auto"
+alias fgrep="fgrep --color=auto"
+alias egrep="egrep --color=auto"
 
 if [[ $(command -v exa) ]]; then
     alias la="exa -lah --no-user --no-permissions --sort=type"
@@ -41,7 +58,7 @@ __RESET="\[\033[m\]"
 
 function __parse_git_branch() {
 	BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-	if [ ! "${BRANCH}" == "" ]
+	if [[ "${BRANCH}" != "" ]]
 	then
 		echo -e " \033[0;35m(${BRANCH})\033[m"
 	fi
@@ -49,7 +66,7 @@ function __parse_git_branch() {
 
 function __nonzero_return() {
 	if [[ $? != 0 ]]; then
-        echo -e " [\033[0;31m$?\033[m]"
+        echo -e " \033[0;31m[$?]\033[m"
 	fi
 }
 
