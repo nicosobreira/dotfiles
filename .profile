@@ -74,5 +74,3 @@ PS1="${__BLUE}\w${__RESET}"
 PS1+='$(__parse_git_branch)'
 PS1+='$(__nonzero_return)\n'
 PS1+="$ "
-
-# Generated for envman. Do not edit.
