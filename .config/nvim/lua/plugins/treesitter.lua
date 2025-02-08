@@ -13,7 +13,6 @@ return {
 			"cpp",
 			"bash",
 			"markdown",
-			"latex",
 		},
 		-- fold = { enable = true },
 		-- highlight = { enable = true },
