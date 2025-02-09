@@ -15,6 +15,8 @@
 filetype plugin indent on
 syntax enable
 
+set background=dark
+
 set omnifunc=syntaxcomplete#Complete
 
 set nocompatible
@@ -33,7 +35,7 @@ set noswapfile
 set scrolloff=5
 
 " - Colorsheme -
-"set t_Co=256
+set t_Co=256
 
 " - Tabs -
 set tabstop=4 "Sets indent size of tabs"
@@ -85,7 +87,6 @@ nnoremap <space>; ;
 map ; :
 
 map <C-s> <cmd>w<CR>
-map <space>s <cmd>so $MYVIMRC<CR>
 
 " - Terminal -
 tmap <ESC> <C-\><C-n> 
