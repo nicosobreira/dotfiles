@@ -33,12 +33,6 @@ shopt -s checkwinsize
 
 [[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
 
-case "$TERM" in
-	xterm*|*-256color) 
-		color_prompt=yes
-		;;
-esac
-
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -50,7 +44,5 @@ if [[ -f /usr/share/bash-completion/bash_completion ]]; then
 elif [[ -f /etc/bash_completion ]]; then
 	. /etc/bash_completion
 fi
-
-shopt -s extglob
 
 [[ -f ~/.profile ]] && . ~/.profile
