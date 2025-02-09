@@ -65,11 +65,10 @@ function __parse_git_branch() {
 }
 
 function __nonzero_return() {
-	RETVAL=$?
-    [[ $RETVAL -ne 0 ]] && echo "[$RETVAL]"
+	echo " [$?]"
 }
 
-export PS1="${__BLUE}\w${__RESET}"
+export PS1="\n${__BLUE}\w${__RESET}"
 PS1+='$(__parse_git_branch)'
 PS1+='$(__nonzero_return)\n'
 PS1+="$ "
