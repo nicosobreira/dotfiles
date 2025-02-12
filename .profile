@@ -11,14 +11,15 @@ for dir in "${_MY_PATH[@]}"; do
 done
 
 # -- Variables --
-if [[ $(command -v nvim) ]]; then
-  export VISUAL=$(which nvim)
-  export EDITOR="$VISUAL"
+export MANPAGER="less -R"
+if command -v nvim; then
+	export VISUAL=$(which nvim)
+	export EDITOR="$VISUAL"
+	export MANPAGER="less -R"
 else
 	export VISUAL=$(which vim)
 	export EDITOR="$VISUAL"
 fi
-export MANPAGER="less -R"
 
 # -- Alias --
 # - Code -
@@ -36,7 +37,7 @@ alias grep="grep --color=auto"
 alias fgrep="fgrep --color=auto"
 alias egrep="egrep --color=auto"
 
-if [[ $(command -v exa) ]]; then
+if command -v exa; then
     alias la="exa -lah --no-user --no-permissions --sort=type"
     alias tree="exa --tree"
 else
@@ -56,19 +57,22 @@ __CYAN="\[\033[36m\]"
 __WHITE="\[\033[37m\]"
 __RESET="\[\033[m\]"
 
-function __parse_git_branch() {
-	BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-	if [[ "${BRANCH}" != "" ]]
-	then
-		echo -e " \033[0;35m(${BRANCH})\033[m"
+function __nonzero_return() {
+	if [[ $? != 0 ]]; then
+		echo -e " \033[0;31m[${?}]\033[m"
 	fi
 }
 
-function __nonzero_return() {
-	echo " [$?]"
+function __git_branch() {
+	branch=$(git branch --show-current 2>/dev/null)
+	if [[ "${branch}" != "" ]]
+	then
+		# This echo generates a new retval this is the problem
+		echo -e " \033[0;35m(${branch})\033[m"
+	fi
 }
 
 export PS1="\n${__BLUE}\w${__RESET}"
-PS1+='$(__parse_git_branch)'
-PS1+='$(__nonzero_return)\n'
+PS1+="\`__nonzero_return\`"
+PS1+="\`__git_branch\`\n"
 PS1+="$ "
