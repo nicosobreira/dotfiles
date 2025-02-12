@@ -22,7 +22,7 @@ install_lazygit() {
 	echo "Installing lazygit"
 }
 
-PACKGES="tree git make"
+PACKGES="tree git make gh"
 
 sudo apt install ${PACKGES}
 
