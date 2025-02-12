@@ -90,6 +90,10 @@ map <C-s> <cmd>w<CR>
 
 " - Terminal -
 tmap <ESC> <C-\><C-n> 
+tmap <C-w>h <C-\><C-w>h
+tmap <C-w>j <C-\><C-w>j 
+tmap <C-w>k <C-\><C-w>k
+tmap <C-w>l <C-\><C-w>l
 
 " - Split Navigation -
 nmap <C-h> <C-w>h
@@ -109,3 +113,20 @@ nmap <space>N <cmd>0tabnew<CR>
 
 " Remove search highlights
 nmap <ESC> <cmd>nohl<CR>
+
+" Block arrow keys
+nnoremap <Left> <cmd>echo "No left for you!"<CR>
+vnoremap <Left> <cmd><C-u>echo "No left for you!"<CR>
+inoremap <Left> <C-o><cmd>echo "No left for you!"<CR>
+
+nnoremap <Right> <cmd>echo "No right for you!"<CR>
+vnoremap <Right> <cmd><C-u>echo "No right for you!"<CR>
+inoremap <Right> <C-o><cmd>echo "No right for you!"<CR>
+
+nnoremap <Up> <cmd>echo "No up for you!"<CR>
+vnoremap <Up> <cmd><C-u>echo "No up for you!"<CR>
+inoremap <Up> <C-o><cmd>echo "No up for you!"<CR>
+
+nnoremap <Down> <cmd>echo "No down for you!"<CR>
+vnoremap <Down> <cmd><C-u>echo "No down for you!"<CR>
+inoremap <Down> <C-o><cmd>echo "No down for you!"<CR>
