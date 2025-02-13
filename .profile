@@ -12,7 +12,7 @@ done
 
 # -- Variables --
 export MANPAGER="less -R"
-if command -v nvim; then
+if command -v nvim >/dev/null; then
 	export VISUAL=$(which nvim)
 	export EDITOR="$VISUAL"
 	export MANPAGER="less -R"
@@ -37,7 +37,7 @@ alias grep="grep --color=auto"
 alias fgrep="fgrep --color=auto"
 alias egrep="egrep --color=auto"
 
-if command -v exa; then
+if command -v exa >/dev/null; then
     alias la="exa -lah --no-user --no-permissions --sort=type"
     alias tree="exa --tree"
 else
