@@ -1,42 +1,63 @@
 #!/usr/bin/env bash
 
 set -eou pipefail
-set -x
+# set -x
+
+WGET_OUTPUT="-q --show-progress"
 
 install_lazygit() {
+	echo -e "\n\tInstalling Lazygit"
 	if [[ ! $(command -v lazygit) ]]; then
-		OLD_LAZYGIT_VERSION=""
+		old_version=""
 	else
-		OLD_LAZYGIT_VERSION=$(lazygit --version 2>/dev/null | grep -oP 'version=\K[0-9.]+' | head -1)
+		old_version=$(lazygit --version 2>/dev/null | grep -oP 'version=\K[0-9.]+' | head -1)
 	fi
-	echo "lazygit version = ${OLD_LAZYGIT_VERSION}"
-	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
-	echo "git lazygit version = ${LAZYGIT_VERSION}"
-	if [[ "$OLD_LAZYGIT_VERSION" == "$LAZYGIT_VERSION" ]]; then
+	latest_version=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
+	if [[ ${old_version} == ${latest_version} ]]; then
 		echo "Already update"
 		return 0
 	fi
-	echo -e "\tInstalling Lazygit"
-	cd /tmp/
-	echo "cd /tmp"
-	curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-	echo "Curling latest version"
-	tar xf lazygit.tar.gz lazygit
-	echo "Extract lazygit.tar.gz"
-	sudo install lazygit -D -t /usr/local/bin/	
+	bin_file="lazygit"
+	tar_file="lazygit.tar.gz"
+	cd /tmp
+	echo "Downloading latest version (v${latest_version})"
+	wget ${WGET_OUTPUT} -O ${tar_file} \
+		"https://github.com/jesseduffield/lazygit/releases/download/v${latest_version}/lazygit_${latest_version}_Linux_x86_64.tar.gz"
+	echo "Extract ${tar_file}"
+	tar xf ${tar_file} ${bin_file}
 	echo "Installing lazygit"
+	mv ${bin_file} ~/.local/bin
 }
 
 install_nvim() {
-	cd /tmp/	 
-	curl -Lo nvim.tar.gz https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
-	sudo rm -rf /opt/nvim
-	sudo tar -C /opt -xzf /tmp/nvim-linux.tar.gz
+	echo -e "\n\tInstalling Neovim"
+	if [[ ! $(command -v nvim) ]]; then
+		old_version=""
+	else
+		old_version=$(nvim --version 2>/dev/null | grep -oP 'v\K[0-9.]+' | head -1)
+	fi
+	latest_version=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
+	if [[ ${old_version} == ${latest_version} ]]; then
+		echo "Already update"
+		return 0
+	fi
+	folder_name="nvim-linux-x86_64"
+	tar_file="/tmp/${folder_name}.tar.gz"
+	folders=("bin" "lib" "share")
+	wget ${WGET_OUTPUT} -O ${tar_file} \
+		https://github.com/neovim/neovim/releases/latest/download/${folder_name}.tar.gz
+	tar -xzf ${tar_file}
+	for dir in "${folders[@]}"; do
+		mkdir -p "~/.local/${dir}"
+		cp -R ${folder_name}/${dir}/* ~/.local/${dir}
+	done
 }
 
-PACKGES="tree git make gh tmux"
+PACKGES="tree git make gh tmux tar curl wget"
 
-sudo apt install ${PACKGES}
+echo -e "\tInstalling PACKGES: ${PACKGES}"
+sudo apt-get install ${PACKGES}
 
+mkdir -p "~/.local/"
 install_lazygit
 install_nvim
