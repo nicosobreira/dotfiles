@@ -1,4 +1,4 @@
-_MY_PATH=(~/.bin ~/.local/bin /opt/nvim-linux64/bin)
+_MY_PATH=("~/.bin" "~/.local/bin")
 
 for dir in "${_MY_PATH[@]}"; do
 	if [[ ! -d "$dir" ]]; then
