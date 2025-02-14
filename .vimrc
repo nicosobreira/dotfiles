@@ -77,9 +77,9 @@ let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
 
 " Fix slow when presse <ESC>
-set ttimeout
-set ttimeoutlen=1
-set ttyfast
+"set ttimeout
+"set ttimeoutlen=1
+"set ttyfast
 
 " --- Keymap ---
 " - Remap space - 
