@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
 
 set -eou pipefail
+set -x
 
 install_lazygit() {
-	OLD_LAZYGIT_VERSION=$(lazygit --version | grep -oP '^version=\K[0-9.]+')
+	if [[ ! $(command -v lazygit) ]]; then
+		OLD_LAZYGIT_VERSION=""
+	else
+		OLD_LAZYGIT_VERSION=$(lazygit --version 2>/dev/null | grep -oP 'version=\K[0-9.]+' | head -1)
+	fi
 	echo "lazygit version = ${OLD_LAZYGIT_VERSION}"
 	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
 	echo "git lazygit version = ${LAZYGIT_VERSION}"
-	if [[ OLD_LAZYGIT_VERSION == LAZYGIT_VERSION ]]; then
+	if [[ "$OLD_LAZYGIT_VERSION" == "$LAZYGIT_VERSION" ]]; then
 		echo "Already update"
 		return 0
 	fi
@@ -22,8 +27,16 @@ install_lazygit() {
 	echo "Installing lazygit"
 }
 
-PACKGES="tree git make gh"
+install_nvim() {
+	cd /tmp/	 
+	curl -Lo nvim.tar.gz https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+	sudo rm -rf /opt/nvim
+	sudo tar -C /opt -xzf /tmp/nvim-linux.tar.gz
+}
+
+PACKGES="tree git make gh tmux"
 
 sudo apt install ${PACKGES}
 
 install_lazygit
+install_nvim
