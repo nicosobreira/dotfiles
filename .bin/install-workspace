@@ -5,6 +5,10 @@ set -eou pipefail
 
 WGET_OUTPUT="-q --show-progress"
 
+install_zoxide() {
+	curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+}
+
 install_lazygit() {
 	echo -e "\n\tInstalling Lazygit"
 	old_version=""
@@ -67,5 +71,6 @@ for dir in "${LOCAL_FOLDERS[@]}"; do
 	mkdir -p ${dir}
 done
 
+install_zoxide
 install_lazygit
 install_nvim
