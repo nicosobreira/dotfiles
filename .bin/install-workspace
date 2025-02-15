@@ -7,9 +7,8 @@ WGET_OUTPUT="-q --show-progress"
 
 install_lazygit() {
 	echo -e "\n\tInstalling Lazygit"
-	if [[ ! $(command -v lazygit) ]]; then
-		old_version=""
-	else
+	old_version=""
+	if [[ $(command -v lazygit) ]]; then
 		old_version=$(lazygit --version 2>/dev/null | grep -oP 'version=\K[0-9.]+' | head -1)
 	fi
 	latest_version=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
@@ -26,11 +25,12 @@ install_lazygit() {
 	echo "Extract ${tar_file}"
 	tar xf ${tar_file} ${bin_file}
 	echo "Installing lazygit"
-	mv ${bin_file} ~/.local/bin
+	install ${bin_file} -D -t $HOME/.local/bin
 }
 
 install_nvim() {
 	echo -e "\n\tInstalling Neovim"
+	sudo apt install npm python3-full
 	if [[ ! $(command -v nvim) ]]; then
 		old_version=""
 	else
@@ -41,6 +41,7 @@ install_nvim() {
 		echo "Already update"
 		return 0
 	fi
+	cd /tmp
 	folder_name="nvim-linux-x86_64"
 	tar_file="/tmp/${folder_name}.tar.gz"
 	folders=("bin" "lib" "share")
@@ -48,16 +49,23 @@ install_nvim() {
 		https://github.com/neovim/neovim/releases/latest/download/${folder_name}.tar.gz
 	tar -xzf ${tar_file}
 	for dir in "${folders[@]}"; do
-		mkdir -p "~/.local/${dir}"
-		cp -R ${folder_name}/${dir}/* ~/.local/${dir}
+		cp -R ${folder_name}/${dir}/* $HOME/.local/${dir}
 	done
 }
 
-PACKGES="tree git make gh tmux tar curl wget"
+PACKGES="tree git make gh tmux tar curl wget unzip"
 
 echo -e "\tInstalling PACKGES: ${PACKGES}"
-sudo apt-get install ${PACKGES}
+sudo apt install ${PACKGES}
 
-mkdir -p "~/.local/"
+LOCAL_FOLDERS=(bin share state lib)
+for dir in "${LOCAL_FOLDERS[@]}"; do
+	dir=$HOME/.local/${dir}
+	[[ -d ${dir} ]] && continue
+
+	echo "Creating ${dir}"
+	mkdir -p ${dir}
+done
+
 install_lazygit
 install_nvim
