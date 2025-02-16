@@ -11,13 +11,6 @@ set -gx PAGER less
 set -gx MANPAGER "less -R"
 set -gx fish_greeting ""
 
-set -gx LESS_TERMCAP_mb '\E[01;31m'
-set -gx LESS_TERMCAP_md '\E[01;31m'
-set -gx LESS_TERMCAP_me '\E[0m'
-set -gx LESS_TERMCAP_se '\E[0m'
-set -gx LESS_TERMCAP_so '\E[01;44;33m'
-set -gx LESS_TERMCAP_ue '\E[0m'
-set -gx LESS_TERMCAP_us '\E[01;32m'
 # -- Shortcuts
 function fish_user_key_bindings
 bind \b backward-kill-word
