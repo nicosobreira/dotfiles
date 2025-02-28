@@ -57,7 +57,7 @@ install_nvim() {
 	done
 }
 
-PACKGES="tree git make gh tmux tar curl wget unzip"
+PACKGES="tree git make gh tmux tar curl wget unzip stow"
 
 echo -e "\tInstalling PACKGES: ${PACKGES}"
 sudo apt install ${PACKGES}
