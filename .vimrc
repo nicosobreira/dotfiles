@@ -43,6 +43,11 @@ set shiftwidth=4 "Sets auto-indent size"
 set autoindent "Turns on auto-indenting"
 set smartindent "Remembers previous indent when creating new lines"
 
+" Prettier
+set list
+set listchars=tab:\|\ ,trail:*
+highlight SpecialKey ctermfg=darkgray guifg=gray70
+
 " - Use system clipborad -
 set clipboard=unnamedplus
 
@@ -82,16 +87,16 @@ let &t_EI = "\e[2 q"
 "set ttyfast
 
 " --- Keymap ---
-" - Remap space - 
+" - Remap space -
 nnoremap <space>; ;
 map ; :
 
 map <C-s> <cmd>w<CR>
 
 " - Terminal -
-tmap <ESC> <C-\><C-n> 
+tmap <ESC> <C-\><C-n>
 tmap <C-w>h <C-\><C-w>h
-tmap <C-w>j <C-\><C-w>j 
+tmap <C-w>j <C-\><C-w>j
 tmap <C-w>k <C-\><C-w>k
 tmap <C-w>l <C-\><C-w>l
 
