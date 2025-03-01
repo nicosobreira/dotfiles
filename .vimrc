@@ -15,6 +15,7 @@
 filetype plugin indent on
 syntax enable
 
+colorscheme default
 set background=dark
 
 set omnifunc=syntaxcomplete#Complete
@@ -38,10 +39,10 @@ set scrolloff=5
 set t_Co=256
 
 " - Tabs -
-set tabstop=4 "Sets indent size of tabs"
-set shiftwidth=4 "Sets auto-indent size"
-set autoindent "Turns on auto-indenting"
-set smartindent "Remembers previous indent when creating new lines"
+set tabstop=4 "Sets indent size of tabs
+set shiftwidth=4 "Sets auto-indent size
+set autoindent "Turns on auto-indenting
+set smartindent "Remembers previous indent when creating new lines
 
 " Prettier
 set list
