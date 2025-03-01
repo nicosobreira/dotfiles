@@ -4,7 +4,7 @@
 
 # If not running interactively, don't do anything
 case $- in
-	*i*) 
+	*i*)
 		;;
 	*)
 		return
@@ -44,5 +44,8 @@ if [[ -f /usr/share/bash-completion/bash_completion ]]; then
 elif [[ -f /etc/bash_completion ]]; then
 	. /etc/bash_completion
 fi
+
+# Set Terminal Lang to English
+export LC_ALL=C
 
 [[ -f ~/.profile ]] && . ~/.profile
