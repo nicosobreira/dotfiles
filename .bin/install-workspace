@@ -11,17 +11,17 @@ install_zoxide() {
 
 install_lazygit() {
 	echo -e "\n\tInstalling Lazygit"
-	old_version=""
+	local old_version=""
 	if [[ $(command -v lazygit) ]]; then
 		old_version=$(lazygit --version 2>/dev/null | grep -oP 'version=\K[0-9.]+' | head -1)
 	fi
-	latest_version=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
+	local latest_version=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
 	if [[ ${old_version} == ${latest_version} ]]; then
 		echo "Already update"
 		return 0
 	fi
-	bin_file="lazygit"
-	tar_file="lazygit.tar.gz"
+	local bin_file="lazygit"
+	local tar_file="lazygit.tar.gz"
 	cd /tmp
 	echo "Downloading latest version (v${latest_version})"
 	wget ${WGET_OUTPUT} -O ${tar_file} \
@@ -40,15 +40,15 @@ install_nvim() {
 	else
 		old_version=$(nvim --version 2>/dev/null | grep -oP 'v\K[0-9.]+' | head -1)
 	fi
-	latest_version=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
+	local latest_version=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
 	if [[ ${old_version} == ${latest_version} ]]; then
 		echo "Already update"
 		return 0
 	fi
 	cd /tmp
-	folder_name="nvim-linux-x86_64"
-	tar_file="/tmp/${folder_name}.tar.gz"
-	folders=("bin" "lib" "share")
+	local folder_name="nvim-linux-x86_64"
+	local tar_file="/tmp/${folder_name}.tar.gz"
+	local folders=("bin" "lib" "share")
 	wget ${WGET_OUTPUT} -O ${tar_file} \
 		https://github.com/neovim/neovim/releases/latest/download/${folder_name}.tar.gz
 	tar -xzf ${tar_file}
@@ -57,20 +57,39 @@ install_nvim() {
 	done
 }
 
+create_folders() {
+	local destination=$1
+	local folders=$2
+
+	IFS=' ' read -r -a array_folders <<< "$folders"
+
+	for folder in "${array_folders[@]}"; do
+		folder="${destination}/${folder}"
+		[[ -d ${folder} ]] && continue
+
+		echo "Creating ${folder}"
+		mkdir -p ${folder}
+	done
+}
+
+stow_dotfiles() {
+	cd "$HOME/dotfiles"
+	stow -R .
+}
+
 PACKGES="tree git make gh tmux tar curl wget unzip stow"
+
+HOME_FOLDERS=".config .bin .local"
+LOCAL_FOLDERS="bin share state lib"
+
+create_folders "$HOME" "${HOME_FOLDERS}"
+create_folders "$HOME/.local" "${LOCAL_FOLDERS}"
 
 echo -e "\tInstalling PACKGES: ${PACKGES}"
 sudo apt install ${PACKGES}
 
-LOCAL_FOLDERS=(bin share state lib)
-for dir in "${LOCAL_FOLDERS[@]}"; do
-	dir=$HOME/.local/${dir}
-	[[ -d ${dir} ]] && continue
-
-	echo "Creating ${dir}"
-	mkdir -p ${dir}
-done
-
 install_zoxide
 install_lazygit
 install_nvim
+
+stow_dotfiles
