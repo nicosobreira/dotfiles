@@ -79,8 +79,8 @@ set wildmenu
 set wildmode=list:full
 
 " - Cursor -
-let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
+let &t_SI = "\e[6 q"
 
 " Fix slow when presse <ESC>
 "set ttimeout
