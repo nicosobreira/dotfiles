@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-init () {
+
+set -euo pipefail
+
+init_folders () {
 	DESKTOP_FOLDER="$HOME/.local/share/applications/custom/obsidian-app"
 	NAME="Obsidian-App"
 	DESKTOP="obsidian-app.desktop"
@@ -27,13 +30,13 @@ init () {
 
 # Get icon if icon.svg not exist
 get_icon () {
-	if [[ -e $WORK_FOLDER/$ICON ]]; then
-		echo "$ICON is already downloaded" 
-	else
-		ICON_LINK="https://obsidian.md/images/obsidian-logo-gradient.svg"
-		wget -q $ICON_LINK -O $WORK_FOLDER/$ICON
-		echo "Download: obsidian-logo-gradient.svg as icon.svg"
+	if [[ -f $WORK_FOLDER/$ICON ]]; then
+		echo "$ICON is already downloaded"
+		return
 	fi
+	local icon_link="https://obsidian.md/images/obsidian-logo-gradient.svg"
+	wget -q $icon_link -O $WORK_FOLDER/$ICON
+	echo "Download: obsidian-logo-gradient.svg as icon.svg"
 }
 
 get_version () {
@@ -41,12 +44,11 @@ get_version () {
 	VERSION_N=${VERSION//v}
 	VERSION_OLD=$(< $WORK_FOLDER/$CONFIG)
 	APP_LINK="https://github.com/obsidianmd/obsidian-releases/releases/download/$VERSION/Obsidian-$VERSION_N.AppImage"
-		
 }
 get_app () {
 	get_version
 	# If the same version quit
-	if [[ ! -e $WORK_FOLDER/$APP_NAME || $VERSION != $VERSION_OLD ]]; then
+	if [[ ! -f $WORK_FOLDER/$APP_NAME || $VERSION != $VERSION_OLD ]]; then
 		echo "Downloading..."
 		wget -q $APP_LINK -O $WORK_FOLDER/$APP_NAME
 		echo "Download: Obsidian-${VERSION_N}.AppImage"
@@ -73,7 +75,7 @@ make_app () {
 
 make_desktop () {
 	if [[ $VERSION != $VERSION_OLD ]]; then
-		cat > $WORK_FOLDER/$DESKTOP << EOF
+		cat > "$WORK_FOLDER/$DESKTOP" << EOF
 [Desktop Entry]
 Type=Application
 Name=$NAME
@@ -123,21 +125,13 @@ delete () {
 			rm -r $DESKTOP_FOLDER/*
 			echo "Delete folders"
 			;;
-		[nN])
-			echo "No folders deleted"
-			exit 0
-			;;
 		*)
-			echo "Need a valid option"
-			exit 1
+			echo "No folders deleted"
 			;;
 	esac
 }
 
-init
-case $1 in
-	help | h)
-		cat << EOF
+HELP_TEXT=$(cat << EOF
 Obsidian-app
 Use to install and setup obsidian.AppImage
 Usage: obsidian-app [options]
@@ -149,6 +143,13 @@ Options:
 	delete			Delete all folders and files!!!
 Default is run
 EOF
+)
+
+init_folders
+argument=${1:-""}
+case "$argument" in
+	help | h)
+		echo "$HELP_TEXT"
 		;;
 	update | u)
 		update
@@ -161,6 +162,7 @@ EOF
 		;;
 	*)
 		echo "$1 is a invalid option"
+		echo "$HELP_TEXT"
 		exit 2
 		;;
 esac
