@@ -10,6 +10,7 @@ set -gx EDITOR $VISUAL
 set -gx PAGER less
 set -gx MANPAGER "less -R"
 set -gx fish_greeting ""
+set -gx LANGUAGE en_US
 
 # -- Shortcuts
 function fish_user_key_bindings

@@ -46,6 +46,6 @@ elif [[ -f /etc/bash_completion ]]; then
 fi
 
 # Set Terminal Lang to English
-export LC_ALL=C
+export LANGUAGE=en_US
 
 [[ -f ~/.profile ]] && . ~/.profile
