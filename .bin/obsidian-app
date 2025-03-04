@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+WGET_OUTPUT="-q --show-progress"
+
 init_folders () {
 	DESKTOP_FOLDER="$HOME/.local/share/applications/custom/obsidian-app"
 	NAME="Obsidian-App"
@@ -35,7 +37,7 @@ get_icon () {
 		return
 	fi
 	local icon_link="https://obsidian.md/images/obsidian-logo-gradient.svg"
-	wget -q $icon_link -O $WORK_FOLDER/$ICON
+	wget $WGET_OUTPUT $icon_link -O $WORK_FOLDER/$ICON
 	echo "Download: obsidian-logo-gradient.svg as icon.svg"
 }
 
@@ -50,7 +52,7 @@ get_app () {
 	# If the same version quit
 	if [[ ! -f $WORK_FOLDER/$APP_NAME || $VERSION != $VERSION_OLD ]]; then
 		echo "Downloading..."
-		wget -q $APP_LINK -O $WORK_FOLDER/$APP_NAME
+		wget $WGET_OUTPUT $APP_LINK -O $WORK_FOLDER/$APP_NAME
 		echo "Download: Obsidian-${VERSION_N}.AppImage"
 	else
 		echo "$APP_NAME is already update"
@@ -87,7 +89,6 @@ EOF
 		echo "Make: $DESKTOP"
 		chmod +x $WORK_FOLDER/$DESKTOP
 		
-		#rm $DESKTOP_FOLDER/*.desktop
 		cp $WORK_FOLDER/$DESKTOP $DESKTOP_FOLDER/$DESKTOP 
 		echo "Copy: $DESKTOP to $DESKTOP_FOLDER"
 	else
@@ -100,7 +101,7 @@ run () {
 	if [[ -e $WORK_FOLDER/$APP_NAME ]]; then
 		echo "Running $APP_NAME"
 		# Runs the command in the background (No nohup output)
-		nohup $WORK_FOLDER/$APP_NAME > /dev/null 2>&1 &
+		nohup $WORK_FOLDER/$APP_NAME 2>/dev/null &
 	else
 		echo "$WORK_FOLDER/$APP_NAME couldn't be found"
 		exit 1
@@ -108,10 +109,10 @@ run () {
 }
 
 update () {
-		get_icon
-		get_app
-		make_app
-		make_desktop
+	get_icon
+	get_app
+	make_app
+	make_desktop
 }
 
 delete () {
