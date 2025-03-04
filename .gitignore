@@ -3,3 +3,4 @@
 LGPL
 license.pdf
 lazy-lock.json
+*.out
