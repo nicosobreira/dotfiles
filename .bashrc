@@ -49,3 +49,4 @@ fi
 export LANGUAGE=en_US
 
 [[ -f ~/.profile ]] && . ~/.profile
+. "$HOME/.cargo/env"
