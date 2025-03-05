@@ -3,9 +3,7 @@ if not status is-interactive
 end
 
 # -- Variables --
-set -gx NVIM $HOME/.config/nvim
-set -gx FISH $HOME/.config/fish/
-set -gx VISUAL (which nvim)
+set -gx VISUAL (which vim)
 set -gx EDITOR $VISUAL
 set -gx PAGER less
 set -gx MANPAGER "less -R"
