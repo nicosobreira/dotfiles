@@ -5,7 +5,40 @@ set -eou pipefail
 
 WGET_OUTPUT="-q --show-progress"
 
+install_yazi() {
+	echo -e "\tInstalling Yazi"
+	current_version=""
+	if command -v yazi >/dev/null; then
+		current_version=$(yazi --version 2>/dev/null | grep -oP 'Yazi \K[0-9.]+' | head -1)
+	fi
+	local latest_version=$(curl -s "https://api.github.com/repos/sxyazi/yazi/releases/latest" | grep -oP '"tag_name": "v\K[0-9.]+' | head -1)
+	if [[ "${current_version}" == "${latest_version}" ]]; then
+		echo "Already in the latest version ${latest_version}"
+		return
+	fi
+	if ! command -v rustup >/dev/null; then
+		curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+		if [[ "$SHELL" =~ "fish" ]]; then
+			source $HOME/.cargo/env.fish
+		elif [[ "$SHELL" =~ "nu" ]]; then
+			source $HOME/.cargo/env.nu
+		else
+			source "$HOME/.cargo/env"
+		fi
+		rustup update
+	fi
+	
+	local YAZI_REPO="/tmp/yazi"
+	if [[ ! -d ${YAZI_REPO} ]]; then
+		git clone https://github.com/sxyazi/yazi.git ${YAZI_REPO}
+	fi
+	cd ${YAZI_REPO}
+	cargo build --release --locked
+	mv target/release/yazi target/release/ya $HOME/.local/bin/
+}
+
 install_zoxide() {
+	echo -e "\tInstalling Zoxide"
 	curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 }
 
@@ -17,7 +50,7 @@ install_lazygit() {
 	fi
 	local latest_version=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
 	if [[ ${old_version} == ${latest_version} ]]; then
-		echo "Already update"
+		echo "Already in the latest version ${latest_version}"
 		return 0
 	fi
 	local bin_file="lazygit"
@@ -32,9 +65,9 @@ install_lazygit() {
 	install ${bin_file} -D -t $HOME/.local/bin
 }
 
-install_nvim() {
+install_neovim() {
 	echo -e "\n\tInstalling Neovim"
-	sudo apt install npm python3-full
+	#sudo apt install npm python3-full
 	if [[ ! $(command -v nvim) ]]; then
 		old_version=""
 	else
@@ -42,7 +75,7 @@ install_nvim() {
 	fi
 	local latest_version=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
 	if [[ ${old_version} == ${latest_version} ]]; then
-		echo "Already update"
+		echo "Already at the latest version ${latest_version}"
 		return 0
 	fi
 	cd /tmp
@@ -55,6 +88,13 @@ install_nvim() {
 	for dir in "${folders[@]}"; do
 		cp -R ${folder_name}/${dir}/* $HOME/.local/${dir}
 	done
+}
+
+install_all() {
+	install_zoxide
+	install_yazi
+	install_neovim
+	install_lazygit
 }
 
 create_folders() {
@@ -72,29 +112,66 @@ create_folders() {
 	done
 }
 
-stow_dotfiles() {
-	cd "$HOME/dotfiles"
-	git pull
-	stow -R .
+clone_dotfiles() {
+	local DOTFILES="$HOME/dotfiles"
+	if [[ ! -d "${DOTFILES}" ]]; then
+		git clone https://github.com/nicosobreira/dotfiles "${DOTFILES}"
+	fi
 }
 
-PACKGES="tree git make gh tmux tar curl wget unzip stow"
+show_help() {
+	cat << EOF
+Usage: $0 [ARGUMENTS]
+Arguments:
+	--install {app}		App names to install
+		name: all nvim lazygit zoxide yazi
+	--help			See help
+EOF
+}
 
+DEPENDENCIES="tree git make gh tmux tar curl wget unzip stow"
 HOME_FOLDERS=".config .bin .local"
 LOCAL_FOLDERS="bin share state lib"
 
-create_folders "$HOME" "${HOME_FOLDERS}"
-create_folders "$HOME/.local" "${LOCAL_FOLDERS}"
-
-echo -e "\tInstalling PACKGES: ${PACKGES}"
-sudo apt install ${PACKGES}
-
-install_zoxide
-install_lazygit
-install_nvim
-
-if [[ ! -d "$HOME/dotfiles" ]]; then
-	git clone https://github.com/nicosobreira/dotfiles $HOME/dotfiles
+if [[ $# -eq 0 ]]; then
+	echo "Type at least one argument"
+	show_help
+	exit 1
 fi
 
-stow_dotfiles
+while [[ $# > 0 ]]; do
+	case "$1" in
+		--install)
+			shift
+			echo -e "\tInstalling dependencies: ${DEPENDENCIES}"
+			sudo apt install ${DEPENDENCIES}
+			create_folders "$HOME" "${HOME_FOLDERS}"
+			create_folders "$HOME/.local" "${LOCAL_FOLDERS}"
+			clone_dotfiles
+			for app in "$@"; do
+				case "${app}" in
+					neovim) install_neovim;;
+					yazi) install_yazi;;
+					zoxide) install_zoxide;;
+					lazygit) install_lazygit;;
+					all)
+						install_neovim
+						install_yazi
+						install_zoxide
+						install_lazygit
+						;;
+					*)
+						echo "Unkown app \"${app}\""
+						show_help
+						exit 2
+						;;
+				esac
+			done
+			break
+			;;
+		--help)
+			show_help
+			exit 0
+			;;
+	esac
+done
