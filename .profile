@@ -38,7 +38,7 @@ alias fgrep="fgrep --color=auto"
 alias egrep="egrep --color=auto"
 
 alias ls="ls -h --color=auto"
-alias la="ls -a --color=auto --format=single-column -h -s --group-directories-first --sort=version"
+alias la="ls --almost-all --dereference-command-line --color=auto --format=single-column --human-readable --size --group-directories-first --sort=version"
 alias tree="tree -a -C"
 
 # -- PS1 --
