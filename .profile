@@ -10,22 +10,21 @@ for dir in "${_MY_PATH[@]}"; do
 	PATH="$dir:$PATH"
 done
 
-# -- Variables --
-export MANPAGER="less -R"
-if command -v nvim >/dev/null; then
-	export VISUAL=$(which nvim)
-	export EDITOR="$VISUAL"
-	export MANPAGER="less -R"
-else
-	export VISUAL=$(which vim)
-	export EDITOR="$VISUAL"
-fi
+# - -Variables --
+export LESS_TERMCAP_mb=$'\E[1;31m'
+export LESS_TERMCAP_md=$'\E[1;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[1;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[1;32m'
 
-# -- Alias --
-# - Code -
+#export MANPAGER="less -R --use-color -Dd+r -Du+b"
+export VISUAL=$(which vim)
+export EDITOR="$VISUAL"
+
 alias make='make -j$(nproc)'
 
-# - Terminal -
 # Basic
 alias c="clear"
 alias duh="du --human-readable"
@@ -69,7 +68,6 @@ function __git_branch() {
 }
 
 export PS1="\n${__BLUE}\w${__RESET}"
-PS1+="\`__nonzero_return\`"
-PS1+="\`__git_branch\`\n"
+PS1+="\`__git_branch\`"
+PS1+="\`__nonzero_return\`\n"
 PS1+="$ "
-. "$HOME/.cargo/env"
