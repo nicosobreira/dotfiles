@@ -120,6 +120,8 @@ nmap <space>N <cmd>0tabnew<CR>
 " Remove search highlights
 nmap <ESC> <cmd>nohl<CR>
 
+nmap Q <cmd>echo "Vi mode disable"<CR>
+
 " Block arrow keys
 "nnoremap <Left> <cmd>echo "No left for you!"<CR>
 "vnoremap <Left> <cmd><C-u>echo "No left for you!"<CR>
