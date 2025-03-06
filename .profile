@@ -19,7 +19,8 @@ export LESS_TERMCAP_so=$'\E[1;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[1;32m'
 
-#export MANPAGER="less -R --use-color -Dd+r -Du+b"
+export MANPAGER="vim +MANPAGER -"
+
 export VISUAL=$(which vim)
 export EDITOR="$VISUAL"
 
@@ -62,7 +63,6 @@ function __git_branch() {
 	branch=$(git branch --show-current 2>/dev/null)
 	if [[ "${branch}" != "" ]]
 	then
-		# This echo generates a new retval this is the problem
 		echo -e " \033[0;35m(${branch})\033[m"
 	fi
 }
