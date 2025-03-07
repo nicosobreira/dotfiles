@@ -43,6 +43,8 @@ alias la="ls --almost-all --dereference-command-line --color=auto --format=singl
 alias tree="tree -a -C"
 
 # -- Better Prompt --
+echo -ne "\e[5 q"
+
 __prompt_command() {
 	retval=$?
 
