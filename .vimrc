@@ -35,9 +35,6 @@ set noswapfile
 
 set scrolloff=5
 
-" - Colorsheme -
-set t_Co=256
-
 " - Tabs -
 set tabstop=4 "Sets indent size of tabs
 set shiftwidth=4 "Sets auto-indent size
@@ -70,7 +67,7 @@ set hlsearch
 set splitbelow
 set splitright
 
-" - enable smart search sensitivity -
+" - Enable smart search sensitivity -
 set ignorecase
 set smartcase
 
@@ -81,11 +78,6 @@ set wildmode=list:full
 " - Cursor -
 let &t_EI = "\e[2 q"
 let &t_SI = "\e[6 q"
-
-" Fix slow when presse <ESC>
-"set ttimeout
-"set ttimeoutlen=1
-"set ttyfast
 
 " --- Keymap ---
 " - Remap space -
