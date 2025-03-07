@@ -26,6 +26,7 @@ shopt -s checkwinsize
 
 # Set Terminal Lang to English
 export LANG=en_US.UTF-8
+export LANGUAGE=en_US
 
 _SOURCES=(/etc/bashrc /usr/share/bash-completion/bash_completion /etc/bash_completion $HOME/.profile $HOME/.cargo/env)
 for file in "${_SOURCES[@]}"; do
