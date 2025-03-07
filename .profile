@@ -23,6 +23,7 @@ if command -v vim >/dev/null; then
 	export MANPAGER="vim +MANPAGER -"
 	export VISUAL=$(which vim)
 	export EDITOR="$VISUAL"
+	alias svim="sudo vim -u $HOME/.vimrc"
 fi
 
 # -- Alias --
