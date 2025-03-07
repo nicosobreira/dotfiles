@@ -4,16 +4,46 @@ set -eou pipefail
 #set -x
 
 WGET_OUTPUT="-q --show-progress"
+DEPENDENCIES="git make tar curl wget unzip"
+PACKGES="tree gh tmux stow vim"
+HOME_FOLDERS=".config .bin .local"
+LOCAL_FOLDERS="bin share state lib"
+
+get_latest_repo_version() {
+	local git_user_name=$1
+	local git_repo=$2
+	echo "$(curl -s "https://api.github.com/repos/${git_user_name}/${git_repo}/releases/latest" | grep -oP '"tag_name": "v\K[0-9.]+' | head -1)"
+}
+
+check_need_update() {
+	if [[ $# -lt 3 ]]; then
+		echo "Error: Less than three arguments"
+		return 2
+	fi
+	local program=$1
+	local search_string=$2
+	local git_user_name=$3
+	local git_repo=${4:-$1}
+	local current_version=""
+	local latest_version="$(get_latest_repo_version git_repo git_user_name)"
+	if command -v "${program}" >/dev/null; then
+		current_version=$(${program} --version 2>/dev/null | grep -oP "${search_string}\K[0-9.]+" | head -1)
+	fi
+	latest_version=$(get_latest_repo_version "${git_user_name}" "${git_repo}")
+	if [[ -z $latest_version ]]; then
+		echo "Error: Unable to access ${git_user_name}/${git_repo}"
+		return 3
+	fi
+	if [[ "${current_version}" == "${latest_version}" ]]; then
+		echo "${program} is already in the latest version ${latest_version}"
+		return 1
+	fi
+	return 0
+}
 
 install_yazi() {
 	echo -e "\tInstalling Yazi"
-	current_version=""
-	if command -v yazi >/dev/null; then
-		current_version=$(yazi --version 2>/dev/null | grep -oP 'Yazi \K[0-9.]+' | head -1)
-	fi
-	local latest_version=$(curl -s "https://api.github.com/repos/sxyazi/yazi/releases/latest" | grep -oP '"tag_name": "v\K[0-9.]+' | head -1)
-	if [[ "${current_version}" == "${latest_version}" ]]; then
-		echo "Already in the latest version ${latest_version}"
+	if ! check_need_update "yazi" "Yazi " "sxyazi" "yazi"; then
 		return
 	fi
 	if ! command -v rustup >/dev/null; then
@@ -44,19 +74,15 @@ install_zoxide() {
 
 install_lazygit() {
 	echo -e "\n\tInstalling Lazygit"
-	local old_version=""
-	if [[ $(command -v lazygit) ]]; then
-		old_version=$(lazygit --version 2>/dev/null | grep -oP 'version=\K[0-9.]+' | head -1)
-	fi
-	local latest_version=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
-	if [[ ${old_version} == ${latest_version} ]]; then
-		echo "Already in the latest version ${latest_version}"
-		return 0
+	local git_user_name="jesseduffield"
+	local git_repo="lazygit"
+	if ! check_need_update "lazygit" "version=" "${git_user_name}" "${git_repo}"; then
+		return
 	fi
 	local bin_file="lazygit"
 	local tar_file="lazygit.tar.gz"
+	local latest_version="$(get_latest_repo_version "${git_user_name}" "${git_repo}")"
 	cd /tmp
-	echo "Downloading latest version (v${latest_version})"
 	wget ${WGET_OUTPUT} -O ${tar_file} \
 		"https://github.com/jesseduffield/lazygit/releases/download/v${latest_version}/lazygit_${latest_version}_Linux_x86_64.tar.gz"
 	echo "Extract ${tar_file}"
@@ -68,15 +94,8 @@ install_lazygit() {
 install_neovim() {
 	echo -e "\n\tInstalling Neovim"
 	#sudo apt install npm python3-full
-	if [[ ! $(command -v nvim) ]]; then
-		old_version=""
-	else
-		old_version=$(nvim --version 2>/dev/null | grep -oP 'v\K[0-9.]+' | head -1)
-	fi
-	local latest_version=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
-	if [[ ${old_version} == ${latest_version} ]]; then
-		echo "Already at the latest version ${latest_version}"
-		return 0
+	if ! check_need_update "nvim" "v" "neovim" "neovim"; then
+		return
 	fi
 	cd /tmp
 	local folder_name="nvim-linux-x86_64"
@@ -91,6 +110,8 @@ install_neovim() {
 }
 
 install_all() {
+	echo -e "\tInstalling packges: ${PACKGES}"
+	sudo apt install ${PACKGES}
 	install_zoxide
 	install_yazi
 	install_neovim
@@ -121,27 +142,33 @@ clone_dotfiles() {
 
 show_help() {
 	cat << EOF
-Usage: $0 [ARGUMENTS]
-Arguments:
-	--install {app}		App names to install
-		name: all nvim lazygit zoxide yazi
-	--help			See help
+Usage: $0 [OPTIONS] [APPS]
+
+OPTIONS:
+	install [APPS]	App names to install
+	help			See help
+APPS:
+	all			Install all apps
+	neovim
+	yazi
+	zoxide
+	lazygit
+
+Examples:
+	$0 install neovim yazi
+	$0 install all
 EOF
 }
 
-DEPENDENCIES="tree git make gh tmux tar curl wget unzip stow"
-HOME_FOLDERS=".config .bin .local"
-LOCAL_FOLDERS="bin share state lib"
-
 if [[ $# -eq 0 ]]; then
-	echo "Type at least one argument"
+	echo "Error: Type at least one argument"
 	show_help
 	exit 1
 fi
 
-while [[ $# > 0 ]]; do
+while [[ $# -gt 0 ]]; do
 	case "$1" in
-		--install)
+		install)
 			shift
 			echo -e "\tInstalling dependencies: ${DEPENDENCIES}"
 			sudo apt install ${DEPENDENCIES}
@@ -155,10 +182,7 @@ while [[ $# > 0 ]]; do
 					zoxide) install_zoxide;;
 					lazygit) install_lazygit;;
 					all)
-						install_neovim
-						install_yazi
-						install_zoxide
-						install_lazygit
+						install_all
 						;;
 					*)
 						echo "Unkown app \"${app}\""
@@ -169,9 +193,14 @@ while [[ $# > 0 ]]; do
 			done
 			break
 			;;
-		--help)
+		help)
 			show_help
-			exit 0
+			break
+			;;
+		*)
+			echo "Error: Unkown argument \"${1}\""
+			show_help
+			exit 1
 			;;
 	esac
 done
