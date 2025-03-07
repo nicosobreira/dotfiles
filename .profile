@@ -10,7 +10,7 @@ for dir in "${_MY_PATH[@]}"; do
 	PATH="$dir:$PATH"
 done
 
-# - -Variables --
+# -- Variables --
 export LESS_TERMCAP_mb=$'\E[1;31m'
 export LESS_TERMCAP_md=$'\E[1;31m'
 export LESS_TERMCAP_me=$'\E[0m'
@@ -25,9 +25,12 @@ if command -v vim >/dev/null; then
 	export EDITOR="$VISUAL"
 fi
 
-alias make='make -j$(nproc)'
+# -- Alias --
+if command -v yazi >/dev/null; then
+	alias y="yazi"
+fi
 
-# Basic
+alias make='make -j$(nproc)'
 alias c="clear"
 alias duh="du --human-readable"
 alias mkdir="mkdir -p"
@@ -43,8 +46,6 @@ alias la="ls --almost-all --dereference-command-line --color=auto --format=singl
 alias tree="tree -a -C"
 
 # -- Better Prompt --
-echo -ne "\e[5 q"
-
 __prompt_command() {
 	retval=$?
 
