@@ -19,10 +19,11 @@ export LESS_TERMCAP_so=$'\E[1;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[1;32m'
 
-export MANPAGER="vim +MANPAGER -"
-
-export VISUAL=$(which vim)
-export EDITOR="$VISUAL"
+if command -v vim >/dev/null; then
+	export MANPAGER="vim +MANPAGER -"
+	export VISUAL=$(which vim)
+	export EDITOR="$VISUAL"
+fi
 
 alias make='make -j$(nproc)'
 
@@ -41,33 +42,39 @@ alias ls="ls -h --color=auto"
 alias la="ls --almost-all --dereference-command-line --color=auto --format=single-column --human-readable --size --group-directories-first --sort=version"
 alias tree="tree -a -C"
 
-# -- PS1 --
-# https://ezprompt.net/
-__BLACK="\[\033[30m\]"
-__RED="\[\033[31m\]"
-__GREEN="\[\033[32m\]"
-__YELLOW="\[\033[33m\]"
-__BLUE="\[\033[34m\]"
-__MAGENTA="\[\033[35m\]"
-__CYAN="\[\033[36m\]"
-__WHITE="\[\033[37m\]"
-__RESET="\[\033[m\]"
+# -- Better Prompt --
+__prompt_command() {
+	retval=$?
 
-function __nonzero_return() {
-	if [[ $? != 0 ]]; then
-		echo -e " \033[0;31m[${?}]\033[m"
-	fi
+	local black="\[\033[30m\]"
+	local red="\[\033[31m\]"
+	local green="\[\033[32m\]"
+	local yellow="\[\033[33m\]"
+	local blue="\[\033[34m\]"
+	local magenta="\[\033[35m\]"
+	local cyan="\[\033[36m\]"
+	local white="\[\033[37m\]"
+	local reset="\[\033[m\]"
+
+	nonzero_return() {
+		if [[ $retval != 0 ]]; then
+			echo -e " ${red}[${retval}]${reset}"
+		fi
+	}
+
+	git_branch() {
+		branch=$(git branch --show-current 2>/dev/null)
+		if [[ "${branch}" != "" ]]
+		then
+			echo -e " ${magenta}(${branch})${reset}"
+		fi
+	}
+
+	local prompt="\n${blue}\w${reset}"
+	prompt+="$(git_branch)"
+	prompt+="$(nonzero_return)\n"
+	prompt+="$ "
+	echo -e "${prompt}"
 }
 
-function __git_branch() {
-	branch=$(git branch --show-current 2>/dev/null)
-	if [[ "${branch}" != "" ]]
-	then
-		echo -e " \033[0;35m(${branch})\033[m"
-	fi
-}
-
-export PS1="\n${__BLUE}\w${__RESET}"
-PS1+="\`__git_branch\`"
-PS1+="\`__nonzero_return\`\n"
-PS1+="$ "
+export PROMPT_COMMAND='PS1=$(__prompt_command)'
