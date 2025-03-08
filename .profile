@@ -27,10 +27,6 @@ if command -v vim >/dev/null; then
 fi
 
 # -- Alias --
-if command -v yazi >/dev/null; then
-	alias y="yazi"
-fi
-
 alias make='make -j$(nproc)'
 alias c="clear"
 alias duh="du --human-readable"

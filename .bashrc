@@ -14,8 +14,8 @@ esac
 # append to the history file, don't overwrite it
 shopt -s histappend
 
-export HISTSIZE=1000
-export HISTFILESIZE=2000
+export HISTSIZE=5000
+export HISTFILESIZE=10000
 export HISTCONTROL=erasedups:ignoredups
 
 # check the window size after each command and, if necessary,
@@ -33,6 +33,15 @@ for file in "${_SOURCES[@]}"; do
 	[[ ! -f "$file" ]] && continue
 	source "$file"
 done
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
 
 if command -v fzf >/dev/null; then
 	eval "$(fzf --bash)"
