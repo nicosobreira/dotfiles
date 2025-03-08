@@ -24,21 +24,39 @@ check_need_update() {
 	local search_string=$2
 	local git_user_name=$3
 	local git_repo=${4:-$1}
+	local version_arg=${5:-"--version"}
 	local current_version=""
-	local latest_version="$(get_latest_repo_version git_repo git_user_name)"
 	if command -v "${program}" >/dev/null; then
-		current_version=$(${program} --version 2>/dev/null | grep -oP "${search_string}\K[0-9.]+" | head -1)
+		echo "Getting the current version"
+		current_version=$(${program} ${version_arg} 2>/dev/null | grep -oP "${search_string}\K[0-9.]+" | head -1)
 	fi
+	echo "Getting the latest version from ${git_user_name}/${git_repo}"
 	latest_version=$(get_latest_repo_version "${git_user_name}" "${git_repo}")
 	if [[ -z $latest_version ]]; then
 		echo "Error: Unable to access ${git_user_name}/${git_repo}"
 		return 3
 	fi
 	if [[ "${current_version}" == "${latest_version}" ]]; then
-		echo "${program} is already in the latest version ${latest_version}"
+		echo "${program} is already in the latest version (${latest_version})"
 		return 1
 	fi
 	return 0
+}
+
+install_fzf() {
+	echo -e "\tInstalling fzf"
+	local git_user_name="junegunn"
+	local git_repo="fzf"
+	if ! check_need_update "fzf" "" ${git_user_name} ${git_repo}; then
+		return
+	fi
+	local latest_version=$(get_latest_repo_version "${git_user_name}" "${git_repo}")
+	local tar_file_repo="fzf-${latest_version}-linux_amd64.tar.gz"
+	local tar_file="/tmp/fzf.tar.gz"
+	cd /tmp
+	wget ${WGET_OUTPUT} -O "${tar_file}" "https://github.com/${git_user_name}/${git_repo}/releases/latest/download/${tar_file_repo}"
+	tar -xf "${tar_file}"
+	mv "/tmp/fzf" "$HOME/.local/bin"
 }
 
 install_yazi() {
@@ -116,6 +134,7 @@ install_all() {
 	install_yazi
 	install_neovim
 	install_lazygit
+	install_fzf
 }
 
 create_folders() {
@@ -153,6 +172,7 @@ APPS:
 	yazi
 	zoxide
 	lazygit
+	fzf
 
 Examples:
 	$0 install neovim yazi
@@ -181,6 +201,7 @@ while [[ $# -gt 0 ]]; do
 					yazi) install_yazi;;
 					zoxide) install_zoxide;;
 					lazygit) install_lazygit;;
+					fzf) install_fzf;;
 					all)
 						install_all
 						;;
