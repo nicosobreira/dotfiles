@@ -5,14 +5,23 @@ set -eou pipefail
 
 WGET_OUTPUT="-q --show-progress"
 DEPENDENCIES="git make tar curl wget unzip"
-PACKGES="tree gh tmux stow vim"
+PACKGES="tree gh stow vim"
 HOME_FOLDERS=".config .bin .local"
 LOCAL_FOLDERS="bin share state lib"
+NULL="NULL"
 
 get_latest_repo_version() {
 	local git_user_name=$1
 	local git_repo=$2
-	echo "$(curl -s "https://api.github.com/repos/${git_user_name}/${git_repo}/releases/latest" | grep -oP '"tag_name": "v\K[0-9.]+' | head -1)"
+	local tag_name_pre=""
+	if [[ -z "${3:-}" ]]; then
+		tag_name_pre="v"
+	else
+		if [[ ! "$3" =~ "$NULL" ]]; then
+			tag_name_pre="$3"
+		fi
+	fi
+	echo "$(curl -s "https://api.github.com/repos/${git_user_name}/${git_repo}/releases/latest" | grep -oP "\"tag_name\": \"${tag_name_pre}\K[0-9.]+" | head -1)"
 }
 
 check_need_update() {
@@ -25,13 +34,14 @@ check_need_update() {
 	local git_user_name=$3
 	local git_repo=${4:-$1}
 	local version_arg=${5:-"--version"}
+	local tag_name_pre=${6:-}
 	local current_version=""
 	if command -v "${program}" >/dev/null; then
 		echo "Getting the current version"
 		current_version=$(${program} ${version_arg} 2>/dev/null | grep -oP "${search_string}\K[0-9.]+" | head -1)
 	fi
 	echo "Getting the latest version from ${git_user_name}/${git_repo}"
-	latest_version=$(get_latest_repo_version "${git_user_name}" "${git_repo}")
+	latest_version=$(get_latest_repo_version "${git_user_name}" "${git_repo}" "${tag_name_pre}")
 	if [[ -z $latest_version ]]; then
 		echo "Error: Unable to access ${git_user_name}/${git_repo}"
 		return 3
@@ -43,18 +53,36 @@ check_need_update() {
 	return 0
 }
 
+install_tmux() {
+	echo -e "\tInstalling Tmux"
+	local git_user_name="tmux"
+	local git_repo="tmux"
+	if ! check_need_update "tmux" "tmux " "$git_user_name" "$git_repo" "-V" "${NULL}"; then
+		return
+	fi
+	sudo apt install libevent-dev ncurses-dev build-essential bison pkg-config
+	local latest=$(get_latest_repo_version "$git_user_name" "$git_repo" "$NULL")
+	local folder="tmux-${latest}a"
+	local tar_file="${folder}.tar.gz"
+	cd /tmp
+	wget ${WGET_OUTPUT} "https://github.com/tmux/tmux/releases/latest/download/${tar_file}"
+	tar -xf ${tar_file}
+	cd $folder
+	./configure --prefix=$HOME/.local
+	make && make install
+}
+
 install_fzf() {
-	echo -e "\tInstalling fzf"
+	echo -e "\tInstalling Fzf"
 	local git_user_name="junegunn"
 	local git_repo="fzf"
 	if ! check_need_update "fzf" "" ${git_user_name} ${git_repo}; then
 		return
 	fi
 	local latest_version=$(get_latest_repo_version "${git_user_name}" "${git_repo}")
-	local tar_file_repo="fzf-${latest_version}-linux_amd64.tar.gz"
-	local tar_file="/tmp/fzf.tar.gz"
+	local tar_file="fzf-${latest_version}-linux_amd64.tar.gz"
 	cd /tmp
-	wget ${WGET_OUTPUT} -O "${tar_file}" "https://github.com/${git_user_name}/${git_repo}/releases/latest/download/${tar_file_repo}"
+	wget ${WGET_OUTPUT} "https://github.com/${git_user_name}/${git_repo}/releases/latest/download/${tar_file}"
 	tar -xf "${tar_file}"
 	mv "/tmp/fzf" "$HOME/.local/bin"
 }
@@ -75,12 +103,10 @@ install_yazi() {
 		fi
 		rustup update
 	fi
-	
-	local YAZI_REPO="/tmp/yazi"
-	if [[ ! -d ${YAZI_REPO} ]]; then
-		git clone https://github.com/sxyazi/yazi.git ${YAZI_REPO}
-	fi
-	cd ${YAZI_REPO}
+	local git_repo="yazi"
+	cd /tmp
+	git clone https://github.com/sxyazi/yazi.git ${git_repo}
+	cd ${git_repo}
 	cargo build --release --locked
 	mv target/release/yazi target/release/ya $HOME/.local/bin/
 }
@@ -117,7 +143,7 @@ install_neovim() {
 	fi
 	cd /tmp
 	local folder_name="nvim-linux-x86_64"
-	local tar_file="/tmp/${folder_name}.tar.gz"
+	local tar_file="${folder_name}.tar.gz"
 	local folders=("bin" "lib" "share")
 	wget ${WGET_OUTPUT} -O ${tar_file} \
 		https://github.com/neovim/neovim/releases/latest/download/${folder_name}.tar.gz
@@ -135,6 +161,7 @@ install_all() {
 	install_neovim
 	install_lazygit
 	install_fzf
+	install_tmux
 }
 
 create_folders() {
@@ -153,10 +180,20 @@ create_folders() {
 }
 
 clone_dotfiles() {
-	local DOTFILES="$HOME/dotfiles"
-	if [[ ! -d "${DOTFILES}" ]]; then
-		git clone https://github.com/nicosobreira/dotfiles "${DOTFILES}"
+	local dotfiles="$HOME/dotfiles"
+	if [[ ! -d "${dotfiles}" ]]; then
+		git clone https://github.com/nicosobreira/dotfiles "${dotfiles}"
 	fi
+	local choice=""
+	read -p "Do you want to stow the dotfiles? [Y/N] " choice
+	case $choice in
+		[yYsS])
+			cd $dotfiles
+			stow -R .
+			;;
+		*)
+			;;
+	esac
 }
 
 show_help() {
@@ -164,15 +201,16 @@ show_help() {
 Usage: $0 [OPTIONS] [APPS]
 
 OPTIONS:
-	install [APPS]	App names to install
+	install [APPS]		App names to install
 	help			See help
 APPS:
-	all			Install all apps
+	all			Install all apps above
 	neovim
 	yazi
 	zoxide
 	lazygit
 	fzf
+	tmux
 
 Examples:
 	$0 install neovim yazi
@@ -202,9 +240,8 @@ while [[ $# -gt 0 ]]; do
 					zoxide) install_zoxide;;
 					lazygit) install_lazygit;;
 					fzf) install_fzf;;
-					all)
-						install_all
-						;;
+					tmux) install_tmux;;
+					all) install_all;;
 					*)
 						echo "Unkown app \"${app}\""
 						show_help
