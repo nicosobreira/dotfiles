@@ -203,10 +203,11 @@ Usage: $0 [OPTIONS] [APPS]
 OPTIONS:
 	install [APPS]		App names to install
 	help			See help
+
 APPS:
 	all			Install all apps above
-	neovim
-	yazi
+	neovim|nvim
+	yazi			Dependencies are very large!
 	zoxide
 	lazygit
 	fzf
@@ -235,7 +236,7 @@ while [[ $# -gt 0 ]]; do
 			clone_dotfiles
 			for app in "$@"; do
 				case "${app}" in
-					neovim) install_neovim;;
+					neovim|nvim) install_neovim;;
 					yazi) install_yazi;;
 					zoxide) install_zoxide;;
 					lazygit) install_lazygit;;
