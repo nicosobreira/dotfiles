@@ -33,3 +33,7 @@ for file in "${_SOURCES[@]}"; do
 	[[ ! -f "$file" ]] && continue
 	source "$file"
 done
+
+if command -v zoxide >/dev/null; then
+	eval "$(zoxide init bash)"
+fi
