@@ -9,6 +9,7 @@ PACKGES="tree gh stow vim"
 HOME_FOLDERS=".config .bin .local"
 LOCAL_FOLDERS="bin share state lib"
 NULL="NULL"
+PREFIX="$HOME/.local"
 
 get_latest_repo_version() {
 	local git_user_name=$1
@@ -68,7 +69,7 @@ install_tmux() {
 	wget ${WGET_OUTPUT} "https://github.com/tmux/tmux/releases/latest/download/${tar_file}"
 	tar -xf ${tar_file}
 	cd $folder
-	./configure --prefix=$HOME/.local
+	./configure --prefix=${PREFIX}
 	make && make install
 }
 
@@ -84,7 +85,7 @@ install_fzf() {
 	cd /tmp
 	wget ${WGET_OUTPUT} "https://github.com/${git_user_name}/${git_repo}/releases/latest/download/${tar_file}"
 	tar -xf "${tar_file}"
-	mv "/tmp/fzf" "$HOME/.local/bin"
+	mv "/tmp/fzf" "$PREFIX/bin"
 }
 
 install_yazi() {
@@ -108,7 +109,7 @@ install_yazi() {
 	git clone https://github.com/sxyazi/yazi.git ${git_repo}
 	cd ${git_repo}
 	cargo build --release --locked
-	mv target/release/yazi target/release/ya $HOME/.local/bin/
+	mv target/release/yazi target/release/ya $PREFIX/bin/
 }
 
 install_zoxide() {
@@ -132,7 +133,7 @@ install_lazygit() {
 	echo "Extract ${tar_file}"
 	tar xf ${tar_file} ${bin_file}
 	echo "Installing lazygit"
-	install ${bin_file} -D -t $HOME/.local/bin
+	install ${bin_file} -D -t $PREFIX/bin
 }
 
 install_neovim() {
@@ -149,7 +150,7 @@ install_neovim() {
 		https://github.com/neovim/neovim/releases/latest/download/${folder_name}.tar.gz
 	tar -xzf ${tar_file}
 	for dir in "${folders[@]}"; do
-		cp -R ${folder_name}/${dir}/* $HOME/.local/${dir}
+		cp -R ${folder_name}/${dir}/* $PREFIX/${dir}
 	done
 }
 
@@ -232,7 +233,7 @@ while [[ $# -gt 0 ]]; do
 			echo -e "\tInstalling dependencies: ${DEPENDENCIES}"
 			sudo apt install ${DEPENDENCIES}
 			create_folders "$HOME" "${HOME_FOLDERS}"
-			create_folders "$HOME/.local" "${LOCAL_FOLDERS}"
+			create_folders "$PREFIX" "${LOCAL_FOLDERS}"
 			clone_dotfiles
 			for app in "$@"; do
 				case "${app}" in
