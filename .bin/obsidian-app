@@ -101,7 +101,7 @@ run () {
 	if [[ -e $WORK_FOLDER/$APP_NAME ]]; then
 		echo "Running $APP_NAME"
 		# Runs the command in the background (No nohup output)
-		nohup $WORK_FOLDER/$APP_NAME 2>/dev/null &
+		nohup $WORK_FOLDER/$APP_NAME >/dev/null &
 	else
 		echo "$WORK_FOLDER/$APP_NAME couldn't be found"
 		exit 1
