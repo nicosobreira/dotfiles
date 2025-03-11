@@ -1,169 +1,136 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -eou pipefail
+# set -x
+
+SCRIPT_FILE=$(realpath $0)
 
 WGET_OUTPUT="-q --show-progress"
+DEPENDENCIES="curl wget"
 
-init_folders () {
-	DESKTOP_FOLDER="$HOME/.local/share/applications/custom/obsidian-app"
-	NAME="Obsidian-App"
-	DESKTOP="obsidian-app.desktop"
-	WORK_FOLDER="$HOME/.local/share/obsidian-app"
-	APP_NAME="Obsidian.AppImage"
-	CONFIG="config.txt"
-	ICON="icon.svg"
-	if [[ ! -d $WORK_FOLDER ]]; then
-		mkdir -p $WORK_FOLDER
-		echo "Folder create: $WORK_FOLDER"
+NAME="Obsidian-App"
+PREFIX="$HOME/.local"
+OBSIDIAN="$PREFIX/obsidian-app"
+
+ICON="$OBSIDIAN/icon.svg"
+CURRENT_VERSION_FILE="$OBSIDIAN/current-version.txt"
+APP_IMAGE="$OBSIDIAN/Obsidian.AppImage"
+DESKTOP="$PREFIX/share/applications/obsidian-app.desktop"
+NULL="NULL"
+
+get_latest_repo_version() {
+	local git_user_name=$1
+	local git_repo=$2
+	local tag_name_pre=${3:-"v"}
+	curl -s "https://api.github.com/repos/${git_user_name}/${git_repo}/releases/latest" | grep -oP "\"tag_name\": \"${tag_name_pre}\K[0-9.]+" | head -1
+}
+
+init_folders() {
+	if [[ ! -d $OBSIDIAN ]]; then
+		mkdir -p $OBSIDIAN
 	fi
-	if [[ ! -e $WORK_FOLDER/$CONFIG ]]; then
-		touch $WORK_FOLDER/$CONFIG
-		echo "File create: $WORK_FOLDER/$CONFIG"
-	fi
-	if [[ ! -e $DESKTOP_FOLDER ]]; then
-		mkdir -p $DESKTOP_FOLDER
-		echo "Folder create: $DESKTOP_FOLDER"
-	fi
-	if [[ ! -e $DESKTOP_FOLDER/$DESKTOP ]]; then
-		touch $DESKTOP_FOLDER/$DESKTOP
-		echo "File create: $DESKTOP_FOLDER/$DESKTOP"
+	if [[ ! -d $PREFIX/share/applications ]]; then
+		mkdir -p $PREFIX/share/applications
 	fi
 }
 
-# Get icon if icon.svg not exist
+install_dependencies() {
+	echo -e "\tInstalling dependencies"
+	sudo apt install $DEPENDENCIES
+}
+
 get_icon () {
-	if [[ -f $WORK_FOLDER/$ICON ]]; then
+	if [[ -f $ICON ]]; then
 		echo "$ICON is already downloaded"
 		return
 	fi
-	local icon_link="https://obsidian.md/images/obsidian-logo-gradient.svg"
-	wget $WGET_OUTPUT $icon_link -O $WORK_FOLDER/$ICON
-	echo "Download: obsidian-logo-gradient.svg as icon.svg"
+
+	echo -e "\tDownloading $ICON"
+	wget $WGET_OUTPUT -O $ICON "https://obsidian.md/images/obsidian-logo-gradient.svg"
 }
 
-get_version () {
-	VERSION="$(git -c 'versionsort.suffix=-' ls-remote --tags --sort='v:refname' https://github.com/obsidianmd/obsidian-releases.git | tail --lines=1 | cut --delimiter='/' --fields=3 )"
-	VERSION_N=${VERSION//v}
-	VERSION_OLD=$(< $WORK_FOLDER/$CONFIG)
-	APP_LINK="https://github.com/obsidianmd/obsidian-releases/releases/download/$VERSION/Obsidian-$VERSION_N.AppImage"
-}
-get_app () {
-	get_version
-	# If the same version quit
-	if [[ ! -f $WORK_FOLDER/$APP_NAME || $VERSION != $VERSION_OLD ]]; then
-		echo "Downloading..."
-		wget $WGET_OUTPUT $APP_LINK -O $WORK_FOLDER/$APP_NAME
-		echo "Download: Obsidian-${VERSION_N}.AppImage"
-	else
-		echo "$APP_NAME is already update"
-	fi
-
-	# If the output is diffent then "v{x}.{y}.{z}"
-	if [[ ${VERSION:0:1} != "v" && $VERSION != "" ]]; then
-		echo "An error occur when getting the most recent file"
-		exit 1
-	fi
-	echo $VERSION > $WORK_FOLDER/$CONFIG
-}
-
-make_app () {
-	if [[ -x $WORK_FOLDER/$APP_NAME ]]; then
-		echo "$APP_NAME file permission is set"
-	else
-		chmod +x $WORK_FOLDER/$APP_NAME
-		echo "Change: $APP_NAME to be executed"
-	fi
-	}
-
-make_desktop () {
-	if [[ $VERSION != $VERSION_OLD ]]; then
-		cat > "$WORK_FOLDER/$DESKTOP" << EOF
+create_desktop() {
+	echo -e "\tCreating $DESKTOP"
+	cat > $DESKTOP << EOF
 [Desktop Entry]
 Type=Application
 Name=$NAME
-Path=$WORK_FOLDER
-Exec=$WORK_FOLDER/$APP_NAME
-Icon=$WORK_FOLDER/$ICON
+Exec=$SCRIPT_FILE run
+Icon=$ICON
 Terminal=false
 EOF
-		echo "Make: $DESKTOP"
-		chmod +x $WORK_FOLDER/$DESKTOP
-		
-		cp $WORK_FOLDER/$DESKTOP $DESKTOP_FOLDER/$DESKTOP 
-		echo "Copy: $DESKTOP to $DESKTOP_FOLDER"
-	else
-		echo "$DESKTOP is already create and up to date"
-	fi
+	chmod u+x $DESKTOP
 }
 
-run () {
-	update
-	if [[ -e $WORK_FOLDER/$APP_NAME ]]; then
-		echo "Running $APP_NAME"
-		# Runs the command in the background (No nohup output)
-		nohup $WORK_FOLDER/$APP_NAME >/dev/null &
-	else
-		echo "$WORK_FOLDER/$APP_NAME couldn't be found"
-		exit 1
-	fi
-}
+get_obsidian() {
+	init_folders
+	install_dependencies
+	local latest_version=$(get_latest_repo_version "obsidianmd" "obsidian-releases" "v")
+	local current_version=$(cat "$CURRENT_VERSION_FILE" 2>/dev/null || echo "")
 
-update () {
+	if [[ $latest_version == $current_version ]]; then
+		echo -e "\tAlready update"
+		return
+	fi
+	echo -e "\tInstalling Obsidian"
+
 	get_icon
-	get_app
-	make_app
-	make_desktop
+
+	wget $WGET_OUTPUT -O $APP_IMAGE "https://github.com/obsidianmd/obsidian-releases/releases/download/v$latest_version/Obsidian-$latest_version.AppImage"
+	chmod u+x $APP_IMAGE
+
+	create_desktop
+
+	echo $latest_version > $CURRENT_VERSION_FILE
 }
 
-delete () {
-	echo "This will delete folders in:"
-	echo $WORK_FOLDER
-	echo $DESKTOP_FOLDER
-	read -p "Want to continue? [Y/N] " choice
-	case $choice in
-		[yYsS])
-			rm -r $WORK_FOLDER/*
-			rm -r $DESKTOP_FOLDER/*
-			echo "Delete folders"
-			;;
-		*)
-			echo "No folders deleted"
-			;;
-	esac
+get_user_choice() {
+	message=$1
+	local input
+	while true; do
+		read -p "$message [Y/N] " input
+		case "$input" in
+			[Yy]) return 0;;
+			[Nn]) return 1;;
+			*) echo "Press \"Y\" or \"N\""
+		esac
+	done
 }
 
-HELP_TEXT=$(cat << EOF
-Obsidian-app
-Use to install and setup obsidian.AppImage
-Usage: obsidian-app [options]
+show_help() {
+	cat << EOF
+Usage: $0 [ARGUMENTS]
 
-Options:
-	help or h		Display help
-	update or u		Use to update or install obsidian
-	run or r		Run the Obsidian.AppImage
-	delete			Delete all folders and files!!!
-Default is run
+ARGUMENTS:
+	run | r		Run Obsidian AppImage
+	update | u	Update Obsidian
+	remove		Remove ceartain folders
+	help | h	Show help
+
+Examples:
+	$0 run
+	$0 update
 EOF
-)
+}
 
-init_folders
-argument=${1:-""}
-case "$argument" in
-	help | h)
-		echo "$HELP_TEXT"
+case "$1" in
+	run|r)
+		get_obsidian
+		$APP_IMAGE
 		;;
-	update | u)
-		update
-		;;
-	run | r | '')
-		run
-		;;
-	delete | d)
-		delete
+	update|u) get_obsidian;;
+	help|h) show_help;;
+	remove)
+		if get_user_choice "Remove ALL contents from $OBSIDIAN?"; then
+			rm -rf $OBSIDIAN
+		fi
+		if get_user_choice "Remove the file $DESKTOP?"; then
+			rm -rf $DESKTOP
+		fi
 		;;
 	*)
-		echo "$1 is a invalid option"
-		echo "$HELP_TEXT"
-		exit 2
+		echo "Error: Unkown argument \"$1\""
+		show_help
+		exit 1
 		;;
 esac
