@@ -11,17 +11,6 @@ case $- in
 		;;
 esac
 
-_MY_PATH=(~/.bin ~/.local/bin)
-
-for dir in "${_MY_PATH[@]}"; do
-	if [[ ! -d "$dir" ]]; then
-		continue
-	fi
-	if [[ "$PATH" =~ "$dir" ]]; then
-		continue
-	fi
-		export PATH="$PATH:$dir"
-done
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -40,20 +29,12 @@ shopt -s checkwinsize
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US
 
+# This need to be **before** the evals
 _SOURCES=(/etc/bashrc /usr/share/bash-completion/bash_completion /etc/bash_completion $HOME/.profile $HOME/.cargo/env)
 for file in "${_SOURCES[@]}"; do
 	[[ ! -f "$file" ]] && continue
 	source "$file"
 done
-
-function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		builtin cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
-}
 
 if command -v fzf >/dev/null; then
 	eval "$(fzf --bash)"

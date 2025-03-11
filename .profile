@@ -1,3 +1,15 @@
+_MY_PATH=(~/.bin ~/.local/bin)
+
+for dir in "${_MY_PATH[@]}"; do
+	if [[ ! -d "$dir" ]]; then
+		continue
+	fi
+	if [[ "$PATH" =~ "$dir" ]]; then
+		continue
+	fi
+		PATH="$PATH:$dir"
+done
+
 # -- Variables --
 export LESS_TERMCAP_mb=$'\E[1;31m'
 export LESS_TERMCAP_md=$'\E[1;31m'
@@ -15,6 +27,15 @@ if command -v vim >/dev/null; then
 fi
 
 # -- Alias --
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
 alias make='make -j$(nproc)'
 alias c="clear"
 alias duh="du --human-readable"
@@ -32,37 +53,37 @@ alias tree="tree -a -C"
 
 # -- Better Prompt --
 __prompt_command() {
-	retval=$?
+	local retval=$?
 
-	local black="\[\033[30m\]"
-	local red="\[\033[31m\]"
-	local green="\[\033[32m\]"
-	local yellow="\[\033[33m\]"
-	local blue="\[\033[34m\]"
-	local magenta="\[\033[35m\]"
-	local cyan="\[\033[36m\]"
-	local white="\[\033[37m\]"
-	local reset="\[\033[m\]"
+	local black="\e[30m"
+	local red="\e[31m"
+	local green="\e[32m"
+	local yellow="\e[33m"
+	local blue="\e[34m"
+	local magenta="\e[35m"
+	local cyan="\e[36m"
+	local white="\e[37m"
+	local reset="\e[m"
 
 	nonzero_return() {
 		if [[ $retval != 0 ]]; then
-			echo -e " ${red}[${retval}]${reset}"
+			echo -ne " ${red}[${retval}]${reset}"
 		fi
 	}
 
 	git_branch() {
-		branch=$(git branch --show-current 2>/dev/null)
-		if [[ "${branch}" != "" ]]
+		local branch=$(git branch --show-current 2>/dev/null)
+		if [[ -n "$branch" ]]
 		then
-			echo -e " ${magenta}(${branch})${reset}"
+			echo -ne " ${magenta}(${branch})${reset}"
 		fi
 	}
 
 	local prompt="\n${blue}\w${reset}"
 	prompt+="$(git_branch)"
-	prompt+="$(nonzero_return)\n"
-	prompt+="$ "
-	echo -e "${prompt}"
+	prompt+="$(nonzero_return)"
+	prompt+="\n$ "
+	PS1="$prompt"
 }
 
-export PROMPT_COMMAND='PS1=$(__prompt_command)'
+export PROMPT_COMMAND='__prompt_command'
