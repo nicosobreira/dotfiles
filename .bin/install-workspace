@@ -202,13 +202,13 @@ show_help() {
 Usage: $0 [OPTIONS] [APPS]
 
 OPTIONS:
-	install [APPS]		App names to install
-	help			See help
+	install [APPS]	App names to install
+	help		See help
 
 APPS:
-	all			Install all apps above
+	all		Install all apps above
 	neovim|nvim
-	yazi			Dependencies are very large!
+	yazi		Dependencies are very large!
 	zoxide
 	lazygit
 	fzf
