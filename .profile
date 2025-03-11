@@ -1,15 +1,3 @@
-_MY_PATH=(~/.bin ~/.local/bin)
-
-for dir in "${_MY_PATH[@]}"; do
-	if [[ ! -d "$dir" ]]; then
-		continue
-	fi
-	if [[ $PATH == *"$dir"* ]]; then
-		continue
-	fi
-	PATH="$dir:$PATH"
-done
-
 # -- Variables --
 export LESS_TERMCAP_mb=$'\E[1;31m'
 export LESS_TERMCAP_md=$'\E[1;31m'

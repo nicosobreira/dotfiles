@@ -11,6 +11,18 @@ case $- in
 		;;
 esac
 
+_MY_PATH=(~/.bin ~/.local/bin)
+
+for dir in "${_MY_PATH[@]}"; do
+	if [[ ! -d "$dir" ]]; then
+		continue
+	fi
+	if [[ $PATH == *"$dir"* ]]; then
+		continue
+	fi
+	PATH="$dir:$PATH"
+done
+
 # append to the history file, don't overwrite it
 shopt -s histappend
 
