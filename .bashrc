@@ -17,10 +17,10 @@ for dir in "${_MY_PATH[@]}"; do
 	if [[ ! -d "$dir" ]]; then
 		continue
 	fi
-	if [[ $PATH == *"$dir"* ]]; then
+	if [[ "$PATH" =~ "$dir" ]]; then
 		continue
 	fi
-	PATH="$dir:$PATH"
+		export PATH="$PATH:$dir"
 done
 
 # append to the history file, don't overwrite it
