@@ -35,6 +35,9 @@ set noswapfile
 
 set scrolloff=5
 
+set spell
+set spelllang=en,pt_br
+
 " - Tabs -
 set tabstop=4 "Sets indent size of tabs
 set shiftwidth=4 "Sets auto-indent size
