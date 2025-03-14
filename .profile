@@ -7,7 +7,7 @@ for dir in "${_MY_PATH[@]}"; do
 	if [[ "$PATH" =~ "$dir" ]]; then
 		continue
 	fi
-		PATH="$PATH:$dir"
+		export PATH="$PATH:$dir"
 done
 
 # -- Variables --
@@ -19,7 +19,14 @@ export LESS_TERMCAP_so=$'\E[1;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[1;32m'
 
-if command -v vim >/dev/null; then
+if command -v nvim >/dev/null; then
+	_NVIM="nvim -u $HOME/.vimrc -c \"colo vim\""
+	alias vim="${_NVIM}"
+	export MANPAGER="${_NVIM} +Man!"
+	export VISUAL="${_NVIM}"
+	export EDITOR="${VISUAL}"
+	alias svim="sudo ${_NVIM}"
+elif command -v vim >/dev/null; then
 	export MANPAGER="vim +MANPAGER -"
 	export VISUAL=$(which vim)
 	export EDITOR="$VISUAL"
