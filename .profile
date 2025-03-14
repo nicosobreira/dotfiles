@@ -20,7 +20,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[1;32m'
 
 if command -v nvim >/dev/null; then
-	_NVIM="nvim -u $HOME/.vimrc -c \"colo vim\""
+	_NVIM="nvim -u $HOME/.vimrc"
 	alias vim="${_NVIM}"
 	export MANPAGER="${_NVIM} +Man!"
 	export VISUAL="${_NVIM}"
