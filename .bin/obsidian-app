@@ -8,10 +8,10 @@ SCRIPT_FILE=$(realpath $0)
 WGET_OUTPUT="-q --show-progress"
 DEPENDENCIES="curl wget"
 
-NAME="Obsidian-App"
 PREFIX="$HOME/.local"
 OBSIDIAN="$PREFIX/obsidian-app"
 
+NAME="Obsidian-App"
 ICON="$OBSIDIAN/icon.svg"
 CURRENT_VERSION_FILE="$OBSIDIAN/current-version.txt"
 APP_IMAGE="$OBSIDIAN/Obsidian.AppImage"
@@ -38,7 +38,7 @@ init_folders() {
 
 install_dependencies() {
 	echo -e "\tInstalling dependencies"
-	sudo apt install $DEPENDENCIES
+	sudo apt-get install $DEPENDENCIES -y
 }
 
 get_icon () {
@@ -49,19 +49,6 @@ get_icon () {
 
 	echo -e "\tDownloading $ICON"
 	wget $WGET_OUTPUT -O $ICON "https://obsidian.md/images/obsidian-logo-gradient.svg"
-}
-
-create_desktop() {
-	echo -e "\tCreating $DESKTOP"
-	cat > $DESKTOP << EOF
-[Desktop Entry]
-Type=Application
-Name=$NAME
-Exec=$SCRIPT_FILE run
-Icon=$ICON
-Terminal=false
-EOF
-	chmod u+x $DESKTOP
 }
 
 get_obsidian() {
@@ -86,6 +73,19 @@ get_obsidian() {
 	echo $latest_version > $CURRENT_VERSION_FILE
 }
 
+create_desktop() {
+	echo -e "\tCreating $DESKTOP"
+	cat > $DESKTOP << EOF
+[Desktop Entry]
+Type=Application
+Name=$NAME
+Exec=$SCRIPT_FILE run
+Icon=$ICON
+Terminal=false
+EOF
+	chmod u+x $DESKTOP
+}
+
 get_user_choice() {
 	message=$1
 	local input
@@ -104,10 +104,10 @@ show_help() {
 Usage: $0 [ARGUMENTS]
 
 ARGUMENTS:
-	run | r		Run Obsidian AppImage
-	update | u	Update Obsidian
+	run		Run Obsidian AppImage
+	update/install	Update Obsidian
 	remove		Remove ceartain folders
-	help | h	Show help
+	help		Show help
 
 Examples:
 	$0 run
@@ -115,24 +115,30 @@ Examples:
 EOF
 }
 
+if [[ -z ${1+x} ]]; then
+	echo "Error: Need at least one argument"
+	show_help
+	exit 1
+fi
+
 case "$1" in
-	run|r)
+	run)
 		get_obsidian
 		$APP_IMAGE
 		;;
-	update|u) get_obsidian;;
-	help|h) show_help;;
+	install|update) get_obsidian;;
+	help) show_help;;
 	remove)
-		if get_user_choice "Remove ALL contents from $OBSIDIAN?"; then
+		if get_user_choice "Remove $OBSIDIAN?"; then
 			rm -rf $OBSIDIAN
 		fi
-		if get_user_choice "Remove the file $DESKTOP?"; then
-			rm -rf $DESKTOP
+		if get_user_choice "Remove $DESKTOP?"; then
+			rm -f $DESKTOP
 		fi
 		;;
 	*)
 		echo "Error: Unknown argument \"$1\""
 		show_help
-		exit 1
+		exit 2
 		;;
 esac
