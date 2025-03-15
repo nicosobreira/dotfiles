@@ -1,21 +1,21 @@
-"        ,---.  ,--,           ,.----,. 
-"       /__./|,--.'|        ,-+-,.' _ | 
-"  ,---.;  ; ||  |,      ,-+-. ;   , || 
-" /___/ \  | |`--'_     ,--.'|'   |  || 
-" \   ;  \ ' |,' ,'|   |   |  ,', |  |, 
-"  \   \  \: |'  | |   |   | /  | |--'  
-"   ;   \  ' .|  | :   |   : |  | ,     
-"    \   \   ''  : |__ |   : |  |/      
-"     \   `  ;|  | '.'||   | |`-'       
-"      :   \ |;  :    ;|   ;/           
+"        ,---.  ,--,           ,.----,. "
+"       /__./|,--.'|        ,-+-,.' _ | "
+"  ,---.;  ; ||  |,      ,-+-. ;   , || "
+" /___/ \  | |`--'_     ,--.'|'   |  || "
+" \   ;  \ ' |,' ,'|   |   |  ,', |  |, "
+"  \   \  \: |'  | |   |   | /  | |--'  "
+"   ;   \  ' .|  | :   |   : |  | ,     "
+"    \   \   ''  : |__ |   : |  |/      "
+"     \   `  ;|  | '.'||   | |`-'       "
+"      :   \ |;  :    ;|   ;/           "
 "       '---" |  ,   / '---'            "
-"              ---`-'                   
+"              ---`-'                   "
 
 " --- Config ---
 filetype plugin indent on
 syntax enable
 
-colorscheme default
+colorscheme sorbet
 set background=dark
 
 set omnifunc=syntaxcomplete#Complete
@@ -37,6 +37,7 @@ set scrolloff=5
 
 set spell
 set spelllang=en,pt_br
+highlight SpellBad cterm=underline ctermbg=Black
 
 " - Tabs -
 set tabstop=4 "Sets indent size of tabs
@@ -97,10 +98,10 @@ tmap <C-w>k <C-\><C-w>k
 tmap <C-w>l <C-\><C-w>l
 
 " - Split Navigation -
-nmap <C-h> <C-w>h
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
-nmap <C-l> <C-w>l
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
 
 " Navegate visual lines
 nmap j gj
@@ -118,6 +119,19 @@ nmap <space>N <cmd>0tabnew<CR>
 nmap <ESC> <cmd>nohl<CR>
 
 nmap Q <cmd>echo "Vi mode disable"<CR>
+
+" hoeler
+let g:colors = getcompletion('', 'color')
+func! NextColors()
+    let idx = index(g:colors, g:colors_name)
+    return (idx + 1 >= len(g:colors) ? g:colors[0] : g:colors[idx + 1])
+endfunc
+func! PrevColors()
+    let idx = index(g:colors, g:colors_name)
+    return (idx - 1 < 0 ? g:colors[-1] : g:colors[idx - 1])
+endfunc
+nnoremap <C-n> :exe "colo " .. NextColors()<CR>
+nnoremap <C-p> :exe "colo " .. PrevColors()<CR>
 
 " Block arrow keys
 "nnoremap <Left> <cmd>echo "No left for you!"<CR>

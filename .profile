@@ -11,16 +11,16 @@ for dir in "${_MY_PATH[@]}"; do
 done
 
 # -- Variables --
-export LESS_TERMCAP_mb=$'\E[1;31m'
-export LESS_TERMCAP_md=$'\E[1;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'
-export LESS_TERMCAP_so=$'\E[1;44;33m'
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[1;32m'
+export LESS_TERMCAP_mb=$'\e[1;31m'
+export LESS_TERMCAP_md=$'\e[1;31m'
+export LESS_TERMCAP_me=$'\e[m'
+export LESS_TERMCAP_se=$'\e[m'
+export LESS_TERMCAP_so=$'\e[1;44;33m'
+export LESS_TERMCAP_ue=$'\e[m'
+export LESS_TERMCAP_us=$'\e[1;32m'
 
 if command -v nvim >/dev/null; then
-	_NVIM="nvim -u $HOME/.vimrc"
+	_NVIM='nvim -u $HOME/.vimrc'
 	alias vim="${_NVIM}"
 	export MANPAGER="${_NVIM} +Man!"
 	export VISUAL="${_NVIM}"
