@@ -15,7 +15,11 @@
 filetype plugin indent on
 syntax enable
 
-colorscheme sorbet
+if has('nvim')
+	colorscheme sorbet
+else
+	colorscheme koehler
+endif
 set background=dark
 
 set omnifunc=syntaxcomplete#Complete
