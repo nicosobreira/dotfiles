@@ -80,16 +80,16 @@ __prompt_command() {
 
 	git_branch() {
 		local branch=$(git branch --show-current 2>/dev/null)
-		if [[ -n "$branch" ]]
-		then
+		if [[ -n "$branch" ]]; then
 			echo -ne " ${magenta}(${branch})${reset}"
 		fi
 	}
 
+	local sep="$"
 	local prompt="\n${blue}\w${reset}"
 	prompt+="$(git_branch)"
 	prompt+="$(nonzero_return)"
-	prompt+="\n$ "
+	prompt+="\n$sep "
 	PS1="$prompt"
 }
 
