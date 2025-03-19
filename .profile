@@ -86,11 +86,10 @@ __prompt_command() {
 	}
 
 	local sep="$"
-	local prompt="\n${blue}\w${reset}"
-	prompt+="$(git_branch)"
-	prompt+="$(nonzero_return)"
-	prompt+="\n$sep "
-	PS1="$prompt"
+	PS1="\n${blue}\w${reset}"
+	PS1+="$(git_branch)"
+	PS1+="$(nonzero_return)"
+	PS1+="\n${sep} "
 }
 
 export PROMPT_COMMAND='__prompt_command'
