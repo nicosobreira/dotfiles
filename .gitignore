@@ -4,5 +4,6 @@ license.pdf
 lazy-lock.json
 *.out
 *.spl
+*.add
 teste*
 test*
