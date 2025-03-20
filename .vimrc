@@ -11,7 +11,7 @@
 "       '---" |  ,   / '---'            "
 "              ---`-'                   "
 
-" --- Config ---
+" -- Config --
 filetype plugin indent on
 syntax enable
 
@@ -21,6 +21,7 @@ else
 	colorscheme koehler
 endif
 set background=dark
+set termguicolors
 
 set omnifunc=syntaxcomplete#Complete
 
@@ -39,25 +40,24 @@ set noswapfile
 
 set scrolloff=5
 
-set spell
 set spelllang=en,pt_br
 highlight SpellBad cterm=underline ctermbg=Black
 
 " - Tabs -
-set tabstop=4 "Sets indent size of tabs
-set shiftwidth=4 "Sets auto-indent size
-set autoindent "Turns on auto-indenting
-set smartindent "Remembers previous indent when creating new lines
+set tabstop=4	"Sets indent size of tabs
+set shiftwidth=4	"Sets auto indent size
+set autoindent	"Turns on auto indenting
+set smartindent	"Remembers previous indent when creating new lines
 
-" Prettier
+" Prettier tabs and trailing spaces
 set list
 set listchars=tab:\|\ ,trail:*
 highlight SpecialKey ctermfg=darkgray guifg=gray70
 
-" - Use system clipborad -
+" - Use system clipboard -
 set clipboard=unnamedplus
 
-" - Auto-comment -
+" - Auto comment -
 set formatoptions=cro
 
 " - Status bar -
@@ -68,10 +68,10 @@ set title
 " - Show lines on
 set number relativenumber
 
-" - Hightlight search text -
+" - Highlight search text -
 set hlsearch
 
-" - Fix spliting -
+" - Fix splitting -
 set splitbelow
 set splitright
 
@@ -82,12 +82,13 @@ set smartcase
 " - Menu, mais opções -
 set wildmenu
 set wildmode=list:full
+set wildoptions=fuzzy
 
 " - Cursor -
 let &t_EI = "\e[2 q"
 let &t_SI = "\e[6 q"
 
-" --- Keymap ---
+" -- Key map --
 " - Remap space -
 nnoremap <space>; ;
 map ; :
@@ -96,18 +97,18 @@ map <C-s> <cmd>w<CR>
 
 " - Terminal -
 tmap <ESC> <C-\><C-n>
-tmap <C-w>h <C-\><C-w>h
-tmap <C-w>j <C-\><C-w>j
-tmap <C-w>k <C-\><C-w>k
-tmap <C-w>l <C-\><C-w>l
+tmap <C-h> <C-\><C-n><cmd>wincmd h<CR>
+tmap <C-j> <C-\><C-n><cmd>wincmd j<CR>
+tmap <C-k> <C-\><C-n><cmd>wincmd k<CR>
+tmap <C-l> <C-\><C-n><cmd>wincmd l<CR>
 
 " - Split Navigation -
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+nmap <C-h> <cmd>wincmd h<CR>
+nmap <C-j> <cmd>wincmd j<CR>
+nmap <C-k> <cmd>wincmd k<CR>
+nmap <C-l> <cmd>wincmd l<CR>
 
-" Navegate visual lines
+" Navigate visual lines
 nmap j gj
 nmap k gk
 vmap j gj
@@ -124,18 +125,7 @@ nmap <ESC> <cmd>nohl<CR>
 
 nmap Q <cmd>echo "Vi mode disable"<CR>
 
-" hoeler
-let g:colors = getcompletion('', 'color')
-func! NextColors()
-    let idx = index(g:colors, g:colors_name)
-    return (idx + 1 >= len(g:colors) ? g:colors[0] : g:colors[idx + 1])
-endfunc
-func! PrevColors()
-    let idx = index(g:colors, g:colors_name)
-    return (idx - 1 < 0 ? g:colors[-1] : g:colors[idx - 1])
-endfunc
-nnoremap <C-n> :exe "colo " .. NextColors()<CR>
-nnoremap <C-p> :exe "colo " .. PrevColors()<CR>
+nmap <space>r <cmd>so $HOME/.vimrc <bar> echo "Source vimrc"<CR>
 
 " Block arrow keys
 "nnoremap <Left> <cmd>echo "No left for you!"<CR>
