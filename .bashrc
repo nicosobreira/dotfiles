@@ -42,3 +42,4 @@ reload() {
 	source $HOME/.profile
 	echo "Bash configuration reloaded"
 }
+echo "Dia 31/03/25 Tem o négocio da Lilian as 15:00"
