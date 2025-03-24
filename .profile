@@ -4,13 +4,21 @@ for dir in "${_MY_PATH[@]}"; do
 	if [[ ! -d "$dir" ]]; then
 		continue
 	fi
+	# Check if $dir is already in $PATH
 	if [[ "$PATH" =~ "$dir" ]]; then
 		continue
 	fi
 		export PATH="$PATH:$dir"
 done
 
+if [[ -n "$BASH_VERSION" ]]; then
+	if [[ -f "$HOME/.bashrc" ]]; then
+		source "$HOME/.bashrc"
+	fi
+fi
+
 # -- Variables --
+# This variables make 'man --pager=less' have color have colorss
 export LESS_TERMCAP_mb=$'\e[1;31m'
 export LESS_TERMCAP_md=$'\e[1;31m'
 export LESS_TERMCAP_me=$'\e[m'
@@ -57,6 +65,8 @@ alias egrep="egrep --color=auto"
 alias ls="ls -h --color=auto"
 alias la="ls --almost-all --dereference-command-line --color=auto --format=single-column --human-readable --size --group-directories-first --sort=version"
 alias tree="tree -a -C"
+alias ..="cd .."
+alias ...="cd ../.."
 
 # -- Better Prompt --
 __prompt_command() {

@@ -4,17 +4,12 @@
 
 # If not running interactively, don't do anything
 case $- in
-	*i*)
-		;;
-	*)
-		return
-		;;
+	*i*) ;;
+	*) return ;;
 esac
-
 
 # append to the history file, don't overwrite it
 shopt -s histappend
-
 export HISTSIZE=5000
 export HISTFILESIZE=10000
 export HISTCONTROL=erasedups:ignoredups
@@ -29,11 +24,9 @@ shopt -s checkwinsize
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US
 
-# This need to be **before** the evals
-_SOURCES=(/etc/bashrc /usr/share/bash-completion/bash_completion /etc/bash_completion $HOME/.profile $HOME/.cargo/env)
+_SOURCES=(/etc/bashrc /usr/share/bash-completion/bash_completion /etc/bash_completion $HOME/.cargo/env)
 for file in "${_SOURCES[@]}"; do
-	[[ ! -f "$file" ]] && continue
-	source "$file"
+	[[ -f "$file" ]] && source "$file"
 done
 
 if command -v fzf >/dev/null; then
@@ -43,3 +36,9 @@ fi
 if command -v zoxide >/dev/null; then
 	eval "$(zoxide init bash)"
 fi
+
+reload() {
+	source $HOME/.bashrc
+	source $HOME/.profile
+	echo "Bash configuration reloaded"
+}
