@@ -91,9 +91,9 @@ let &t_SI = "\e[6 q"
 " -- Key map --
 " - Remap space -
 nnoremap <space>; ;
-map ; :
+nnoremap ; :
 
-map <C-s> <cmd>w<CR>
+nnoremap <C-s> <cmd>w<CR>
 
 " - Terminal -
 tmap <ESC> <C-\><C-n>
