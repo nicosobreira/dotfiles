@@ -38,7 +38,6 @@ if command -v zoxide >/dev/null; then
 fi
 
 reload() {
-	source $HOME/.bashrc
 	source $HOME/.profile
 	echo "Bash configuration reloaded"
 }
