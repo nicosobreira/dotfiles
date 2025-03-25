@@ -104,6 +104,10 @@ tmap <C-j> <C-\><C-n><cmd>wincmd j<CR>
 tmap <C-k> <C-\><C-n><cmd>wincmd k<CR>
 tmap <C-l> <C-\><C-n><cmd>wincmd l<CR>
 
+" - Netrw -
+au FileType netrw nmap <buffer> h -
+au FileType netrw nmap <buffer> l <CR>
+
 " - Split Navigation -
 nmap <C-h> <cmd>wincmd h<CR>
 nmap <C-j> <cmd>wincmd j<CR>
