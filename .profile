@@ -27,6 +27,8 @@ export LESS_TERMCAP_so=$'\e[1;44;33m'
 export LESS_TERMCAP_ue=$'\e[m'
 export LESS_TERMCAP_us=$'\e[1;32m'
 
+export MYVIMRC="$HOME/.vimrc"
+
 if command -v nvim >/dev/null; then
 	_NVIM='nvim -u $HOME/.vimrc'
 	alias vim="${_NVIM}"
