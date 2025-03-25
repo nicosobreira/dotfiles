@@ -20,6 +20,7 @@ if has('nvim')
 else
 	colorscheme koehler
 endif
+
 set background=dark
 set termguicolors
 
@@ -29,6 +30,7 @@ set nocompatible
 set wrap
 set linebreak
 set mouse=a
+set autoread
 
 set termencoding=utf-8
 set encoding=utf-8
@@ -90,8 +92,8 @@ let &t_SI = "\e[6 q"
 
 " -- Key map --
 " - Remap space -
-nnoremap <space>; ;
-nnoremap ; :
+noremap <space>; ;
+noremap ; :
 
 nnoremap <C-s> <cmd>w<CR>
 
@@ -127,19 +129,29 @@ nmap Q <cmd>echo "Vi mode disable"<CR>
 
 nmap <space>r <cmd>so $HOME/.vimrc <bar> echo "Source vimrc"<CR>
 
-" Block arrow keys
-"nnoremap <Left> <cmd>echo "No left for you!"<CR>
-"vnoremap <Left> <cmd><C-u>echo "No left for you!"<CR>
-"inoremap <Left> <C-o><cmd>echo "No left for you!"<CR>
-"
-"nnoremap <Right> <cmd>echo "No right for you!"<CR>
-"vnoremap <Right> <cmd><C-u>echo "No right for you!"<CR>
-"inoremap <Right> <C-o><cmd>echo "No right for you!"<CR>
-"
-"nnoremap <Up> <cmd>echo "No up for you!"<CR>
-"vnoremap <Up> <cmd><C-u>echo "No up for you!"<CR>
-"inoremap <Up> <C-o><cmd>echo "No up for you!"<CR>
-"
-"nnoremap <Down> <cmd>echo "No down for you!"<CR>
-"vnoremap <Down> <cmd><C-u>echo "No down for you!"<CR>
-"inoremap <Down> <C-o><cmd>echo "No down for you!"<CR>
+" -- Plugins --
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
+call plug#begin()
+
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-commentary'
+Plug 'christoomey/vim-tmux-navigator'
+
+call plug#end()
