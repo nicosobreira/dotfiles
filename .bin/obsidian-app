@@ -55,7 +55,7 @@ get_obsidian() {
 	init_folders
 	install_dependencies
 	local latest_version=$(get_latest_repo_version "obsidianmd" "obsidian-releases" "v")
-	local current_version=$(cat "$CURRENT_VERSION_FILE" 2>/dev/null || echo "")
+	local current_version=$(cat "$CURRENT_VERSION_FILE" 2>/dev/null)
 
 	if [[ $latest_version == $current_version ]]; then
 		echo -e "\tAlready update"
