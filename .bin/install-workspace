@@ -56,21 +56,40 @@ check_need_update() {
 
 install_tmux() {
 	echo -e "\tInstalling Tmux"
+
 	local git_user_name="tmux"
 	local git_repo="tmux"
 	if ! check_need_update "tmux" "tmux " "$git_user_name" "$git_repo" "-V" "${NULL}"; then
 		return
 	fi
+
 	sudo apt install libevent-dev ncurses-dev build-essential bison pkg-config
+
 	local latest=$(get_latest_repo_version "$git_user_name" "$git_repo" "$NULL")
 	local folder="tmux-${latest}a"
 	local tar_file="${folder}.tar.gz"
 	cd /tmp
-	wget ${WGET_OUTPUT} "https://github.com/tmux/tmux/releases/latest/download/${tar_file}"
-	tar -xf ${tar_file}
+	# wget ${WGET_OUTPUT} "https://github.com/tmux/tmux/releases/latest/download/${tar_file}"
+	# tar -xf ${tar_file}
 	cd $folder
-	./configure --prefix=${PREFIX}
+	# ./configure --prefix=${PREFIX}
 	make && make install
+
+	if [[ -z "${BASH_COMPLETION_VERSINFO+isset}" ]]; then
+		echo "No bash completion version found, may not be installed"
+		return
+	fi
+	if [[ $(echo "${BASH_COMPLETION_VERSIONFO} < 1.2" | bc) ]]; then
+		echo "The bash completion version is smaller than 1.2"
+		return
+	fi
+
+	echo "Installing autocomplete"
+	local dir="${BASH_COMPLETION_DIR:-"${XDG_DATA_HOME:-"$HOME/.local/share"}/bash-completion"}/completions/tmux"
+	mkdir -p "$dir"
+	curl -fSsL "https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/master/completions/tmux" \
+		> "${dir}/tmux"
+	echo "Now you need to re-source .bashrc"
 }
 
 install_fzf() {
