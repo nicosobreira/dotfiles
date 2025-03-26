@@ -4,11 +4,10 @@ for dir in "${_MY_PATH[@]}"; do
 	if [[ ! -d "$dir" ]]; then
 		continue
 	fi
-	# Check if $dir is already in $PATH
 	if [[ "$PATH" =~ "$dir" ]]; then
 		continue
 	fi
-		export PATH="$PATH:$dir"
+		export PATH="$dir:$PATH"
 done
 
 if [[ -n "$BASH_VERSION" ]]; then
