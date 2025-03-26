@@ -10,7 +10,6 @@
 "      :   \ |;  :    ;|   ;/           "
 "       '---" |  ,   / '---'            "
 "              ---`-'                   "
-
 " -- Config --
 filetype plugin indent on
 syntax enable
@@ -86,6 +85,12 @@ set wildmenu
 set wildmode=list:full
 set wildoptions=fuzzy
 
+" - Netrw -
+" Hide './' and '../'
+let g:netrw_list_hide = '^\./$,^\.\./$'
+let g:netrw_hide = 1
+let g:netrw_banner = 0
+
 " - Cursor -
 let &t_EI = "\e[2 q"
 let &t_SI = "\e[6 q"
@@ -107,6 +112,7 @@ tmap <C-l> <C-\><C-n><cmd>wincmd l<CR>
 " - Netrw -
 au FileType netrw nmap <buffer> h -
 au FileType netrw nmap <buffer> l <CR>
+nmap <space>e <cmd>Vexplore<CR>
 
 " - Split Navigation -
 nmap <C-h> <cmd>wincmd h<CR>
@@ -114,23 +120,21 @@ nmap <C-j> <cmd>wincmd j<CR>
 nmap <C-k> <cmd>wincmd k<CR>
 nmap <C-l> <cmd>wincmd l<CR>
 
-" Navigate visual lines
+" - Navigate visual lines -
 nmap j gj
 nmap k gk
 vmap j gj
 vmap k gk
 
-" Tabs
+" - Tabs -
 nmap <Tab> gt
 nmap <S-Tab> gT
 nmap <space>n <cmd>$tabnew<CR>
 nmap <space>N <cmd>0tabnew<CR>
 
-" Remove search highlights
+" - Extra -
 nmap <ESC> <cmd>nohl<CR>
-
 nmap Q <cmd>echo "Vi mode disable"<CR>
-
 nmap <space>r <cmd>so $HOME/.vimrc <bar> echo "Source vimrc"<CR>
 
 " -- Plugins --
