@@ -30,6 +30,10 @@ set wrap
 set linebreak
 set mouse=a
 set autoread
+set noruler
+
+set undofile
+set undolevels=10000
 
 set termencoding=utf-8
 set encoding=utf-8
@@ -68,6 +72,8 @@ set title
 
 " - Show lines on
 set number relativenumber
+set cursorline
+highlight CursorLineNR cterm=bold
 
 " - Highlight search text -
 set hlsearch
@@ -82,7 +88,7 @@ set smartcase
 
 " - Menu, mais opções -
 set wildmenu
-set wildmode=list:full
+set wildmode=longest:full,full
 set wildoptions=fuzzy
 
 " - Netrw -
@@ -95,12 +101,18 @@ let g:netrw_banner = 0
 let &t_EI = "\e[2 q"
 let &t_SI = "\e[6 q"
 
+" - Folds options -
+set foldlevel=99
+autocmd FileType c,cpp,java,php setlocal foldmethod=syntax
+autocmd FileType python setlocal foldmethod=indent
+autocmd FileType vim setlocal foldmethod=marker
+
 " -- Key map --
 " - Remap space -
 noremap <space>; ;
 noremap ; :
 
-nnoremap <C-s> <cmd>w<CR>
+nmap <C-s> <cmd>w<CR>
 
 " - Terminal -
 tmap <ESC> <C-\><C-n>
@@ -115,10 +127,10 @@ au FileType netrw nmap <buffer> l <CR>
 nmap <space>e <cmd>Vexplore<CR>
 
 " - Split Navigation -
-nmap <C-h> <cmd>wincmd h<CR>
-nmap <C-j> <cmd>wincmd j<CR>
-nmap <C-k> <cmd>wincmd k<CR>
-nmap <C-l> <cmd>wincmd l<CR>
+nmap <C-h> <C-w>h h<CR>
+nmap <C-j> <C-w>j j<CR>
+nmap <C-k> <C-w>k k<CR>
+nmap <C-l> <C-w>l l<CR>
 
 " - Navigate visual lines -
 nmap j gj
@@ -132,10 +144,27 @@ nmap <S-Tab> gT
 nmap <space>n <cmd>$tabnew<CR>
 nmap <space>N <cmd>0tabnew<CR>
 
+" Resize window using <ctrl> arrow keys
+nnoremap <silent> <C-Up> :resize -2<CR>
+nnoremap <silent> <C-Down> :resize +2<CR>
+nnoremap <silent> <C-Left> :vertical resize -2<CR>
+nnoremap <silent> <C-Right> :vertical resize +2<CR>
+
+" Move Lines
+nnoremap <silent> <A-j> :<C-u>execute 'move .+' . v:count1<CR>==
+nnoremap <silent> <A-k> :<C-u>execute 'move .-' . (v:count1 + 1)<CR>==
+inoremap <silent> <A-j> <Esc>:m .+1<CR>==gi
+inoremap <silent> <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <silent> <A-j> :<C-u>execute "'<,'>move '>+" . v:count1<CR>gv=gv
+vnoremap <silent> <A-k> :<C-u>execute "'<,'>move '<-" . (v:count1 + 1)<CR>gv=gv
+
 " - Extra -
 nmap <ESC> <cmd>nohl<CR>
 nmap Q <cmd>echo "Vi mode disable"<CR>
-nmap <space>r <cmd>so $HOME/.vimrc <bar> echo "Source vimrc"<CR>
+nmap <space>r <cmd>source $HOME/.vimrc <bar> echo "Source vimrc"<CR>
+nmap <space>s <cmd>set spell!<CR>
+xnoremap < <gv
+xnoremap > >gv
 
 " -- Plugins --
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
@@ -144,13 +173,13 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Install vim-plug if not found
+" Install vim plug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
-" Run PlugInstall if there are missing plugins
+" Run Plug Install if there are missing plugins
 autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
   \| PlugInstall --sync | source $MYVIMRC
 \| endif
@@ -161,5 +190,8 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-obsession'
 Plug 'tpope/vim-commentary'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'bfrg/vim-c-cpp-modern'
 
 call plug#end()
+
+let g:cpp_type_name_highlight = 0
