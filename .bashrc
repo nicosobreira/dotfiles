@@ -38,8 +38,13 @@ if command -v zoxide >/dev/null; then
 fi
 
 reload() {
-	source $HOME/.profile
-	echo "Bash configuration reloaded"
+	[[ -f "$HOME/.profile" ]] && source "$HOME/.profile"
 }
 
-echo "Dia 31/03/25 Tem o négocio da Lilian as 15:00"
+notes() {
+	[[ ! -f "$HOME/.notes" ]] && return
+	printf "\tNOTES\n"
+	cat "$HOME/.notes"
+}
+
+notes
