@@ -111,7 +111,8 @@ autocmd FileType python setlocal foldmethod=indent
 autocmd FileType vim setlocal foldmethod=marker
 
 " -- Keys map --
-let mapleader = "<Space>"
+let mapleader = " "
+
 " - Remap space -
 nnoremap ; :
 nnoremap : ;
