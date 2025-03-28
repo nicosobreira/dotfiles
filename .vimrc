@@ -145,10 +145,10 @@ nmap <space>n <cmd>$tabnew<CR>
 nmap <space>N <cmd>0tabnew<CR>
 
 " Resize window using <ctrl> arrow keys
-nnoremap <silent> <C-Up> :resize -2<CR>
-nnoremap <silent> <C-Down> :resize +2<CR>
-nnoremap <silent> <C-Left> :vertical resize -2<CR>
-nnoremap <silent> <C-Right> :vertical resize +2<CR>
+nnoremap <silent> <C-Up> :resize +2<CR>
+nnoremap <silent> <C-Down> :resize -2<CR>
+nnoremap <silent> <C-Left> :vertical resize +2<CR>
+nnoremap <silent> <C-Right> :vertical resize -2<CR>
 
 " Move Lines
 nnoremap <silent> <A-j> :<C-u>execute 'move .+' . v:count1<CR>==
