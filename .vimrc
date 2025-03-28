@@ -110,7 +110,8 @@ autocmd FileType c,cpp,java,php setlocal foldmethod=syntax
 autocmd FileType python setlocal foldmethod=indent
 autocmd FileType vim setlocal foldmethod=marker
 
-" -- Key map --
+" -- Keys map --
+let mapleader = "<Space>"
 " - Remap space -
 nnoremap ; :
 nnoremap : ;
@@ -135,7 +136,7 @@ tmap <C-l> <C-\><C-n><cmd>wincmd l<CR>
 " - Netrw -
 au FileType netrw nmap <buffer> h -
 au FileType netrw nmap <buffer> l <CR>
-nmap <space>e <cmd>Lexplore<CR>
+nmap <leader>e <cmd>Lexplore<CR>
 
 " - Split Navigation -
 nmap <C-h> <C-w>h h<CR>
@@ -152,8 +153,8 @@ vmap k gk
 " - Tabs -
 nmap <Tab> gt
 nmap <S-Tab> gT
-nmap <space>n <cmd>$tabnew<CR>
-nmap <space>N <cmd>0tabnew<CR>
+nmap <leader>n <cmd>$tabnew<CR>
+nmap <leader>N <cmd>0tabnew<CR>
 
 " Resize window using <ctrl> arrow keys
 nnoremap <silent> <C-Up> :resize +2<CR>
@@ -172,8 +173,8 @@ vnoremap <silent> <A-k> :<C-u>execute "'<,'>move '<-" . (v:count1 + 1)<CR>gv=gv
 " - Extra -
 nmap <ESC> <cmd>nohl<CR>
 nmap Q <cmd>echo "Vi mode disable"<CR>
-nmap <space>r <cmd>source $HOME/.vimrc <bar> echo "Source vimrc"<CR>
-nmap <space>s <cmd>set spell! <bar> echo "Spell check" (&spell ? "ON" : "OFF") <CR>
+nmap <leader>r <cmd>source $HOME/.vimrc <bar> echo "Source vimrc"<CR>
+nmap <leader>s <cmd>set spell! <bar> echo "Spell check" (&spell ? "ON" : "OFF") <CR>
 xnoremap < <gv
 xnoremap > >gv
 
