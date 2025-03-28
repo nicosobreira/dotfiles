@@ -14,6 +14,7 @@
 filetype plugin indent on
 syntax enable
 
+" TODO Check if the *sorbet* colorscheme exist
 if has('nvim')
 	colorscheme sorbet
 else
@@ -96,6 +97,8 @@ set wildoptions=fuzzy
 let g:netrw_list_hide = '^\./$,^\.\./$'
 let g:netrw_hide = 1
 let g:netrw_banner = 0
+let g:netrw_altfile = 1  " Better behavior when toggling
+let g:netrw_alto = 1     " Makes splits open to the right (instead of left)
 
 " - Cursor -
 let &t_EI = "\e[2 q"
@@ -109,8 +112,16 @@ autocmd FileType vim setlocal foldmethod=marker
 
 " -- Key map --
 " - Remap space -
-noremap <space>; ;
-noremap ; :
+nnoremap ; :
+nnoremap : ;
+
+" Visual mode
+vnoremap ; :
+vnoremap : ;
+
+" Operator-pending mode
+onoremap ; :
+onoremap : ;
 
 nmap <C-s> <cmd>w<CR>
 
@@ -124,7 +135,7 @@ tmap <C-l> <C-\><C-n><cmd>wincmd l<CR>
 " - Netrw -
 au FileType netrw nmap <buffer> h -
 au FileType netrw nmap <buffer> l <CR>
-nmap <space>e <cmd>Vexplore<CR>
+nmap <space>e <cmd>Lexplore<CR>
 
 " - Split Navigation -
 nmap <C-h> <C-w>h h<CR>
@@ -162,7 +173,7 @@ vnoremap <silent> <A-k> :<C-u>execute "'<,'>move '<-" . (v:count1 + 1)<CR>gv=gv
 nmap <ESC> <cmd>nohl<CR>
 nmap Q <cmd>echo "Vi mode disable"<CR>
 nmap <space>r <cmd>source $HOME/.vimrc <bar> echo "Source vimrc"<CR>
-nmap <space>s <cmd>set spell!<CR>
+nmap <space>s <cmd>set spell! <bar> echo "Spell check" (&spell ? "ON" : "OFF") <CR>
 xnoremap < <gv
 xnoremap > >gv
 
