@@ -42,9 +42,11 @@ reload() {
 }
 
 notes() {
-	[[ ! -f "$HOME/.notes" ]] && return
+	local notes_file="$HOME/.notes"
+	[[ ! -f "$notes_file" ]] && return	# File not found
+	[[ ! -s "$notes_file" ]] && return 	# File is empty
 	printf "\tNOTES\n"
-	cat "$HOME/.notes"
+	cat "$notes_file"
 }
 
 notes
