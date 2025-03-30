@@ -25,8 +25,8 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US
 
 _SOURCES=(/etc/bashrc /usr/share/bash-completion/bash_completion /etc/bash_completion $HOME/.cargo/env)
-for file in "${_SOURCES[@]}"; do
-	[[ -f "$file" ]] && source "$file"
+for _file in "${_SOURCES[@]}"; do
+	[[ -f "$_file" ]] && source "$_file"
 done
 
 if command -v fzf >/dev/null; then
