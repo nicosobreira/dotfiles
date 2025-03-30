@@ -162,7 +162,7 @@ install_lazygit() {
 
 install_neovim() {
 	echo -e "\n\tInstalling Neovim"
-	#sudo apt install npm python3-full
+	# sudo apt install npm python3-full
 	if ! check_need_update "nvim" "v" "neovim" "neovim"; then
 		return
 	fi
@@ -173,6 +173,7 @@ install_neovim() {
 	wget ${WGET_OUTPUT} -O ${tar_file} \
 		https://github.com/neovim/neovim/releases/latest/download/${folder_name}.tar.gz
 	tar -xzf ${tar_file}
+	rm -rf $PREFIX/share/nvim/runtime
 	for dir in "${folders[@]}"; do
 		cp -R ${folder_name}/${dir}/* $PREFIX/${dir}
 	done
