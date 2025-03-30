@@ -45,8 +45,10 @@ set noswapfile
 
 set scrolloff=5
 
+" - Spell Fix -
 set spelllang=en,pt_br
 highlight SpellBad cterm=underline ctermbg=Black
+autocmd FileType markdown setlocal spell
 
 " - Tabs -
 set tabstop=4	"Sets indent size of tabs
