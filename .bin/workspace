@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
 set -eou pipefail
-#set -x
+# set -x
+
+if [[ "$EUID" == 0 ]]; then
+	PREFIX="/usr"
+else
+	PREFIX="$HOME/.local"
+fi
 
 WGET_OUTPUT="-q --show-progress"
 DEPENDENCIES="git make tar curl wget unzip"
@@ -9,7 +15,6 @@ PACKGES="tree gh stow vim"
 HOME_FOLDERS=".config .bin .local"
 LOCAL_FOLDERS="bin share state lib"
 NULL="NULL"
-PREFIX="$HOME/.local"
 
 get_latest_repo_version() {
 	local git_user_name=$1
@@ -26,7 +31,7 @@ get_latest_repo_version() {
 }
 
 check_need_update() {
-	if [[ $# -lt 3 ]]; then
+	if [[ $# < 3 ]]; then
 		echo "Error: Less than three arguments"
 		return 2
 	fi
@@ -63,16 +68,16 @@ install_tmux() {
 		return
 	fi
 
-	sudo apt install libevent-dev ncurses-dev build-essential bison pkg-config
+	sudo apt install libevent-dev ncurses-dev build-essential bison pkg-config -y
 
 	local latest=$(get_latest_repo_version "$git_user_name" "$git_repo" "$NULL")
 	local folder="tmux-${latest}a"
 	local tar_file="${folder}.tar.gz"
 	cd /tmp
-	# wget ${WGET_OUTPUT} "https://github.com/tmux/tmux/releases/latest/download/${tar_file}"
-	# tar -xf ${tar_file}
+	wget ${WGET_OUTPUT} "https://github.com/tmux/tmux/releases/latest/download/${tar_file}"
+	tar -xf ${tar_file}
 	cd $folder
-	# ./configure --prefix=${PREFIX}
+	./configure --prefix=${PREFIX}
 	make && make install
 
 	if [[ -z "${BASH_COMPLETION_VERSINFO+isset}" ]]; then
@@ -175,7 +180,7 @@ install_neovim() {
 
 install_all() {
 	echo -e "\tInstalling packges: ${PACKGES}"
-	sudo apt install ${PACKGES}
+	sudo apt install ${PACKGES} -y
 	install_zoxide
 	install_yazi
 	install_neovim
@@ -222,6 +227,7 @@ Usage: $0 [OPTIONS] [APPS]
 
 OPTIONS:
 	install [APPS]	App names to install
+	stow		Clone dotfiles and stow
 	help		See help
 
 APPS:
@@ -250,10 +256,9 @@ while [[ $# -gt 0 ]]; do
 		install)
 			shift
 			echo -e "\tInstalling dependencies: ${DEPENDENCIES}"
-			sudo apt install ${DEPENDENCIES}
+			sudo apt install ${DEPENDENCIES} -y
 			create_folders "$HOME" "${HOME_FOLDERS}"
 			create_folders "$PREFIX" "${LOCAL_FOLDERS}"
-			clone_dotfiles
 			for app in "$@"; do
 				case "${app}" in
 					neovim|nvim) install_neovim;;
@@ -270,6 +275,10 @@ while [[ $# -gt 0 ]]; do
 						;;
 				esac
 			done
+			break
+			;;
+		stow)
+			clone_dotfiles
 			break
 			;;
 		help)
