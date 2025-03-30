@@ -36,7 +36,6 @@ set noruler
 set undofile
 set undolevels=10000
 
-set termencoding=utf-8
 set encoding=utf-8
 
 set showmode
