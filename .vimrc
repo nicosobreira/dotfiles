@@ -10,7 +10,9 @@
 "      :   \ |;  :    ;|   ;/           "
 "       '---" |  ,   / '---'            "
 "              ---`-'                   "
-" -- Config --
+" == CONFIG ==
+set background=dark
+set termguicolors
 filetype plugin indent on
 syntax enable
 
@@ -21,12 +23,10 @@ else
 	colorscheme koehler
 endif
 
-set background=dark
-set termguicolors
+set nocompatible
 
 set omnifunc=syntaxcomplete#Complete
 
-set nocompatible
 set wrap
 set linebreak
 set mouse=a
@@ -43,20 +43,20 @@ set showmode
 set nobackup
 set noswapfile
 
-set scrolloff=5
+set scrolloff=10
 
 " - Spell Fix -
 set spelllang=en,pt_br
 highlight SpellBad cterm=underline ctermbg=Black
-autocmd FileType markdown setlocal spell
+autocmd FileType markdown,txt setlocal spell
 
-" - Tabs -
+" - Indentation -
+set breakindent
 set tabstop=4	"Sets indent size of tabs
 set shiftwidth=4	"Sets auto indent size
 set autoindent	"Turns on auto indenting
 set smartindent	"Remembers previous indent when creating new lines
 
-" Prettier tabs and trailing spaces
 set list
 set listchars=tab:\|\ ,trail:*
 highlight SpecialKey ctermfg=darkgray guifg=gray70
@@ -111,8 +111,10 @@ autocmd FileType c,cpp,java,php setlocal foldmethod=syntax
 autocmd FileType python setlocal foldmethod=indent
 autocmd FileType vim setlocal foldmethod=marker
 
-" -- Keys map --
+" == MAPPINGS ==
 let mapleader = " "
+
+nmap <C-s> <cmd>w<CR>
 
 " - Remap space -
 nnoremap ; :
@@ -126,7 +128,9 @@ vnoremap : ;
 onoremap ; :
 onoremap : ;
 
-nmap <C-s> <cmd>w<CR>
+" Move to the end/beggining of the line
+nnoremap H _
+nnoremap L $
 
 " - Terminal -
 tmap <ESC> <C-\><C-n>
@@ -177,26 +181,27 @@ nmap <ESC> <cmd>nohl<CR>
 nmap Q <cmd>echo "Vi mode disable"<CR>
 nmap <leader>r <cmd>source $HOME/.vimrc <bar> echo "Source vimrc"<CR>
 nmap <leader>s <cmd>set spell! <bar> echo "Spell check" (&spell ? "ON" : "OFF") <CR>
+nmap <leader>= gg=G<C-o>
 xnoremap < <gv
 xnoremap > >gv
 
-" -- Plugins --
+" == PLUGINS ==
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+	silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 " Install vim plug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
 " Run Plug Install if there are missing plugins
 autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \| PlugInstall --sync | source $MYVIMRC
-\| endif
+			\| PlugInstall --sync | source $MYVIMRC
+			\| endif
 
 call plug#begin()
 
