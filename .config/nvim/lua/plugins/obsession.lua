@@ -5,7 +5,7 @@ return {
 		{
 			"<leader>o",
 			function()
-				vim.cmd("Obsession Session.vim")
+				vim.cmd("Obsession! Session.vim")
 			end,
 			desc = "New [o]bsession"
 		}
