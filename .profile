@@ -29,12 +29,11 @@ export LESS_TERMCAP_us=$'\e[1;32m'
 export MYVIMRC="$HOME/.vimrc"
 
 if command -v nvim >/dev/null; then
-	_NVIM='nvim -u $HOME/.vimrc'
-	alias vim="${_NVIM}"
-	export MANPAGER="${_NVIM} +Man!"
-	export VISUAL="${_NVIM}"
+	alias vim="nvim"
+	export MANPAGER="nvim +Man!"
+	export VISUAL="nvim"
 	export EDITOR="${VISUAL}"
-	alias svim="sudo ${_NVIM}"
+	alias svim="sudo nvim"
 elif command -v vim >/dev/null; then
 	export MANPAGER="vim +MANPAGER -"
 	export VISUAL=$(which vim)
@@ -44,6 +43,10 @@ fi
 
 # -- Alias --
 function y() {
+	if ! command -v yazi >/dev/null; then
+		echo "Command \"yazi\" not found"
+		return
+	fi
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
 	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
