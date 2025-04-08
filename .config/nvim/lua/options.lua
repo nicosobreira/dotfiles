@@ -54,6 +54,9 @@ vim.opt.laststatus = 2
 vim.opt.confirm = true
 vim.opt.title = true
 
+-- Tabline
+vim.opt.tabline = "%!v:lua.require'custom.tabline'.get()"
+
 -- Line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true
