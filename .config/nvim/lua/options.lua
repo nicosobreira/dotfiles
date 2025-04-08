@@ -40,7 +40,7 @@ vim.opt.smartindent = true
 
 -- Visual whitespace
 vim.opt.list = true
-vim.opt.listchars = {tab = '| ', trail = '*'}
+vim.opt.listchars = { tab = '| ', trail = '*' }
 vim.cmd('highlight SpecialKey ctermfg=darkgray guifg=gray70')
 
 -- Clipboard
@@ -76,6 +76,7 @@ vim.opt.wildoptions = 'fuzzy'
 
 -- Netrw settings
 vim.g.netrw_list_hide = '^\\./$,^\\.\\./$'
+vim.g.netrw_browse_split = 0
 vim.g.netrw_hide = 1
 vim.g.netrw_banner = 0
 vim.g.netrw_altfile = 1
@@ -86,15 +87,3 @@ vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
 
 -- Folding
 vim.opt.foldlevel = 99
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = {'c', 'cpp', 'java', 'php'},
-	command = 'setlocal foldmethod=syntax'
-})
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = 'python',
-	command = 'setlocal foldmethod=indent'
-})
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = 'vim',
-	command = 'setlocal foldmethod=marker'
-})
