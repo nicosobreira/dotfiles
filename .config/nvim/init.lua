@@ -29,3 +29,5 @@ require("lazy").setup({
 	checker = { enabled = true },
 	opts = { rocks = { hererocks = false } }
 })
+
+require("highlight")

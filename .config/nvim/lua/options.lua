@@ -25,7 +25,6 @@ vim.opt.scrolloff = 10
 
 -- Spell check
 vim.opt.spelllang = 'en,pt_br'
-vim.cmd('highlight SpellBad cterm=underline ctermbg=Black')
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = {'markdown', 'txt'},
 	command = 'setlocal spell'
@@ -41,7 +40,6 @@ vim.opt.smartindent = true
 -- Visual whitespace
 vim.opt.list = true
 vim.opt.listchars = { tab = '| ', trail = '*' }
-vim.cmd('highlight SpecialKey ctermfg=darkgray guifg=gray70')
 
 -- Clipboard
 vim.opt.clipboard = 'unnamedplus'
@@ -61,7 +59,6 @@ vim.opt.tabline = "%!v:lua.require'custom.tabline'.get()"
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.cursorline = true
-vim.cmd('highlight CursorLineNR cterm=bold')
 
 -- Search
 vim.opt.hlsearch = true
