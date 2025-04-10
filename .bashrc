@@ -29,6 +29,13 @@ for _file in "${_SOURCES[@]}"; do
 	[[ -f "$_file" ]] && source "$_file"
 done
 
+# Dircolors setup
+if command -v dircolors &>/dev/null; then
+	if [[ -f ~/.dircolors ]]; then
+		eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+	fi
+fi
+
 if command -v fzf >/dev/null; then
 	eval "$(fzf --bash)"
 fi
