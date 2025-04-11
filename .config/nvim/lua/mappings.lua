@@ -97,7 +97,11 @@ vim.keymap.set('n', '<leader>=', function()
 	vim.api.nvim_win_set_cursor(0, save_pos)
 end,
 { desc = 'Format file and return to position' })
+
 vim.keymap.set('x', '<', '<gv')
 vim.keymap.set('x', '>', '>gv')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz') 
+
+-- Lazy
+vim.keymap.set("n", "<leader>ll", "<cmd>Lazy<CR>")
