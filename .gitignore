@@ -3,6 +3,7 @@ LGPL
 license.pdf
 lazy-lock.json
 lazyvim.json
+*.pdf
 *.out
 *.spl
 *.add
