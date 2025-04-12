@@ -1,11 +1,11 @@
 -- Initialize with default options
 vim.opt.background = 'dark'
 vim.opt.termguicolors = true
-vim.cmd('filetype plugin indent on')
-vim.cmd('syntax enable')
+vim.cmd("filetype plugin indent on")
+vim.cmd("syntax enable")
 
 -- Colorscheme
-local has_sorbet = pcall(vim.cmd, 'colorscheme sorbet')
+local has_sorbet = pcall(vim.cmd, "colorscheme sorbet")
 if not has_sorbet then
 	vim.cmd('colorscheme defualt')
 end
@@ -22,6 +22,9 @@ vim.opt.showmode = false
 vim.opt.backup = false
 vim.opt.swapfile = false
 vim.opt.scrolloff = 10
+
+-- Conceal (hide) `*` and `**`
+vim.opt.conceallevel = 2
 
 -- Spell check
 vim.opt.spelllang = 'en,pt_br'
@@ -52,8 +55,8 @@ vim.opt.laststatus = 2
 vim.opt.confirm = true
 vim.opt.title = true
 
--- Tabline
-vim.opt.tabline = "%!v:lua.require'custom.tabline'.get()"
+-- Custom Tabline
+vim.opt.tabline = "%!v:lua.require('custom.tabline').get()"
 
 -- Line numbers
 vim.opt.number = true
