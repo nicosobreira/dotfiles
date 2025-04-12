@@ -2,7 +2,8 @@
 vim.g.mapleader = ' '
 
 -- Save
-vim.keymap.set('n', '<C-s>', '<cmd>w<CR>')
+vim.keymap.set({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<CR><esc>", { desc = "Save File" })
+
 
 -- Swap colon and semicolon
 vim.keymap.set({'n', 'v', 'o'}, ';', ':')
