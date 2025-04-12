@@ -9,41 +9,31 @@ vim.keymap.set({'n', 'v', 'o'}, ';', ':')
 vim.keymap.set({'n', 'v', 'o'}, ':', ';')
 
 -- Line navigation
-vim.keymap.set('n', 'H', '_')
-vim.keymap.set('n', 'L', '$')
+vim.keymap.set({'n', 'v'}, 'H', '_')
+vim.keymap.set({'n', 'v'}, 'L', '$')
 
 -- Terminal mappings
-vim.keymap.set('t', '<ESC>', '<C-\\><C-n>')
-local term_maps = {
-	{'<C-h>', '<C-\\><C-n><cmd>wincmd h<CR>'},
-	{'<C-j>', '<C-\\><C-n><cmd>wincmd j<CR>'},
-	{'<C-k>', '<C-\\><C-n><cmd>wincmd k<CR>'},
-	{'<C-l>', '<C-\\><C-n><cmd>wincmd l<CR>'},
-}
-for _, map in ipairs(term_maps) do
-	vim.keymap.set('t', map[1], map[2])
-end
+vim.keymap.set('t', '<ESC><ESC>', '<C-\\><C-n>')
+vim.keymap.set('t', '<C-h>', '<C-\\><C-n><cmd>wincmd h<CR>')
+vim.keymap.set('t', '<C-j>', '<C-\\><C-n><cmd>wincmd j<CR>')
+vim.keymap.set('t', '<C-k>', '<C-\\><C-n><cmd>wincmd k<CR>')
+vim.keymap.set('t', '<C-l>', '<C-\\><C-n><cmd>wincmd l<CR>')
 
 -- Netrw mappings
 vim.api.nvim_create_autocmd('FileType', {
-	pattern = 'netrw',
+	pattern = "netrw",
 	callback = function()
-		vim.keymap.set('n', 'h', '-', { buffer = true })
-		vim.keymap.set('n', 'l', '<CR>', { buffer = true })
+		vim.keymap.set('n', 'h', '-', { buffer = true, remap = true })
+		vim.keymap.set('n', 'l', '<CR>', { buffer = true, remap = true })
 	end
 })
-vim.keymap.set('n', '<leader>e', '<cmd>Lexplore<CR>')
+vim.keymap.set('n', '<leader>e', '<cmd>Explore<CR>')
 
 -- Window navigation
-local win_maps = {
-	{'<C-h>', '<C-w>h'},
-	{'<C-j>', '<C-w>j'},
-	{'<C-k>', '<C-w>k'},
-	{'<C-l>', '<C-w>l'},
-}
-for _, map in ipairs(win_maps) do
-	vim.keymap.set('n', map[1], map[2])
-end
+vim.keymap.set('n', '<C-h>', '<C-w>h')
+vim.keymap.set('n', '<C-j>', '<C-w>j')
+vim.keymap.set('n', '<C-k>', '<C-w>k')
+vim.keymap.set('n', '<C-l>', '<C-w>l')
 
 -- Visual line navigation
 vim.keymap.set({'n', 'v'}, 'j', 'gj')
@@ -85,6 +75,7 @@ vim.keymap.set('n', '<leader>s', function()
 	vim.opt.spell = not vim.opt.spell:get()
 	print('Spell check ' .. (vim.opt.spell:get() and 'ON' or 'OFF'))
 end)
+
 vim.keymap.set('n', '<leader>=', function()
 	-- Save current cursor position
 	local save_pos = vim.api.nvim_win_get_cursor(0)
@@ -92,11 +83,12 @@ vim.keymap.set('n', '<leader>=', function()
 	vim.cmd('undojoin')
 
 	vim.cmd('normal! gg=G')
-	
+
 	-- Return cursor position
 	vim.api.nvim_win_set_cursor(0, save_pos)
 end,
-{ desc = 'Format file and return to position' })
+	{ desc = 'Format file and return to position' }
+)
 
 vim.keymap.set('x', '<', '<gv')
 vim.keymap.set('x', '>', '>gv')
