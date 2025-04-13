@@ -4,6 +4,10 @@ vim.g.mapleader = ' '
 -- Save
 vim.keymap.set({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<CR><esc>", { desc = "Save File" })
 
+-- Map <leader>1 ... 9 to switch to corresponding tabs
+for i = 1, 9 do
+  vim.keymap.set('n', '<leader>' .. i, '<cmd>tabn ' .. i .. '<CR>', { desc = 'Go to tab '.. i })
+end
 
 -- Swap colon and semicolon
 vim.keymap.set({'n', 'v', 'o'}, ';', ':')
@@ -28,6 +32,7 @@ vim.api.nvim_create_autocmd('FileType', {
 		vim.keymap.set('n', 'l', '<CR>', { buffer = true, remap = true })
 	end
 })
+
 vim.keymap.set('n', '<leader>e', '<cmd>Explore<CR>')
 
 -- Window navigation
