@@ -7,6 +7,14 @@ return {
 		{ 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
 	},
 	cmd = { "Telescope" },
+	opts = {
+		defaults = {
+			file_ignore_patterns = {
+				"^.git/",
+				"%.o"
+			}
+		}
+	},
 	keys = {
 		{
 			"<leader>ff",
