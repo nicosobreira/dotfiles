@@ -7,7 +7,7 @@ for dir in "${_MY_PATH[@]}"; do
 	if [[ "$PATH" =~ "$dir" ]]; then
 		continue
 	fi
-		export PATH="$dir:$PATH"
+	export PATH="$dir:$PATH"
 done
 
 if [[ -n "$BASH_VERSION" ]]; then
@@ -17,7 +17,7 @@ if [[ -n "$BASH_VERSION" ]]; then
 fi
 
 # -- Variables --
-# This variables make 'man --pager=less' have color have colorss
+# This variables make 'man --pager=less' have color have colors
 export LESS_TERMCAP_mb=$'\e[1;31m'
 export LESS_TERMCAP_md=$'\e[1;31m'
 export LESS_TERMCAP_me=$'\e[m'
@@ -26,6 +26,7 @@ export LESS_TERMCAP_so=$'\e[1;44;33m'
 export LESS_TERMCAP_ue=$'\e[m'
 export LESS_TERMCAP_us=$'\e[1;32m'
 
+export PAGER="less -R"
 export MYVIMRC="$HOME/.vimrc"
 
 if command -v nvim >/dev/null; then
@@ -42,6 +43,13 @@ elif command -v vim >/dev/null; then
 fi
 
 # -- Alias --
+function cht() {
+	local style="dracula"
+	local query="$@"
+	query="${query// /+}"
+	curl -s cht.sh/${query}?style=${style} | $PAGER
+}
+
 function y() {
 	if ! command -v yazi >/dev/null; then
 		echo "Command \"yazi\" not found"
@@ -92,18 +100,18 @@ __prompt_command() {
 		fi
 	}
 
-	git_branch() {
-		local branch=$(git branch --show-current 2>/dev/null)
-		if [[ -n "$branch" ]]; then
-			echo -ne " ${magenta}(${branch})${reset}"
-		fi
-	}
+git_branch() {
+	local branch=$(git branch --show-current 2>/dev/null)
+	if [[ -n "$branch" ]]; then
+		echo -ne " ${magenta}(${branch})${reset}"
+	fi
+}
 
-	local sep="$"
-	PS1="\n${blue}\w${reset}"
-	PS1+="$(git_branch)"
-	PS1+="$(nonzero_return)"
-	PS1+="\n${sep} "
+local sep="$"
+PS1="\n${blue}\w${reset}"
+PS1+="$(git_branch)"
+PS1+="$(nonzero_return)"
+PS1+="\n${sep} "
 }
 
 export PROMPT_COMMAND='__prompt_command'
