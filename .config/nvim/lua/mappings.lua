@@ -103,3 +103,9 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- Lazy
 vim.keymap.set("n", "<leader>ll", "<cmd>Lazy<CR>")
+
+-- Open quick fix on Diagnostics
+vim.keymap.set("n", "<space>d", function()
+	vim.diagnostic.setqflist()
+end, { desc = "Open [d]iagnostics quickfix" })
+
