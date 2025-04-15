@@ -27,7 +27,10 @@ require("lazy").setup({
 	-- colorscheme that will be used when installing plugins.
 	-- automatically check for plugin updates
 	checker = { enabled = true },
-	opts = { rocks = { hererocks = false } }
+	opts = {
+		defaults = { lazy = { enabled = true } },
+		rocks = { enabled = false }
+	}
 })
 
 require("highlight")
