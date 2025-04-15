@@ -4,7 +4,14 @@ return {
 	-- tag = "0.1.8",
 	dependencies = {
 		{ 'nvim-lua/plenary.nvim' },
-		{ 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
+		{
+			'nvim-telescope/telescope-fzf-native.nvim',
+			-- If `make` isn't installed don't load
+			cond = function()
+				return vim.fn.executable 'make' == 1
+			end,
+			build = 'make'
+		}
 	},
 	cmd = { "Telescope" },
 	opts = {
