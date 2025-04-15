@@ -4,12 +4,6 @@ vim.opt.termguicolors = true
 vim.cmd("filetype plugin indent on")
 vim.cmd("syntax enable")
 
--- Colorscheme
-local has_sorbet = pcall(vim.cmd, "colorscheme sorbet")
-if not has_sorbet then
-	vim.cmd('colorscheme defualt')
-end
-
 -- Basic settings
 vim.opt.wrap = true
 vim.opt.linebreak = true
@@ -23,15 +17,14 @@ vim.opt.backup = false
 vim.opt.swapfile = false
 vim.opt.scrolloff = 10
 
+-- "Ominfunc" help size
+vim.opt.pumheight = 10
+
 -- Conceal (hide) `*` and `**`
 vim.opt.conceallevel = 2
 
 -- Spell check
 vim.opt.spelllang = 'en,pt_br'
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = {'markdown', 'txt'},
-	command = 'setlocal spell'
-})
 
 -- Indentation
 vim.opt.breakindent = true
@@ -89,4 +82,5 @@ vim.g.netrw_alto = 1
 vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
 
 -- Folding
+vim.opt.foldmethod = "syntax"
 vim.opt.foldlevel = 99
