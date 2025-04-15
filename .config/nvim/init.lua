@@ -26,7 +26,7 @@ require("lazy").setup({
 	spec = { { import = "plugins" } },
 	-- colorscheme that will be used when installing plugins.
 	-- automatically check for plugin updates
-	checker = { enabled = true },
+	checker = { enabled = true, notify = false},
 	opts = {
 		defaults = { lazy = { enabled = true } },
 		rocks = { enabled = false }
