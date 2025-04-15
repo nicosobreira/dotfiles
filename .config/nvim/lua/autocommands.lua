@@ -20,31 +20,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
--- Different folding methods depending on file type
-vim.api.nvim_create_autocmd("FileType", {
-	group = augroup("fold_method_sytax"),
-	pattern = { "c", "cpp", "java", "php" },
-	callback = function()
-		vim.opt_local.foldmethod = "syntax"
-	end
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-	group = augroup("fold_method_indent"),
-	pattern = "python",
-	callback = function()
-		vim.opt_local.foldmethod = "indent"
-	end
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-	group = augroup("fold_method_marker"),
-	pattern = "vim",
-	callback = function()
-		vim.opt_local.foldmethod = "marker"
-	end
-})
-
 -- Set spell depending on the file type
 vim.api.nvim_create_autocmd("FileType", {
 	group = augroup("set_spell"),
