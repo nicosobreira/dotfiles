@@ -99,7 +99,7 @@ end,
 vim.keymap.set('x', '<', '<gv')
 vim.keymap.set('x', '>', '>gv')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
-vim.keymap.set('n', '<C-u>', '<C-u>zz') 
+vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- Lazy
 vim.keymap.set("n", "<leader>ll", "<cmd>Lazy<CR>")
