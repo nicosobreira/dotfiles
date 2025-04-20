@@ -24,7 +24,7 @@ vim.opt.pumheight = 10
 vim.opt.conceallevel = 2
 
 -- Spell check
-vim.opt.spelllang = 'en,pt_br'
+vim.opt.spelllang = {'en', 'pt_br'}
 
 -- Indentation
 vim.opt.breakindent = true
