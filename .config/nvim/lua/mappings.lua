@@ -6,7 +6,7 @@ vim.keymap.set({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<CR><esc>", { desc = "Sav
 
 -- Map <leader>1 ... 9 to switch to corresponding tabs
 for i = 1, 9 do
-  vim.keymap.set('n', '<leader>' .. i, '<cmd>tabn ' .. i .. '<CR>', { desc = 'Go to tab '.. i })
+	vim.keymap.set('n', '<leader>' .. i, '<cmd>tabn ' .. i .. '<CR>', { desc = 'Go to tab '.. i })
 end
 
 -- Swap colon and semicolon
@@ -23,15 +23,6 @@ vim.keymap.set('t', '<C-h>', '<C-\\><C-n><cmd>wincmd h<CR>')
 vim.keymap.set('t', '<C-j>', '<C-\\><C-n><cmd>wincmd j<CR>')
 vim.keymap.set('t', '<C-k>', '<C-\\><C-n><cmd>wincmd k<CR>')
 vim.keymap.set('t', '<C-l>', '<C-\\><C-n><cmd>wincmd l<CR>')
-
--- Netrw mappings
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = "netrw",
-	callback = function()
-		vim.keymap.set('n', 'h', '-', { buffer = true, remap = true })
-		vim.keymap.set('n', 'l', '<CR>', { buffer = true, remap = true })
-	end
-})
 
 vim.keymap.set('n', '<leader>e', '<cmd>Explore<CR>')
 
@@ -109,3 +100,6 @@ vim.keymap.set("n", "<space>d", function()
 	vim.diagnostic.setqflist()
 end, { desc = "Open [d]iagnostics quickfix" })
 
+-- Autocomple in normal mode
+vim.keymap.set("i", "<C-n>", "<C-x><C-o><C-n>", { noremap = false, silent = true})
+vim.keymap.set("i", "<C-p>", "<C-x><C-o><C-p>", { noremap = false, silent = true})
