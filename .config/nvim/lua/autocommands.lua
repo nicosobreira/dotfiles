@@ -62,28 +62,60 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 
 -- Close some filetypes with <q>
 vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("close_with_q"),
-  pattern = {
-    "checkhealth",
-    "dbout",
-    "help",
-    "lspinfo",
-    "notify",
-    "qf",
-    "spectre_panel",
-    "startuptime",
-  },
-  callback = function(event)
-    vim.bo[event.buf].buflisted = false
-    vim.schedule(function()
-      vim.keymap.set("n", "q", function()
-        vim.cmd("close")
-        pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
-      end, {
-        buffer = event.buf,
-        silent = true,
-        desc = "Quit buffer",
-      })
-    end)
-  end,
+	group = augroup("close_with_q"),
+	pattern = {
+		"checkhealth",
+		"dbout",
+		"help",
+		"lspinfo",
+		"notify",
+		"qf",
+		"spectre_panel",
+		"startuptime",
+	},
+	callback = function(event)
+		vim.bo[event.buf].buflisted = false
+		vim.schedule(function()
+			vim.keymap.set("n", "q", function()
+				vim.cmd("close")
+				pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
+			end, {
+					buffer = event.buf,
+					silent = true,
+					desc = "Quit buffer",
+				})
+		end)
+	end,
+})
+
+-- Automatic create Header Guards
+vim.api.nvim_create_autocmd("BufNewFile", {
+	group = augroup("auto_create_header_guards"),
+	pattern = "*.h",
+	callback = function(args)
+		-- Ask the user if they want a header guard
+		local choice = vim.fn.input("Add header guard? [Y/N]: ")
+		if choice:lower() ~= "y" then
+			return
+		end
+
+		-- Extract filename without extension (uppercase for guard)
+		local filename = vim.fn.fnamemodify(args.file, ":t:r"):upper()
+		local guard = filename .. "_H"
+
+		-- Insert the header guard
+		local lines = {
+			"#ifndef " .. guard,
+			"#define " .. guard,
+			"",
+			"",
+			"",
+			"#endif // " .. guard
+		}
+
+		vim.api.nvim_buf_set_lines(0, 0, 0, false, lines)
+
+		-- Place cursor between the guards
+		vim.api.nvim_win_set_cursor(0, {4, 0})  -- Line 4, column 0
+	end
 })
