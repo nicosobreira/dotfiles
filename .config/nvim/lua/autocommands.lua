@@ -2,6 +2,16 @@ local function augroup(name)
 	return vim.api.nvim_create_augroup("custom_" .. name, { clear = true })
 end
 
+-- Terminal options
+vim.api.nvim_create_autocmd("TermOpen", {
+	group = augroup("term_open"),
+	callback = function()
+		vim.opt_local.number = false
+		vim.opt_local.relativenumber = false
+		vim.opt_local.spell = false
+	end
+})
+
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 	group = augroup("checktime"),
@@ -48,4 +58,32 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 		local file = vim.uv.fs_realpath(event.match) or event.match
 		vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
 	end,
+})
+
+-- Close some filetypes with <q>
+vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("close_with_q"),
+  pattern = {
+    "checkhealth",
+    "dbout",
+    "help",
+    "lspinfo",
+    "notify",
+    "qf",
+    "spectre_panel",
+    "startuptime",
+  },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.schedule(function()
+      vim.keymap.set("n", "q", function()
+        vim.cmd("close")
+        pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
+      end, {
+        buffer = event.buf,
+        silent = true,
+        desc = "Quit buffer",
+      })
+    end)
+  end,
 })
