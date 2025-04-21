@@ -2,13 +2,19 @@ local function augroup(name)
 	return vim.api.nvim_create_augroup("custom_" .. name, { clear = true })
 end
 
+-- Move help and man pages to the right side
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "help", "man" },
+	command = "wincmd L",
+})
+
 -- Terminal options
 vim.api.nvim_create_autocmd("TermOpen", {
 	group = augroup("term_open"),
 	callback = function()
-		vim.opt_local.number = false
-		vim.opt_local.relativenumber = false
-		vim.opt_local.spell = false
+		vim.wo.number = false
+		vim.wo.relativenumber = false
+		vim.wo.spell = false
 	end
 })
 
@@ -35,7 +41,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	group = augroup("set_spell"),
 	pattern = {"markdown", "txt", "plaintex"},
 	callback = function()
-		vim.opt_local.spell = true
+		vim.wo.spell = true
 	end
 })
 
@@ -44,7 +50,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 	group = augroup("json_conceal"),
 	pattern = { "json", "jsonc", "json5" },
 	callback = function()
-		vim.opt_local.conceallevel = 0
+		vim.wo.conceallevel = 0
 	end,
 })
 
@@ -82,7 +88,7 @@ vim.api.nvim_create_autocmd("FileType", {
 			end, {
 					buffer = event.buf,
 					silent = true,
-					desc = "Quit buffer",
+					desc = "[q]uit buffer",
 				})
 		end)
 	end,
@@ -117,5 +123,20 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 
 		-- Place cursor between the guards
 		vim.api.nvim_win_set_cursor(0, {4, 0})  -- Line 4, column 0
+	end
+})
+
+-- Sets the concellevel automatic in markdown files
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = 'markdown',
+	callback = function()
+		vim.api.nvim_create_autocmd('ModeChanged', {
+			buffer = 0,  -- Only for current buffer
+			callback = function()
+				vim.wo.conceallevel = (vim.fn.mode() == 'i') and 0 or 2
+			end
+		})
+		-- Initialize based on current mode
+		vim.wo.conceallevel = (vim.fn.mode() == 'i') and 0 or 2
 	end
 })
