@@ -95,11 +95,6 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 -- Lazy
 vim.keymap.set("n", "<leader>ll", "<cmd>Lazy<CR>")
 
--- Open quick fix on Diagnostics
-vim.keymap.set("n", "<space>d", function()
-	vim.diagnostic.setqflist()
-end, { desc = "Open [d]iagnostics quickfix" })
-
 -- Autocomple in normal mode
 vim.keymap.set("i", "<C-n>", "<C-x><C-o><C-n>", { noremap = false, silent = true})
 vim.keymap.set("i", "<C-p>", "<C-x><C-o><C-p>", { noremap = false, silent = true})
