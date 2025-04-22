@@ -68,9 +68,11 @@ vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { silent = true })
 -- Miscellaneous
 vim.keymap.set('n', '<ESC>', '<cmd>nohl<CR>')
 vim.keymap.set('n', 'Q', '<cmd>echo "Vi mode disable"<CR>')
+
+-- Toggle spell check
 vim.keymap.set('n', '<leader>s', function()
 	vim.opt.spell = not vim.opt.spell:get()
-	print('Spell check ' .. (vim.opt.spell:get() and 'ON' or 'OFF'))
+	print('Spell check is ' .. (vim.opt.spell:get() and 'on' or 'off'))
 end)
 
 vim.keymap.set('n', '<leader>=', function()
