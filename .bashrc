@@ -28,12 +28,12 @@ export LANGUAGE=en_US
 _MY_PATH=(~/.bin ~/.local/bin)
 
 for _dir in "${_MY_PATH[@]}"; do
-	if [[ -d "${_dir}" ]] && [[ ! ":${PATH}:" =~ ":${_dir}:" ]]; then
+	if [[ -d "${_dir}" ]] && [[ ! ":${PATH}:" =~ :${_dir}: ]]; then
 		export PATH="${_dir}:${PATH}"
 	fi
 done
 
-_SOURCES=(/etc/bashrc /usr/share/bash-completion/bash_completion /etc/bash_completion $HOME/.cargo/env)
+_SOURCES=(/etc/bashrc /usr/share/bash-completion/bash_completion /etc/bash_completion "$HOME/.cargo/env")
 for _file in "${_SOURCES[@]}"; do
 	[[ -f "${_file}" ]] && source "${_file}"
 done
@@ -76,15 +76,15 @@ elif command -v vim >/dev/null; then
 	export MANPAGER="vim +MANPAGER -"
 	export VISUAL=$(which vim)
 	export EDITOR="$VISUAL"
-	alias svim="sudo vim -u $HOME/.vimrc"
+	alias svim='sudo vim -u $HOME/.vimrc'
 fi
 
 # -- Functions --
 function cht() {
 	local style="dracula"
-	local query="$@"
+	local query="$*"
 	query="${query// /+}"
-	curl -s cht.sh/${query}?style=${style} | $PAGER
+	curl -s "cht.sh/${query}?style=${style}" | $PAGER
 }
 
 function y() {
@@ -95,7 +95,7 @@ function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
 	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		builtin cd -- "$cwd"
+		builtin cd -- "$cwd" || return
 	fi
 	rm -f -- "$tmp"
 }
@@ -135,14 +135,14 @@ function __prompt_command() {
 	local retval=$?
 
 	local sep="$"
-	local black="\e[30m"
+	# local black="\e[30m"
 	local red="\e[31m"
-	local green="\e[32m"
-	local yellow="\e[33m"
+	# local green="\e[32m"
+	# local yellow="\e[33m"
 	local blue="\e[34m"
 	local magenta="\e[35m"
-	local cyan="\e[36m"
-	local white="\e[37m"
+	# local cyan="\e[36m"
+	# local white="\e[37m"
 	local reset="\e[m"
 
 	nonzero_return() {
