@@ -24,21 +24,18 @@ shopt -s checkwinsize
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US
 
+# Custom PATH
 _MY_PATH=(~/.bin ~/.local/bin)
 
 for _dir in "${_MY_PATH[@]}"; do
-	if [[ ! -d "$_dir" ]]; then
-		continue
+	if [[ -d "${_dir}" ]] && [[ ! ":${PATH}:" =~ ":${_dir}:" ]]; then
+		export PATH="${_dir}:${PATH}"
 	fi
-	if [[ "$PATH" =~ "$_dir" ]]; then
-		continue
-	fi
-	export PATH="$_dir:$PATH"
 done
 
 _SOURCES=(/etc/bashrc /usr/share/bash-completion/bash_completion /etc/bash_completion $HOME/.cargo/env)
 for _file in "${_SOURCES[@]}"; do
-	[[ -f "$_file" ]] && source "$_file"
+	[[ -f "${_file}" ]] && source "${_file}"
 done
 
 # Dircolors setup
