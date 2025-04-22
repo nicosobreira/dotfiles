@@ -30,7 +30,10 @@ require("lazy").setup({
 	opts = {
 		defaults = { lazy = { enabled = true } },
 		rocks = { enabled = false }
-	}
+	},
+	change_detection = {
+		notify = false,
+	},
 })
 
 require("highlight")
