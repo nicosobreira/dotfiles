@@ -169,24 +169,24 @@ return {
 
 		-- Enable the following language servers
 		local servers = {
-			clangd = {
-				cmd = {
-					"clangd",
-					"--background-index", -- Better for large projects
-					"--header-insertion=never", -- Avoid auto-adding headers
-				},
-				init_options = {
-					fallbackFlags = {
-						"-Wall",
-						"-Wextra",
-						"-Wshadow",
-						"-Wconversion",
-						"-Wfloat-equal",
-						"-Wno-unused-const-variable",
-						"-Wno-sign-conversion",
-					}
-				},
-			},
+			-- clangd = {
+			-- 	cmd = {
+			-- 		"clangd",
+			-- 		"--background-index", -- Better for large projects
+			-- 		"--header-insertion=never", -- Avoid auto-adding headers
+			-- 	},
+			-- 	init_options = {
+			-- 		fallbackFlags = {
+			-- 			"-Wall",
+			-- 			"-Wextra",
+			-- 			"-Wshadow",
+			-- 			"-Wconversion",
+			-- 			"-Wfloat-equal",
+			-- 			"-Wno-unused-const-variable",
+			-- 			"-Wno-sign-conversion",
+			-- 		}
+			-- 	},
+			-- },
 			bashls = {},
 			lua_ls = {
 				settings = {
