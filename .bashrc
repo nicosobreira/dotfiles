@@ -25,7 +25,7 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US
 
 # Custom PATH
-_MY_PATH=(~/.bin ~/.local/bin)
+_MY_PATH=("$HOME/.bin" "$HOME/.local/bin")
 
 for _dir in "${_MY_PATH[@]}"; do
 	if [[ -d "${_dir}" ]] && [[ ! ":${PATH}:" =~ :${_dir}: ]]; then
@@ -78,6 +78,30 @@ elif command -v vim >/dev/null; then
 	export EDITOR="$VISUAL"
 	alias svim='sudo vim -u $HOME/.vimrc'
 fi
+
+function dwm-make(){
+	if ! command -v dwm >/dev/null; then
+		echo "Command \"dwm\" not found"
+		return
+	fi
+
+	local current_dir="$PWD"
+
+	# Dwmblocks
+	echo -e "\tDwmblocks"
+	cd "$HOME/suckless/dwmblocks"
+	make clean
+	sudo make install
+
+	# Dwm
+	echo -e "\tDwm"
+	cd "$HOME/suckless/dwm"
+	sudo make clean install
+
+	cd "$current_dir"
+}
+
+alias dwm-edit="vim $HOME/suckless/dwm/config.h"
 
 # -- Functions --
 function cht() {
