@@ -35,6 +35,7 @@ set noruler
 
 set undofile
 set undolevels=10000
+set noundofile
 
 set encoding=utf-8
 
@@ -142,7 +143,7 @@ tmap <C-l> <C-\><C-n><cmd>wincmd l<CR>
 " - Netrw -
 au FileType netrw nmap <buffer> h -
 au FileType netrw nmap <buffer> l <CR>
-nmap <leader>e <cmd>Lexplore<CR>
+nmap <leader>e <cmd>Explore<CR>
 
 " - Split Navigation -
 nmap <C-h> <C-w>h h<CR>
