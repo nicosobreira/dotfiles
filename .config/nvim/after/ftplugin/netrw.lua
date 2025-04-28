@@ -12,11 +12,4 @@ vim.keymap.set('n', 'd', 'D', { buffer = true, remap = true, desc = 'Delete file
 vim.keymap.set('n', 'r', 'R', { buffer = true, remap = true, desc = 'Rename file' })
 
 -- Quit mapping
-vim.keymap.set('n', 'q', ':q<CR>', { buffer = true, desc = 'Close Netrw' })
-
--- Netrw settings
-vim.g.netrw_banner = 0			-- Disable banner
-vim.g.netrw_liststyle = 3		-- Tree style listing
-vim.wo.cursorline = true		-- Highlight current line
-vim.wo.number = false			-- Disable line numbers
-vim.wo.relativenumber = false	-- Disable relative numbers
+vim.keymap.set('n', 'q', '<cmd>q<CR>', { buffer = true, remap = true, desc = 'Close Netrw' })
