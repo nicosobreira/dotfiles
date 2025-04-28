@@ -1,8 +1,11 @@
 #!/usr/bin/env sh
 
+xrandr
+xset r rate 190 50
+xrdb -merge "$HOME/.Xresources"
+
 feh --bg-fill "$HOME/suckless/wallpaper/wallpaper2.png"
 setxkbmap -model pc105 -layout br -variant abnt2
-xset r rate 190 50
 
 dwmblocks &
 

@@ -118,12 +118,11 @@ static char *colors[][ColCount] = {
  * until it an icon matches. Similarly if there are two tag icons then it would alternate between
  * them. This works seamlessly with alternative tags and alttagsdecoration patches.
  */
-/* NUMTAGS = 4 */
 static char *tagicons[][NUMTAGS] =
 {
-	[DEFAULT_TAGS]        = { "", "󰖟", "3", "4" },
-	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D" },
-	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>" },
+	[DEFAULT_TAGS]        = { "", "󰖟", "", "󰺷", "" },
+	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D", "E" },
+	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>" },
 };
 
 /* There are two options when it comes to per-client rules:
@@ -155,8 +154,12 @@ static const Rule rules[] = {
 	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
 	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
 	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
+
+	/* Browers */
 	RULE(.class = "firefox", .tags = 1 << 1)
-	RULE(.class = "Firefox", .tags = 2 << 1)
+	RULE(.class = "Vivaldi-stable", .tags = 1 << 1)
+
+	RULE(.class = "obsidian", .tags = 1 << 2)
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as
@@ -214,51 +217,57 @@ static const char *dmenucmd[] = {
 	NULL
 };
 
-static const char *termcmd[]   = { "kitty", NULL };
-static const char *flameshot[] = { "flameshot", "gui", NULL };
+static const char *termcmd[]           = { "kitty", NULL };
+
+static const char *flameshotCmd[]      = { "flameshot", "gui", NULL };
+
+static const char *brightnessUpCmd[]   = { "brightnessctl", "set", "5%+", NULL };
+static const char *brightnessDownCmd[] = { "brightnessctl", "set", "5%-", NULL };
 
 static const Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          SHCMD("$HOME/.config/rofi/launcher.sh") },
-	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_t,      spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.02} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.02} },
-	{ MODKEY,                       XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,                       XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	/* modifier         key                       function        argument */
+	{ MODKEY,           XK_p,                     spawn,          SHCMD("$HOME/.config/rofi/launcher.sh") },
+	{ MODKEY|ShiftMask, XK_p,                     spawn,          {.v = dmenucmd } },
+	{ MODKEY,           XK_Return,                spawn,          {.v = termcmd } },
+	{ MODKEY,           XK_b,                     togglebar,      {0} },
+	{ MODKEY,           XK_j,                     focusstack,     {.i = +1 } },
+	{ MODKEY,           XK_k,                     focusstack,     {.i = -1 } },
+	{ MODKEY,           XK_i,                     incnmaster,     {.i = +1 } },
+	{ MODKEY,           XK_d,                     incnmaster,     {.i = -1 } },
+	{ MODKEY,           XK_h,                     setmfact,       {.f = -0.02} },
+	{ MODKEY,           XK_l,                     setmfact,       {.f = +0.02} },
+	{ MODKEY,           XK_z,                     zoom,           {0} },
+	{ MODKEY,           XK_Tab,                   view,           {0} },
+	{ MODKEY,           XK_c,                     killclient,     {0} },
+	{ MODKEY,           XK_t,                     setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,           XK_f,                     setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,           XK_m,                     setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,           XK_space,                 setlayout,      {0} },
+	{ MODKEY|ShiftMask, XK_space,                 togglefloating, {0} },
+	{ MODKEY,           XK_0,                     view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask, XK_0,                     tag,            {.ui = ~0 } },
+	{ MODKEY,           XK_comma,                 focusmon,       {.i = -1 } },
+	{ MODKEY,           XK_period,                focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask, XK_comma,                 tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask, XK_period,                tagmon,         {.i = +1 } },
 
 	/* Custom Keys */
-	{ 0,                            XK_Print,                   spawn,          {.v = flameshot } },
-	{ 0,                            XF86XK_AudioMute,           spawn,          SHCMD("pactl set-sink-mute 0 toggle") },
-	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          SHCMD("pactl set-sink-volume 0 -3%") },
-	{ 0,                            XF86XK_AudioRaiseVolume,    spawn,          SHCMD("pactl set-sink-volume 0 +3%") },
-	{ 0,                            XF86XK_MonBrightnessUp,     spawn,          SHCMD("brightnessctl g +5%") },
-	{ 0,                            XF86XK_MonBrightnessDown,   spawn,          SHCMD("brightnessctl g 5%-") },
-	{ 0,                            XK_ISO_Next_Group,          spawn,          SHCMD("pkill -RTMIN+10 dwmblocks") },
-	{ MODKEY,                       XK_q,                       quit,           {0} },
-	{ MODKEY|ShiftMask,             XK_q,                       spawn,          SHCMD("$HOME/.config/rofi/powermenu.sh") },
+	{ 0,                XK_Print,                 spawn,          {.v = flameshotCmd } },
+	{ 0,                XF86XK_AudioMute,         spawn,          SHCMD("pactl set-sink-mute 0 toggle") },
+	{ 0,                XF86XK_AudioLowerVolume,  spawn,          SHCMD("pactl set-sink-volume 0 -3%") },
+	{ 0,                XF86XK_AudioRaiseVolume,  spawn,          SHCMD("pactl set-sink-volume 0 +3%") },
+	{ 0,                XF86XK_MonBrightnessUp,   spawn,          {.v = brightnessUpCmd } },
+	{ 0,                XF86XK_MonBrightnessDown, spawn,          {.v = brightnessDownCmd } },
+	{ 0,                XK_ISO_Next_Group,        spawn,          SHCMD("pkill -RTMIN+10 dwmblocks") },
 
-	TAGKEYS(                        XK_1,                                  0)
-	TAGKEYS(                        XK_2,                                  1)
-	TAGKEYS(                        XK_3,                                  2)
-	TAGKEYS(                        XK_4,                                  3)
+	{ MODKEY,           XK_q,                     quit,           {0} },
+	{ MODKEY|ShiftMask, XK_q,                     spawn,          SHCMD("$HOME/.config/rofi/powermenu.sh") },
+
+	TAGKEYS(            XK_1,                     0)
+	TAGKEYS(            XK_2,                     1)
+	TAGKEYS(            XK_3,                     2)
+	TAGKEYS(            XK_4,                     3)
+	TAGKEYS(            XK_5,                     4)
 };
 
 /* button definitions */

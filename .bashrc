@@ -92,6 +92,8 @@ function dwm-make(){
 	cd "$HOME/suckless/dwmblocks"
 	make clean
 	sudo make install
+	killall -q dwmblocks
+	setsid dwmblocks &
 
 	# Dwm
 	echo -e "\tDwm"
@@ -100,8 +102,6 @@ function dwm-make(){
 
 	cd "$current_dir"
 }
-
-alias dwm-edit="vim $HOME/suckless/dwm/config.h"
 
 # -- Functions --
 function cht() {
@@ -137,10 +137,14 @@ function notes() {
 }
 
 # -- Alias --
+alias dwm-edit="$EDITOR $HOME/suckless/dwm/config.h"
+
 alias make='make -j$(nproc)'
 alias c="clear"
 alias duh="du --human-readable"
 alias mkdir="mkdir -p"
+
+alias less="less -R"
 
 alias dir="dir --color=auto"
 alias vdir="vdir --color=auto"
@@ -148,8 +152,8 @@ alias grep="grep --color=auto"
 alias fgrep="fgrep --color=auto"
 alias egrep="egrep --color=auto"
 
-alias ls="ls -h --color=auto"
-alias la="ls --almost-all --dereference-command-line --color=auto --format=single-column --human-readable --size --group-directories-first --sort=version"
+alias ls="ls -h --color=always"
+alias la="ls --almost-all --dereference-command-line --color=always --format=single-column --human-readable --size --group-directories-first --sort=version"
 alias tree="tree -a -C"
 alias ..="cd .."
 alias ...="cd ../.."
