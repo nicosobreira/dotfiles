@@ -39,17 +39,17 @@ for _file in "${_SOURCES[@]}"; do
 done
 
 # Dircolors setup
-if command -v dircolors >/dev/null; then
+if command -v dircolors &>/dev/null; then
 	if [[ -f ~/.dircolors ]]; then
 		eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 	fi
 fi
 
-if command -v fzf >/dev/null; then
+if command -v fzf &>/dev/null; then
 	eval "$(fzf --bash)"
 fi
 
-if command -v zoxide >/dev/null; then
+if command -v zoxide &>/dev/null; then
 	eval "$(zoxide init bash)"
 fi
 
@@ -66,13 +66,13 @@ export LESS_TERMCAP_us=$'\e[1;32m'
 export PAGER="less -R"
 export MYVIMRC="$HOME/.vimrc"
 
-if command -v nvim >/dev/null; then
+if command -v nvim &>/dev/null; then
 	alias vim="nvim"
 	export MANPAGER="nvim +Man!"
 	export VISUAL="nvim"
 	export EDITOR="${VISUAL}"
 	alias svim="sudo nvim"
-elif command -v vim >/dev/null; then
+elif command -v vim &>/dev/null; then
 	export MANPAGER="vim +MANPAGER -"
 	export VISUAL=$(which vim)
 	export EDITOR="$VISUAL"
@@ -80,7 +80,7 @@ elif command -v vim >/dev/null; then
 fi
 
 function dwm-make(){
-	if ! command -v dwm >/dev/null; then
+	if ! command -v dwm &>/dev/null; then
 		echo "Command \"dwm\" not found"
 		return
 	fi
