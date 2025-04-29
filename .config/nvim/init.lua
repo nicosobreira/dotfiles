@@ -15,25 +15,38 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 
 -- Loading config and mappings before lazygit
-require("options")
-require("mappings")
-require("autocommands")
+require("config.options")
+require("config.mappings")
+require("config.autocommands")
 
 vim.opt.rtp:prepend(lazypath)
 
 -- Setup lazy.nvim
 require("lazy").setup({
 	spec = { { import = "plugins" } },
-	-- colorscheme that will be used when installing plugins.
-	-- automatically check for plugin updates
+	install = { colorscheme = { "tokyonight", "habamax" } },
 	checker = { enabled = true, notify = false},
 	opts = {
 		defaults = { lazy = { enabled = true } },
 		rocks = { enabled = false }
 	},
+
 	change_detection = {
 		notify = false,
 	},
+
+	performance = {
+		rtp = {
+			-- disable some rtp plugins
+			disabled_plugins = {
+				"gzip",
+				"tarPlugin",
+				"tohtml",
+				"tutor",
+				"zipPlugin",
+			},
+		},
+	},
 })
 
-require("highlight")
+require("config.highlight")
