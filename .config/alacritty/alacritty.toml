@@ -1,0 +1,15 @@
+[general]
+
+import = [
+	"~/.config/alacritty/themes/catppuccin_mocha.toml"
+]
+
+[window]
+
+padding = { x = 4, y = 4 }
+
+[font]
+
+normal = { family = "Caskaydia Cove Nerd Font", style = "Regular" }
+
+size = 10
