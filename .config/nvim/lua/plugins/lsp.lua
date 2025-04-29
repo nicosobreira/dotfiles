@@ -169,24 +169,24 @@ return {
 
 		-- Enable the following language servers
 		local servers = {
-			-- clangd = {
-			-- 	cmd = {
-			-- 		"clangd",
-			-- 		"--background-index", -- Better for large projects
-			-- 		"--header-insertion=never", -- Avoid auto-adding headers
-			-- 	},
-			-- 	init_options = {
-			-- 		fallbackFlags = {
-			-- 			"-Wall",
-			-- 			"-Wextra",
-			-- 			"-Wshadow",
-			-- 			"-Wconversion",
-			-- 			"-Wfloat-equal",
-			-- 			"-Wno-unused-const-variable",
-			-- 			"-Wno-sign-conversion",
-			-- 		}
-			-- 	},
-			-- },
+			clangd = {
+				cmd = {
+					"clangd",
+					"--background-index", -- Better for large projects
+					"--header-insertion=never", -- Avoid auto-adding headers
+				},
+				init_options = {
+					fallbackFlags = {
+						"-Wall",
+						"-Wextra",
+						"-Wshadow",
+						"-Wconversion",
+						"-Wfloat-equal",
+						"-Wno-unused-const-variable",
+						"-Wno-sign-conversion",
+					}
+				},
+			},
 			bashls = {},
 			lua_ls = {
 				settings = {
@@ -221,7 +221,7 @@ return {
 		require("mason-tool-installer").setup { ensure_installed = ensure_installed }
 
 		require("mason-lspconfig").setup {
-			ensure_installed = { "tree-sitter-cli" },
+			ensure_installed = {},
 			automatic_installation = false,
 			handlers = {
 				function(server_name)
