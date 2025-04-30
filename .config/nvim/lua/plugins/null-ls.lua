@@ -1,4 +1,5 @@
 return {
+	enabled = false,
 	"nvimtools/none-ls.nvim",
 	dependencies = {"nvim-lua/plenary.nvim"},
 	ft = {"bash", "sh"},
