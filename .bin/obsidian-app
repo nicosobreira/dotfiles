@@ -6,7 +6,6 @@ set -eou pipefail
 SCRIPT_FILE=$(realpath $0)
 
 WGET_OUTPUT="-q --show-progress"
-DEPENDENCIES="curl wget"
 
 PREFIX="$HOME/.local"
 OBSIDIAN="$PREFIX/obsidian-app"
@@ -26,6 +25,15 @@ get_latest_repo_version() {
 		head -1
 }
 
+check_dependencies() {
+	if command -v curl &>/dev/null && command -v wget &>/dev/null; then
+		return
+	fi
+	echo "Need to install the dependencies"
+	show_help
+	exit 3
+}
+
 init_folders() {
 	if [[ ! -d $OBSIDIAN ]]; then
 		mkdir -p "$OBSIDIAN"
@@ -33,11 +41,6 @@ init_folders() {
 	if [[ ! -d $PREFIX/share/applications ]]; then
 		mkdir -p "$PREFIX/share/applications"
 	fi
-}
-
-install_dependencies() {
-	echo -e "\tInstalling dependencies"
-	sudo apt-get install $DEPENDENCIES -y
 }
 
 get_icon () {
@@ -51,8 +54,8 @@ get_icon () {
 }
 
 get_obsidian() {
+	check_dependencies
 	init_folders
-	install_dependencies
 	local latest_version=$(get_latest_repo_version "obsidianmd" "obsidian-releases" "v")
 	local current_version=$(cat "$CURRENT_VERSION_FILE" 2>/dev/null)
 
@@ -108,7 +111,10 @@ ARGUMENTS:
         remove            Remove ceartain folders
         help              Show help
 
-EXAMPLES:
+Dependencies:
+        curl, wget
+
+Examples:
         obsidian-app run
         obsidian-app update
 EOF
