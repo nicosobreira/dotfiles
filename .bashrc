@@ -85,18 +85,17 @@ function dwm-make(){
 		return
 	fi
 
-	local current_dir="$PWD"
+	echo -e "\tBar"
+	local bar_script="$HOME/suckless/scripts/bar.sh"
+	local bar_process_id="$(pgrep -f "$bar_script")"
 
-	# Dwmblocks
-	echo -e "\tDwmblocks"
-	cd "$HOME/suckless/dwmblocks"
-	make clean
-	sudo make install
-	killall -q dwmblocks
-	setsid dwmblocks &
+	echo "Killing bar [id = $bar_process_id]"
+	kill "$bar_process_id"
+	"$bar_script" &
 
-	# Dwm
 	echo -e "\tDwm"
+	
+	local current_dir="$PWD"
 	cd "$HOME/suckless/dwm"
 	sudo make clean install
 
