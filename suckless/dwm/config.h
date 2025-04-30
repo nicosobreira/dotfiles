@@ -9,13 +9,14 @@
 /* appearance */
 static const unsigned int borderpx       = 1;   /* border pixel of windows */
 static const unsigned int snap           = 32;  /* snap pixel */
-static const unsigned int gappih         = 5;  /* horiz inner gap between windows */
-static const unsigned int gappiv         = 5;  /* vert inner gap between windows */
-static const unsigned int gappoh         = 5;  /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov         = 5;  /* vert outer gap between windows and screen edge */
+static const unsigned int gappih         = 5;   /* horiz inner gap between windows */
+static const unsigned int gappiv         = 5;   /* vert inner gap between windows */
+static const unsigned int gappoh         = 5;   /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov         = 5;   /* vert outer gap between windows and screen edge */
 static const int smartgaps_fact          = 1;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
 static const int showbar                 = 1;   /* 0 means no bar */
 static const int topbar                  = 1;   /* 0 means bottom bar */
+
 /* Status is to be shown on: -1 (all monitors), 0 (a specific monitor by index), 'A' (active monitor) */
 static const int statusmon               = 'A';
 static const unsigned int systrayspacing = 2;   /* systray spacing */
@@ -38,45 +39,55 @@ static const char dmenufont[]            = "CaskaydiaCove NF:size=12:style=Bold"
 
 static char c000000[]                    = "#000000"; // placeholder value
 
-static char normfgcolor[]                = "#bbbbbb";
-static char normbgcolor[]                = "#222222";
-static char normbordercolor[]            = "#444444";
-static char normfloatcolor[]             = "#db8fd9";
+#define COLOR_TEXT "#cdd6f4"       // White
+#define COLOR_BASE "#1e1e2e"       // Black
+#define COLOR_SURFACE_0 "#313244"  // Gray
+#define COLOR_YELLOW "#f9e2af"     // Yellow
+#define COLOR_MAUVE "#cba6f7"      // Purple
+#define COLOR_SKY "#89b4f1"        // Blue
+#define COLOR_TEAL "#a6e3a1"       // Green
+#define COLOR_RED "#f38ba8"        // Red
 
-static char selfgcolor[]                 = "#eeeeee";
-static char selbgcolor[]                 = "#005577";
-static char selbordercolor[]             = "#005577";
-static char selfloatcolor[]              = "#005577";
+static char normfgcolor[]          = COLOR_TEXT;
+static char normbgcolor[]          = COLOR_BASE;
+static char normbordercolor[]      = COLOR_SURFACE_0;
+static char normfloatcolor[]       = COLOR_YELLOW;
 
-static char titlenormfgcolor[]           = "#bbbbbb";
-static char titlenormbgcolor[]           = "#222222";
-static char titlenormbordercolor[]       = "#444444";
-static char titlenormfloatcolor[]        = "#db8fd9";
+static char selfgcolor[]           = COLOR_TEXT;
+static char selbgcolor[]           = COLOR_SKY;
+static char selbordercolor[]       = COLOR_SKY;
+static char selfloatcolor[]        = COLOR_SKY;
 
-static char titleselfgcolor[]            = "#eeeeee";
-static char titleselbgcolor[]            = "#005577";
-static char titleselbordercolor[]        = "#005577";
-static char titleselfloatcolor[]         = "#005577";
+static char titlenormfgcolor[]     = COLOR_TEXT;
+static char titlenormbgcolor[]     = COLOR_BASE;
+static char titlenormbordercolor[] = COLOR_SURFACE_0;
+static char titlenormfloatcolor[]  = COLOR_YELLOW;
 
-static char tagsnormfgcolor[]            = "#bbbbbb";
-static char tagsnormbgcolor[]            = "#222222";
-static char tagsnormbordercolor[]        = "#444444";
-static char tagsnormfloatcolor[]         = "#db8fd9";
+static char titleselfgcolor[]      = COLOR_BASE;
+static char titleselbgcolor[]      = COLOR_MAUVE;
+static char titleselbordercolor[]  = COLOR_MAUVE;
+static char titleselfloatcolor[]   = COLOR_MAUVE;
 
-static char tagsselfgcolor[]             = "#eeeeee";
-static char tagsselbgcolor[]             = "#005577";
-static char tagsselbordercolor[]         = "#005577";
-static char tagsselfloatcolor[]          = "#005577";
+static char tagsnormfgcolor[]      = COLOR_MAUVE;
+static char tagsnormbgcolor[]      = COLOR_BASE;
+static char tagsnormbordercolor[]  = COLOR_SURFACE_0;
+static char tagsnormfloatcolor[]   = COLOR_YELLOW;
 
-static char hidnormfgcolor[]             = "#005577";
-static char hidselfgcolor[]              = "#227799";
-static char hidnormbgcolor[]             = "#222222";
-static char hidselbgcolor[]              = "#222222";
+static char tagsselfgcolor[]       = COLOR_TEAL;
+static char tagsselbgcolor[]       = COLOR_BASE;
+static char tagsselbordercolor[]   = COLOR_SURFACE_0;
+static char tagsselfloatcolor[]    = COLOR_YELLOW;
 
-static char urgfgcolor[]                 = "#bbbbbb";
-static char urgbgcolor[]                 = "#222222";
-static char urgbordercolor[]             = "#ff0000";
-static char urgfloatcolor[]              = "#db8fd9";
+static char hidnormfgcolor[]       = COLOR_SKY;
+static char hidnormbgcolor[]       = COLOR_BASE;
+
+static char hidselfgcolor[]        = COLOR_TEAL;
+static char hidselbgcolor[]        = COLOR_BASE;
+
+static char urgfgcolor[]           = COLOR_MAUVE;
+static char urgbgcolor[]           = COLOR_BASE;
+static char urgbordercolor[]       = COLOR_RED;
+static char urgfloatcolor[]        = COLOR_YELLOW;
 
 static char *colors[][ColCount] = {
 	/*                       fg                bg                border                float */
@@ -160,6 +171,7 @@ static const Rule rules[] = {
 	RULE(.class = "Vivaldi-stable", .tags = 1 << 1)
 
 	RULE(.class = "obsidian", .tags = 1 << 2)
+	RULE(.class = "Gimp", .tags = 1 << 2)
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as
@@ -219,7 +231,8 @@ static const char *dmenucmd[] = {
 
 static const char *termcmd[]           = { "alacritty", NULL };
 
-static const char *flameshotCmd[]      = { "flameshot", "gui", NULL };
+static const char *printScreenCmd[]    = { "flameshot", "gui", NULL };
+static const char *browserCmd[]        = { "vivaldi-stable", NULL };
 
 static const char *brightnessUpCmd[]   = { "brightnessctl", "set", "5%+", NULL };
 static const char *brightnessDownCmd[] = { "brightnessctl", "set", "5%-", NULL };
@@ -229,7 +242,6 @@ static const Key keys[] = {
 	{ MODKEY,           XK_p,                     spawn,          SHCMD("$HOME/.config/rofi/launcher.sh") },
 	{ MODKEY|ShiftMask, XK_p,                     spawn,          {.v = dmenucmd } },
 	{ MODKEY,           XK_Return,                spawn,          {.v = termcmd } },
-	{ MODKEY,           XK_b,                     togglebar,      {0} },
 	{ MODKEY,           XK_j,                     focusstack,     {.i = +1 } },
 	{ MODKEY,           XK_k,                     focusstack,     {.i = -1 } },
 	{ MODKEY,           XK_i,                     incnmaster,     {.i = +1 } },
@@ -252,13 +264,13 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask, XK_period,                tagmon,         {.i = +1 } },
 
 	/* Custom Keys */
-	{ 0,                XK_Print,                 spawn,          {.v = flameshotCmd } },
+	{ 0,                XK_Print,                 spawn,          {.v = printScreenCmd } },
 	{ 0,                XF86XK_AudioMute,         spawn,          SHCMD("pactl set-sink-mute 0 toggle") },
 	{ 0,                XF86XK_AudioLowerVolume,  spawn,          SHCMD("pactl set-sink-mute 0 false; pactl set-sink-volume 0 -3%") },
 	{ 0,                XF86XK_AudioRaiseVolume,  spawn,          SHCMD("pactl set-sink-mute 0 false; pactl set-sink-volume 0 +3%")  },
 	{ 0,                XF86XK_MonBrightnessUp,   spawn,          {.v = brightnessUpCmd } },
 	{ 0,                XF86XK_MonBrightnessDown, spawn,          {.v = brightnessDownCmd } },
-	{ 0,                XK_ISO_Next_Group,        spawn,          SHCMD("pkill -RTMIN+10 dwmblocks") },
+	{ MODKEY,           XK_b,                     spawn,          {.v = browserCmd } },
 
 	{ MODKEY,           XK_q,                     quit,           {0} },
 	{ MODKEY|ShiftMask, XK_q,                     spawn,          SHCMD("$HOME/.config/rofi/powermenu.sh") },
