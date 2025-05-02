@@ -11,17 +11,19 @@
 "       '---" |  ,   / '---'            "
 "              ---`-'                   "
 " == CONFIG ==
-set background=dark
-set termguicolors
-filetype plugin indent on
-syntax enable
-
-" TODO Check if the *sorbet* colorscheme exist
-if has('nvim')
-	colorscheme sorbet
-else
-	colorscheme koehler
+if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
+
+syntax on
+set termguicolors
+
+colorscheme koehler
+
+set background=dark
+filetype plugin indent on
+
 
 set nocompatible
 
