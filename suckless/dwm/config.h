@@ -7,15 +7,15 @@
 #define CMD(...)   { .v = (const char*[]){ __VA_ARGS__, NULL } }
 
 /* appearance */
-static const unsigned int borderpx       = 1;   /* border pixel of windows */
-static const unsigned int snap           = 32;  /* snap pixel */
-static const unsigned int gappih         = 5;   /* horiz inner gap between windows */
-static const unsigned int gappiv         = 5;   /* vert inner gap between windows */
-static const unsigned int gappoh         = 5;   /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov         = 5;   /* vert outer gap between windows and screen edge */
-static const int smartgaps_fact          = 1;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
-static const int showbar                 = 1;   /* 0 means no bar */
-static const int topbar                  = 1;   /* 0 means bottom bar */
+static const unsigned int borderpx = 1;   /* border pixel of windows */
+static const unsigned int snap     = 32;  /* snap pixel */
+static const unsigned int gappih   = 5;   /* horiz inner gap between windows */
+static const unsigned int gappiv   = 5;   /* vert inner gap between windows */
+static const unsigned int gappoh   = 5;   /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov   = 5;   /* vert outer gap between windows and screen edge */
+static const int smartgaps_fact    = 1;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
+static const int showbar           = 1;   /* 0 means no bar */
+static const int topbar            = 1;   /* 0 means bottom bar */
 
 /* Status is to be shown on: -1 (all monitors), 0 (a specific monitor by index), 'A' (active monitor) */
 static const int statusmon               = 'A';
@@ -23,68 +23,68 @@ static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int showsystray             = 1;   /* 0 means no systray */
 
 /* alt-tab configuration */
-static const unsigned int tabmodkey      = 0x40; /* (Alt) when this key is held down the alt-tab functionality stays active. Must be the same modifier as used to run alttabstart */
-static const unsigned int tabcyclekey    = 0x17; /* (Tab) when this key is hit the menu moves one position forward in client stack. Must be the same key as used to run alttabstart */
-static const unsigned int tabposy        = 1;    /* tab position on Y axis, 0 = top, 1 = center, 2 = bottom */
-static const unsigned int tabposx        = 1;    /* tab position on X axis, 0 = left, 1 = center, 2 = right */
-static const unsigned int maxwtab        = 600;  /* tab menu width */
-static const unsigned int maxhtab        = 200;  /* tab menu height */
+static const unsigned int tabmodkey   = 0x40;  /* (Alt) when this key is held down the alt-tab functionality stays active. Must be the same modifier as used to run alttabstart */
+static const unsigned int tabcyclekey = 0x17;  /* (Tab) when this key is hit the menu moves one position forward in client stack. Must be the same key as used to run alttabstart */
+static const unsigned int tabposy     = 1;     /* tab position on Y axis, 0 = top, 1 = center, 2 = bottom */
+static const unsigned int tabposx     = 1;     /* tab position on X axis, 0 = left, 1 = center, 2 = right */
+static const unsigned int maxwtab     = 600;   /* tab menu width */
+static const unsigned int maxhtab     = 200;   /* tab menu height */
 
 /* Indicators: see patch/bar_indicators.h for options */
-static int tagindicatortype              = INDICATOR_TOP_LEFT_SQUARE;
-static int tiledindicatortype            = INDICATOR_NONE;
-static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
-static const char *fonts[]               = { "CaskaydiaCove NF:size=12:style=Regular" };
-static const char dmenufont[]            = "CaskaydiaCove NF:size=12:style=Bold";
+static int tagindicatortype   = INDICATOR_TOP_LEFT_SQUARE;
+static int tiledindicatortype = INDICATOR_NONE;
+static int floatindicatortype = INDICATOR_TOP_LEFT_SQUARE;
+static const char *fonts[]    = { "CaskaydiaCove NF:size=12:style=Regular" };
+static const char dmenufont[] = "CaskaydiaCove NF:size=12:style=Bold";
 
-static char c000000[]                    = "#000000"; // placeholder value
+static char c000000[] = "#000000"; // placeholder value
 
-#define COLOR_TEXT "#cdd6f4"       // White
-#define COLOR_BASE "#1e1e2e"       // Black
-#define COLOR_SURFACE_0 "#313244"  // Gray
-#define COLOR_YELLOW "#f9e2af"     // Yellow
-#define COLOR_MAUVE "#cba6f7"      // Purple
-#define COLOR_SKY "#89b4f1"        // Blue
-#define COLOR_TEAL "#a6e3a1"       // Green
-#define COLOR_RED "#f38ba8"        // Red
+#define COLOR_TEXT   "#cdd6f4"
+#define COLOR_BASE   "#1e1e2e"
+#define COLOR_GRAY   "#313244"
+#define COLOR_YELLOW "#f9e2af"
+#define COLOR_MAIN   "#cba6f7"
+#define COLOR_BLUE   "#89b4f1"
+#define COLOR_GREEN  "#a6e3a1"
+#define COLOR_RED    "#f38ba8"
 
 static char normfgcolor[]          = COLOR_TEXT;
 static char normbgcolor[]          = COLOR_BASE;
-static char normbordercolor[]      = COLOR_SURFACE_0;
+static char normbordercolor[]      = COLOR_GRAY;
 static char normfloatcolor[]       = COLOR_YELLOW;
 
-static char selfgcolor[]           = COLOR_TEXT;
-static char selbgcolor[]           = COLOR_SKY;
-static char selbordercolor[]       = COLOR_SKY;
-static char selfloatcolor[]        = COLOR_SKY;
+static char selfgcolor[]           = COLOR_GRAY;
+static char selbgcolor[]           = COLOR_MAIN;
+static char selbordercolor[]       = COLOR_MAIN;
+static char selfloatcolor[]        = COLOR_MAIN;
 
 static char titlenormfgcolor[]     = COLOR_TEXT;
 static char titlenormbgcolor[]     = COLOR_BASE;
-static char titlenormbordercolor[] = COLOR_SURFACE_0;
+static char titlenormbordercolor[] = COLOR_GRAY;
 static char titlenormfloatcolor[]  = COLOR_YELLOW;
 
 static char titleselfgcolor[]      = COLOR_BASE;
-static char titleselbgcolor[]      = COLOR_MAUVE;
-static char titleselbordercolor[]  = COLOR_MAUVE;
-static char titleselfloatcolor[]   = COLOR_MAUVE;
+static char titleselbgcolor[]      = COLOR_MAIN;
+static char titleselbordercolor[]  = COLOR_MAIN;
+static char titleselfloatcolor[]   = COLOR_MAIN;
 
-static char tagsnormfgcolor[]      = COLOR_MAUVE;
+static char tagsnormfgcolor[]      = COLOR_MAIN;
 static char tagsnormbgcolor[]      = COLOR_BASE;
-static char tagsnormbordercolor[]  = COLOR_SURFACE_0;
+static char tagsnormbordercolor[]  = COLOR_GRAY;
 static char tagsnormfloatcolor[]   = COLOR_YELLOW;
 
-static char tagsselfgcolor[]       = COLOR_TEAL;
+static char tagsselfgcolor[]       = COLOR_GREEN;
 static char tagsselbgcolor[]       = COLOR_BASE;
-static char tagsselbordercolor[]   = COLOR_SURFACE_0;
+static char tagsselbordercolor[]   = COLOR_GRAY;
 static char tagsselfloatcolor[]    = COLOR_YELLOW;
 
-static char hidnormfgcolor[]       = COLOR_SKY;
+static char hidnormfgcolor[]       = COLOR_MAIN;
 static char hidnormbgcolor[]       = COLOR_BASE;
 
-static char hidselfgcolor[]        = COLOR_TEAL;
+static char hidselfgcolor[]        = COLOR_GREEN;
 static char hidselbgcolor[]        = COLOR_BASE;
 
-static char urgfgcolor[]           = COLOR_MAUVE;
+static char urgfgcolor[]           = COLOR_MAIN;
 static char urgbgcolor[]           = COLOR_BASE;
 static char urgbordercolor[]       = COLOR_RED;
 static char urgfloatcolor[]        = COLOR_YELLOW;
@@ -165,13 +165,17 @@ static const Rule rules[] = {
 	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
 	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
 	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
-
+	
 	/* Browers */
 	RULE(.class = "firefox", .tags = 1 << 1)
 	RULE(.class = "Vivaldi-stable", .tags = 1 << 1)
 
+	/* Notes */
 	RULE(.class = "obsidian", .tags = 1 << 2)
 	RULE(.class = "Gimp", .tags = 1 << 2)
+
+	/* Games */
+	RULE(.class = "retroarch", .tags = 1 << 3)
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as
@@ -187,25 +191,25 @@ static const Rule rules[] = {
  *    name - does nothing, intended for visual clue and for logging / debugging
  */
 static const BarRule barrules[] = {
-	/* monitor   bar    alignment         widthfunc                 drawfunc                clickfunc                hoverfunc       name */
-	{ -1,        0,     BAR_ALIGN_LEFT,   width_tags,               draw_tags,              click_tags,              hover_tags,     "tags" },
-	{  0,        0,     BAR_ALIGN_RIGHT,  width_systray,            draw_systray,           click_systray,           NULL,           "systray" },
-	{ -1,        0,     BAR_ALIGN_LEFT,   width_ltsymbol,           draw_ltsymbol,          click_ltsymbol,          NULL,           "layout" },
-	{ statusmon, 0,     BAR_ALIGN_RIGHT,  width_statuscolors,       draw_statuscolors,      click_statuscolors,      NULL,           "statuscolors" },
-	{ -1,        0,     BAR_ALIGN_NONE,   width_awesomebar,         draw_awesomebar,        click_awesomebar,        NULL,           "awesomebar" },
+	/* monitor   bar    alignment         widthfunc                 drawfunc                clickfunc                hoverfunc                name */
+	{ -1,        0,     BAR_ALIGN_LEFT,   width_tags,               draw_tags,              click_tags,              hover_tags,              "tags" },
+	{  0,        0,     BAR_ALIGN_RIGHT,  width_systray,            draw_systray,           click_systray,           NULL,                    "systray" },
+	{ -1,        0,     BAR_ALIGN_LEFT,   width_ltsymbol,           draw_ltsymbol,          click_ltsymbol,          NULL,                    "layout" },
+	{ statusmon, 0,     BAR_ALIGN_RIGHT,  width_status2d,           draw_status2d,          click_status2d,          NULL,                    "status2d" },
+	{ -1,        0,     BAR_ALIGN_NONE,   width_awesomebar,         draw_awesomebar,        click_awesomebar,        NULL,                    "awesomebar" },
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
-static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+static const float mfact        = 0.55; /* factor of master area size [0.05..0.95] */
+static const int nmaster        = 1;    /* number of clients in master area */
+static const int resizehints    = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
-	/* symbol     arrange function */
-	{ "[T]",      tile },    /* first entry is default */
-	{ "[F]",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
+	/* symbol  arrange function */
+	{ "[T]",   tile },    /* first entry is default */
+	{ "[F]",   NULL },    /* no layout function means floating behavior */
+	{ "[M]",   monocle },
 };
 
 /* key definitions */
@@ -238,7 +242,7 @@ static const char *brightnessUpCmd[]   = { "brightnessctl", "set", "5%+", NULL }
 static const char *brightnessDownCmd[] = { "brightnessctl", "set", "5%-", NULL };
 
 static const Key keys[] = {
-	/* modifier         key                       function        argument */
+	/* modifier                     key            function                argument */
 	{ MODKEY,           XK_p,                     spawn,          SHCMD("$HOME/.config/rofi/launcher.sh") },
 	{ MODKEY|ShiftMask, XK_p,                     spawn,          {.v = dmenucmd } },
 	{ MODKEY,           XK_Return,                spawn,          {.v = termcmd } },
