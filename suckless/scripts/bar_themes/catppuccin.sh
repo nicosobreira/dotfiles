@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env dash
 
 red="#f38ba8"
 blue="#89b4fa"
