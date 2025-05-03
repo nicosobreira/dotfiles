@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-exec /home/acerola/suckless/startdwm.sh
+exec "$HOME/suckless/startdwm.sh"

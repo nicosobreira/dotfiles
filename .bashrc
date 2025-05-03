@@ -54,7 +54,7 @@ if command -v zoxide &>/dev/null; then
 fi
 
 # -- Variables --
-# This variables make 'man --pager=less' have color have colors
+# `man -P less` have color support
 export LESS_TERMCAP_mb=$'\e[1;31m'
 export LESS_TERMCAP_md=$'\e[1;31m'
 export LESS_TERMCAP_me=$'\e[m'
@@ -64,7 +64,6 @@ export LESS_TERMCAP_ue=$'\e[m'
 export LESS_TERMCAP_us=$'\e[1;32m'
 
 export PAGER="less -R"
-export MYVIMRC="$HOME/.vimrc"
 
 if command -v nvim &>/dev/null; then
 	alias vim="nvim"
@@ -73,6 +72,7 @@ if command -v nvim &>/dev/null; then
 	export EDITOR="${VISUAL}"
 	alias svim="sudo nvim"
 elif command -v vim &>/dev/null; then
+	export MYVIMRC="$HOME/.vimrc"
 	export MANPAGER="vim +MANPAGER -"
 	export VISUAL=$(which vim)
 	export EDITOR="$VISUAL"
@@ -84,14 +84,6 @@ function dwm-make(){
 		echo "Command \"dwm\" not found"
 		return
 	fi
-
-	echo -e "\tBar"
-	local bar_script="$HOME/suckless/scripts/bar.sh"
-	local bar_process_id="$(pgrep -f "$bar_script")"
-
-	echo "Killing bar [id = $bar_process_id]"
-	kill "$bar_process_id"
-	"$bar_script" &
 
 	echo -e "\tDwm"
 	

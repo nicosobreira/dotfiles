@@ -7,12 +7,14 @@
 #define CMD(...)   { .v = (const char*[]){ __VA_ARGS__, NULL } }
 
 /* appearance */
+#define GAP (0)
+
 static const unsigned int borderpx = 1;   /* border pixel of windows */
 static const unsigned int snap     = 32;  /* snap pixel */
-static const unsigned int gappih   = 5;   /* horiz inner gap between windows */
-static const unsigned int gappiv   = 5;   /* vert inner gap between windows */
-static const unsigned int gappoh   = 5;   /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov   = 5;   /* vert outer gap between windows and screen edge */
+static const unsigned int gappih   = GAP;   /* horiz inner gap between windows */
+static const unsigned int gappiv   = GAP;   /* vert inner gap between windows */
+static const unsigned int gappoh   = GAP;   /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov   = GAP;   /* vert outer gap between windows and screen edge */
 static const int smartgaps_fact    = 1;   /* gap factor when there is only one client; 0 = no gaps, 3 = 3x outer gaps */
 static const int showbar           = 1;   /* 0 means no bar */
 static const int topbar            = 1;   /* 0 means bottom bar */
@@ -168,7 +170,7 @@ static const Rule rules[] = {
 	
 	/* Browers */
 	RULE(.class = "firefox", .tags = 1 << 1)
-	RULE(.class = "Vivaldi-stable", .tags = 1 << 1)
+	RULE(.class = "Vivaldi", .tags = 1 << 1)
 
 	/* Notes */
 	RULE(.class = "obsidian", .tags = 1 << 2)
@@ -269,9 +271,9 @@ static const Key keys[] = {
 
 	/* Custom Keys */
 	{ 0,                XK_Print,                 spawn,          {.v = printScreenCmd } },
-	{ 0,                XF86XK_AudioMute,         spawn,          SHCMD("pactl set-sink-mute 0 toggle") },
-	{ 0,                XF86XK_AudioLowerVolume,  spawn,          SHCMD("pactl set-sink-mute 0 false; pactl set-sink-volume 0 -3%") },
-	{ 0,                XF86XK_AudioRaiseVolume,  spawn,          SHCMD("pactl set-sink-mute 0 false; pactl set-sink-volume 0 +3%")  },
+	{ 0,                XF86XK_AudioMute,         spawn,          SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle") },
+	{ 0,                XF86XK_AudioLowerVolume,  spawn,          SHCMD("pactl set-sink-mute @DEFAULT_SINK@ false; pactl set-sink-volume @DEFAULT_SINK@ -3%") },
+	{ 0,                XF86XK_AudioRaiseVolume,  spawn,          SHCMD("pactl set-sink-mute @DEFAULT_SINK@ false; pactl set-sink-volume @DEFAULT_SINK@ +3%")  },
 	{ 0,                XF86XK_MonBrightnessUp,   spawn,          {.v = brightnessUpCmd } },
 	{ 0,                XF86XK_MonBrightnessDown, spawn,          {.v = brightnessDownCmd } },
 	{ MODKEY,           XK_b,                     spawn,          {.v = browserCmd } },

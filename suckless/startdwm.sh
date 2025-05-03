@@ -3,13 +3,14 @@
 xrandr
 xset r rate 190 50
 
-[[ -f ~/.Xresources ]] && xrdb -merge -I"$HOME" ~/.Xresources
+[ -f "$HOME/.Xresources" ] && xrdb -merge -I"$HOME" "$HOME/.Xresources"
 
-feh --bg-fill "~/suckless/wallpaper/wallpaper2.png"
+feh --bg-fill "$HOME/suckless/wallpaper/wallpaper2.png" &
+
 setxkbmap -model pc105 -layout br -variant abnt2
 
-setsid "~/suckless/scripts/bar.sh" &>/dev/null &
+setsid "$HOME/suckless/scripts/bar.sh" &> /dev/null &
 
 while true; do
-	dwm 2>~/.dwm.log
+	dwm 2> "$HOME/.dwm.log"
 done
