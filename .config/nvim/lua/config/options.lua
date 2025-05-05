@@ -52,9 +52,6 @@ vim.opt.laststatus = 2
 vim.opt.confirm = true
 vim.opt.title = true
 
--- Custom Tabline
-vim.opt.tabline = "%!v:lua.require('custom.tabline').get()"
-
 -- Line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -88,3 +85,6 @@ vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 -- Folding
 vim.opt.foldmethod = "syntax"
 vim.opt.foldlevel = 99
+
+-- Custom Tabline
+vim.opt.tabline = "%!v:lua.require('custom.tabline').get()"

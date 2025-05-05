@@ -1,3 +1,4 @@
+---@param name string
 local function augroup(name)
 	return vim.api.nvim_create_augroup("custom_" .. name, { clear = true })
 end
@@ -51,18 +52,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 	pattern = { "json", "jsonc", "json5" },
 	callback = function()
 		vim.wo.conceallevel = 0
-	end,
-})
-
--- Auto create dir when saving a file, in case some intermediate directory does not exist
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-	group = augroup("auto_create_dir"),
-	callback = function(event)
-		if event.match:match("^%w%w+:[\\/][\\/]") then
-			return
-		end
-		local file = vim.uv.fs_realpath(event.match) or event.match
-		vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
 	end,
 })
 
@@ -122,21 +111,44 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 		vim.api.nvim_buf_set_lines(0, 0, 0, false, lines)
 
 		-- Place cursor between the guards
-		vim.api.nvim_win_set_cursor(0, {4, 0})  -- Line 4, column 0
+		vim.api.nvim_win_set_cursor(0, {4, 0})
+	end
+})
+
+-- Automatic create Shebang
+vim.api.nvim_create_autocmd("BufNewFile", {
+	group = augroup("auto_create_shebang"),
+	pattern = "*.sh",
+	callback = function(_)
+		local shell = vim.fn.input("Add Shebang [press ENTER to NONE]: ")
+		if shell:lower() == "" then
+			return
+		end
+
+		local lines = {
+			"#!/usr/bin/env " .. shell,
+			"",
+			"",
+		}
+
+		vim.api.nvim_buf_set_lines(0, 0, 0, false, lines)
+
+		-- Place cursor some spaces  below
+		vim.api.nvim_win_set_cursor(0, {3, 0})
 	end
 })
 
 -- Sets the concellevel automatic in markdown files
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = 'markdown',
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
 	callback = function()
-		vim.api.nvim_create_autocmd('ModeChanged', {
+		vim.api.nvim_create_autocmd("ModeChanged", {
 			buffer = 0,  -- Only for current buffer
 			callback = function()
-				vim.wo.conceallevel = (vim.fn.mode() == 'i') and 0 or 2
+				vim.wo.conceallevel = (vim.fn.mode() == "i") and 0 or 2
 			end
 		})
 		-- Initialize based on current mode
-		vim.wo.conceallevel = (vim.fn.mode() == 'i') and 0 or 2
+		vim.wo.conceallevel = (vim.fn.mode() == "i") and 0 or 2
 	end
 })
