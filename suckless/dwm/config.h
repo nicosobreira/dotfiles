@@ -7,7 +7,7 @@
 #define CMD(...)   { .v = (const char*[]){ __VA_ARGS__, NULL } }
 
 /* appearance */
-#define GAP (0)
+#define GAP (5)
 
 static const unsigned int borderpx = 1;   /* border pixel of windows */
 static const unsigned int snap     = 32;  /* snap pixel */
@@ -36,19 +36,20 @@ static const unsigned int maxhtab     = 200;   /* tab menu height */
 static int tagindicatortype   = INDICATOR_TOP_LEFT_SQUARE;
 static int tiledindicatortype = INDICATOR_NONE;
 static int floatindicatortype = INDICATOR_TOP_LEFT_SQUARE;
+
 static const char *fonts[]    = { "CaskaydiaCove NF:size=12:style=Regular" };
 static const char dmenufont[] = "CaskaydiaCove NF:size=12:style=Bold";
 
 static char c000000[] = "#000000"; // placeholder value
 
-#define COLOR_TEXT   "#cdd6f4"
-#define COLOR_BASE   "#1e1e2e"
-#define COLOR_GRAY   "#313244"
-#define COLOR_YELLOW "#f9e2af"
-#define COLOR_MAIN   "#cba6f7"
-#define COLOR_BLUE   "#89b4f1"
-#define COLOR_GREEN  "#a6e3a1"
-#define COLOR_RED    "#f38ba8"
+#define COLOR_TEXT      "#cdd6f4"
+#define COLOR_BASE      "#1e1e2e"
+#define COLOR_GRAY      "#313244"
+#define COLOR_YELLOW    "#f9e2af"
+#define COLOR_MAIN      "#cba6f7"
+#define COLOR_BLUE      "#89b4f1"
+#define COLOR_SECONDARY "#a6e3a1"
+#define COLOR_RED       "#f38ba8"
 
 static char normfgcolor[]          = COLOR_TEXT;
 static char normbgcolor[]          = COLOR_BASE;
@@ -75,7 +76,7 @@ static char tagsnormbgcolor[]      = COLOR_BASE;
 static char tagsnormbordercolor[]  = COLOR_GRAY;
 static char tagsnormfloatcolor[]   = COLOR_YELLOW;
 
-static char tagsselfgcolor[]       = COLOR_GREEN;
+static char tagsselfgcolor[]       = COLOR_SECONDARY;
 static char tagsselbgcolor[]       = COLOR_BASE;
 static char tagsselbordercolor[]   = COLOR_GRAY;
 static char tagsselfloatcolor[]    = COLOR_YELLOW;
@@ -83,7 +84,7 @@ static char tagsselfloatcolor[]    = COLOR_YELLOW;
 static char hidnormfgcolor[]       = COLOR_MAIN;
 static char hidnormbgcolor[]       = COLOR_BASE;
 
-static char hidselfgcolor[]        = COLOR_GREEN;
+static char hidselfgcolor[]        = COLOR_SECONDARY;
 static char hidselbgcolor[]        = COLOR_BASE;
 
 static char urgfgcolor[]           = COLOR_MAIN;
@@ -240,9 +241,6 @@ static const char *termcmd[]           = { "alacritty", NULL };
 static const char *printScreenCmd[]    = { "flameshot", "gui", NULL };
 static const char *browserCmd[]        = { "vivaldi-stable", NULL };
 
-static const char *brightnessUpCmd[]   = { "brightnessctl", "set", "5%+", NULL };
-static const char *brightnessDownCmd[] = { "brightnessctl", "set", "5%-", NULL };
-
 static const Key keys[] = {
 	/* modifier                     key            function                argument */
 	{ MODKEY,           XK_p,                     spawn,          SHCMD("$HOME/.config/rofi/launcher.sh") },
@@ -268,14 +266,16 @@ static const Key keys[] = {
 	{ MODKEY,           XK_period,                focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask, XK_comma,                 tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask, XK_period,                tagmon,         {.i = +1 } },
+	{ MODKEY,           XK_BackSpace,             zoom,           {0} },
 
 	/* Custom Keys */
 	{ 0,                XK_Print,                 spawn,          {.v = printScreenCmd } },
-	{ 0,                XF86XK_AudioMute,         spawn,          SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle") },
-	{ 0,                XF86XK_AudioLowerVolume,  spawn,          SHCMD("pactl set-sink-mute @DEFAULT_SINK@ false; pactl set-sink-volume @DEFAULT_SINK@ -3%") },
-	{ 0,                XF86XK_AudioRaiseVolume,  spawn,          SHCMD("pactl set-sink-mute @DEFAULT_SINK@ false; pactl set-sink-volume @DEFAULT_SINK@ +3%")  },
-	{ 0,                XF86XK_MonBrightnessUp,   spawn,          {.v = brightnessUpCmd } },
-	{ 0,                XF86XK_MonBrightnessDown, spawn,          {.v = brightnessDownCmd } },
+	{ 0,                XF86XK_AudioMute,         spawn,          SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle; kill -44 $(pidof dwmblocks)") },
+	{ 0,                XF86XK_AudioLowerVolume,  spawn,          SHCMD("pactl set-sink-mute @DEFAULT_SINK@ false; pactl set-sink-volume @DEFAULT_SINK@ -3%; kill -44 $(pidof dwmblocks)") },
+	{ 0,                XF86XK_AudioRaiseVolume,  spawn,          SHCMD("pactl set-sink-mute @DEFAULT_SINK@ false; pactl set-sink-volume @DEFAULT_SINK@ +3%; kill -44 $(pidof dwmblocks)")  },
+
+	{ 0,                XF86XK_MonBrightnessUp,   spawn,          SHCMD("brightnessctl set 5%+; kill -44 $(pidof dwmblocks)") },
+	{ 0,                XF86XK_MonBrightnessDown, spawn,          SHCMD("brightnessctl set 5%-; kill -44 $(pidof dwmblocks)") },
 	{ MODKEY,           XK_b,                     spawn,          {.v = browserCmd } },
 
 	{ MODKEY,           XK_q,                     quit,           {0} },

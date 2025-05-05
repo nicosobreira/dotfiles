@@ -6,3 +6,5 @@ black="#1e1e2e"
 yellow="#f9e2af"
 purple="#cba6f7"
 white="#1e1e2e"
+
+main_color="$purple"

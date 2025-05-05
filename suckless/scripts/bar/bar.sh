@@ -2,8 +2,6 @@
 
 . "$HOME/suckless/scripts/bar_themes/catppuccin.sh"
 
-main_color="$purple"
-
 get_battery() {
 	if [ "$(cat /sys/class/power_supply/BAT1/status)" = "Charging" ]; then
 		battery_symbol="^c$green^󰂄 ^d^"
