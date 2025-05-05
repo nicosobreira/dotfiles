@@ -49,10 +49,6 @@ if command -v fzf &>/dev/null; then
 	eval "$(fzf --bash)"
 fi
 
-if command -v zoxide &>/dev/null; then
-	eval "$(zoxide init bash)"
-fi
-
 # -- Variables --
 # `man -P less` have color support
 export LESS_TERMCAP_mb=$'\e[1;31m'
@@ -63,31 +59,37 @@ export LESS_TERMCAP_so=$'\e[1;44;33m'
 export LESS_TERMCAP_ue=$'\e[m'
 export LESS_TERMCAP_us=$'\e[1;32m'
 
-export PAGER="less -R"
+export LESS="-R"
+export MYVIMRC="$HOME/.vimrc"
 
 if command -v nvim &>/dev/null; then
 	alias vim="nvim"
 	export MANPAGER="nvim +Man!"
 	export VISUAL="nvim"
 	export EDITOR="${VISUAL}"
-	alias svim="sudo nvim"
 elif command -v vim &>/dev/null; then
-	export MYVIMRC="$HOME/.vimrc"
 	export MANPAGER="vim +MANPAGER -"
 	export VISUAL=$(which vim)
 	export EDITOR="$VISUAL"
-	alias svim='sudo vim -u $HOME/.vimrc'
 fi
 
-function dwm-make(){
+function dwm-make() {
 	if ! command -v dwm &>/dev/null; then
 		echo "Command \"dwm\" not found"
 		return
 	fi
 
-	echo -e "\tDwm"
-	
 	local current_dir="$PWD"
+
+	echo -e "\tDwmblocks"
+
+	cd "$HOME/suckless/dwmblocks"
+	sudo make clean install
+	kill -TERM $(pidof dwmblocks)
+	dwmblocks &>/dev/null &
+
+	echo -e "\tDwm"
+
 	cd "$HOME/suckless/dwm"
 	sudo make clean install
 
@@ -107,6 +109,7 @@ function y() {
 		echo "Command \"yazi\" not found"
 		return
 	fi
+
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
 	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
@@ -121,21 +124,20 @@ function reload() {
 
 function notes() {
 	local notes_file="$HOME/.notes"
-	[[ ! -f "$notes_file" ]] && return	# File not found
-	[[ ! -s "$notes_file" ]] && return	# File is empty
+	[[ ! -f "$notes_file" ]] && return  # File not found
+	[[ ! -s "$notes_file" ]] && return  # File is empty
 	printf "\tNOTES\n"
 	cat "$notes_file"
 }
 
 # -- Alias --
-alias dwm-edit="$EDITOR $HOME/suckless/dwm/config.h"
+alias dwm-edit='$EDITOR $HOME/suckless/dwm/config.h'
 
+alias svim='sudo vim -u $HOME/.vimrc'
 alias make='make -j$(nproc)'
 alias c="clear"
 alias duh="du --human-readable"
 alias mkdir="mkdir -p"
-
-alias less="less -R"
 
 alias dir="dir --color=auto"
 alias vdir="vdir --color=auto"
@@ -164,18 +166,18 @@ function __prompt_command() {
 	# local white="\e[37m"
 	local reset="\e[m"
 
-	nonzero_return() {
-		if [[ $retval != 0 ]]; then
-			echo -ne " ${red}[${retval}]${reset}"
+	function nonzero_return() {
+		if [[ "$retval" -ne 0 ]]; then
+			printf " ${red}[${retval}]${reset}"
 		fi
 	}
 
-git_branch() {
-	local branch=$(git branch --show-current 2>/dev/null)
-	if [[ -n "$branch" ]]; then
-		echo -ne " ${magenta}(${branch})${reset}"
-	fi
-}
+	function git_branch() {
+		local branch=$(git branch --show-current 2>/dev/null)
+		if [[ -n "$branch" ]]; then
+			printf " ${magenta}(${branch})${reset}"
+		fi
+	}
 
 PS1="\n${blue}\w${reset}"
 PS1+="$(git_branch)"
