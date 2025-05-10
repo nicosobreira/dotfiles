@@ -38,16 +38,16 @@ check_need_update() {
 	local program=$1
 	local search_string=$2
 	local git_user_name=$3
-	local git_repo=${4:-$1}
+	local git_repo=${4:-"$1"}
 	local version_arg=${5:-"--version"}
 	local tag_name_pre=${6:-}
 	local current_version=""
 	if command -v "${program}" >/dev/null; then
-		echo "Getting the current version"
 		current_version=$(${program} ${version_arg} 2>/dev/null | grep -oP "${search_string}\K[0-9.]+" | head -1)
+		echo "Current version: ${current_version}"
 	fi
-	echo "Getting the latest version from ${git_user_name}/${git_repo}"
 	latest_version=$(get_latest_repo_version "${git_user_name}" "${git_repo}" "${tag_name_pre}")
+	echo "Latest version from ${git_user_name}/${git_repo}: ${latest_version}"
 	if [[ -z $latest_version ]]; then
 		echo "Error: Unable to access ${git_user_name}/${git_repo}"
 		return 3
@@ -168,15 +168,23 @@ install_neovim() {
 	fi
 	cd /tmp
 	local folder_name="nvim-linux-x86_64"
-	local tar_file="${folder_name}.tar.gz"
+	local tar_file="/tmp/${folder_name}.tar.gz"
 	local folders=("bin" "lib" "share")
 	wget ${WGET_OUTPUT} -O ${tar_file} \
 		https://github.com/neovim/neovim/releases/latest/download/${folder_name}.tar.gz
+
+	echo "Unziping ${tar_file}"
 	tar -xzf ${tar_file}
+
+	echo "Removing old runtime folder"
 	rm -rf $PREFIX/share/nvim/runtime
+	
+	echo "Moving new folders"
 	for dir in "${folders[@]}"; do
 		cp -R ${folder_name}/${dir}/* $PREFIX/${dir}
 	done
+
+	echo "Done!"
 }
 
 install_all() {
