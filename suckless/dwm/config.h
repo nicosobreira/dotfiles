@@ -267,6 +267,8 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask, XK_comma,                 tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask, XK_period,                tagmon,         {.i = +1 } },
 	{ MODKEY,           XK_BackSpace,             zoom,           {0} },
+	{ MODKEY,           XK_b,                     spawn,          {.v = browserCmd } },
+	{ MODKEY|ShiftMask, XK_b,                     togglebar,      {0} },
 
 	/* Custom Keys */
 	{ 0,                XK_Print,                 spawn,          {.v = printScreenCmd } },
@@ -276,7 +278,6 @@ static const Key keys[] = {
 
 	{ 0,                XF86XK_MonBrightnessUp,   spawn,          SHCMD("brightnessctl set 5%+; kill -44 $(pidof dwmblocks)") },
 	{ 0,                XF86XK_MonBrightnessDown, spawn,          SHCMD("brightnessctl set 5%-; kill -44 $(pidof dwmblocks)") },
-	{ MODKEY,           XK_b,                     spawn,          {.v = browserCmd } },
 
 	{ MODKEY,           XK_q,                     quit,           {0} },
 	{ MODKEY|ShiftMask, XK_q,                     spawn,          SHCMD("$HOME/.config/rofi/powermenu.sh") },
