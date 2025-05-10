@@ -13,7 +13,7 @@ end
 -- This is where you actually apply your config choices
 
 -- For example, changing the color scheme:
-config.color_scheme = 'Palenight (Gogh)' 
+config.color_scheme = 'Catppuccin Mocha'
 
 -- Set Cursor
 config.default_cursor_style = 'BlinkingBlock'
@@ -34,7 +34,8 @@ config.keys = {
 }
 
 -- Set a default font
-config.font = wezterm.font 'Cascadia Code'
+config.font = wezterm.font('Caskaydia Cove NerdFont')
+config.font_size = 10
 
 -- and finally, return the configuration to wezterm
 return config
