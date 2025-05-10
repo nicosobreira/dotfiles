@@ -85,7 +85,7 @@ function dwm-make() {
 
 	cd "$HOME/suckless/dwmblocks"
 	sudo make clean install
-	kill -TERM $(pidof dwmblocks)
+	kill -TERM $(pgrep dwmblocks)
 	dwmblocks &>/dev/null &
 
 	echo -e "\tDwm"
@@ -101,7 +101,7 @@ function cht() {
 	local style="dracula"
 	local query="$*"
 	query="${query// /+}"
-	curl -s "cht.sh/${query}?style=${style}" | $PAGER
+	curl -s "cht.sh/${query}?style=${style}" | "$PAGER"
 }
 
 function y() {
