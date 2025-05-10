@@ -25,6 +25,5 @@ return {
 				path = obsidian_path,
 			},
 		},
-		disable_frontmatter = true,
 	},
 }
