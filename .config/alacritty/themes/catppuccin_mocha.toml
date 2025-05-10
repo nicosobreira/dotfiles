@@ -48,7 +48,9 @@ red = '#F38BA8' # red
 green = '#A6E3A1' # green
 yellow = '#F9E2AF' # yellow
 blue = '#89B4FA' # blue
-magenta = '#F5C2E7' # pink
+
+magenta = '#CBA6F7' # magenta
+
 cyan = '#94E2D5' # teal
 white = '#BAC2DE' # subtext1
 
@@ -59,7 +61,9 @@ red = '#F38BA8' # red
 green = '#A6E3A1' # green
 yellow = '#F9E2AF' # yellow
 blue = '#89B4FA' # blue
-magenta = '#F5C2E7' # pink
+
+magenta = '#CBA6F7' # magenta
+
 cyan = '#94E2D5' # teal
 white = '#A6ADC8' # subtext0
 
@@ -70,6 +74,8 @@ red = '#F38BA8' # red
 green = '#A6E3A1' # green
 yellow = '#F9E2AF' # yellow
 blue = '#89B4FA' # blue
-magenta = '#F5C2E7' # pink
+
+magenta = '#CBA6F7' # magenta
+
 cyan = '#94E2D5' # teal
 white = '#BAC2DE' # subtext1
