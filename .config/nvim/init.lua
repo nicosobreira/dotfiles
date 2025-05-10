@@ -24,16 +24,13 @@ vim.opt.rtp:prepend(lazypath)
 -- Setup lazy.nvim
 require("lazy").setup({
 	spec = { { import = "plugins" } },
-	install = { colorscheme = { "tokyonight", "habamax" } },
-	checker = { enabled = true, notify = false},
-	opts = {
-		defaults = { lazy = { enabled = true } },
-		rocks = { enabled = false }
-	},
+	install = { colorscheme = { "catppuccin-mocha", "habamax" } },
+	checker = { enabled = true, notify = false },
 
 	change_detection = {
 		notify = false,
 	},
+	rocks = { enabled = false },
 
 	performance = {
 		rtp = {
