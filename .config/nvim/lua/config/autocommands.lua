@@ -3,12 +3,6 @@ local function augroup(name)
 	return vim.api.nvim_create_augroup("custom_" .. name, { clear = true })
 end
 
--- Move help and man pages to the right side
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "help", "man" },
-	command = "wincmd L",
-})
-
 -- Terminal options
 vim.api.nvim_create_autocmd("TermOpen", {
 	group = augroup("term_open"),
