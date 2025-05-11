@@ -276,8 +276,8 @@ static const Key keys[] = {
 	{ 0,                XF86XK_AudioLowerVolume,  spawn,          SHCMD("pactl set-sink-mute @DEFAULT_SINK@ false; pactl set-sink-volume @DEFAULT_SINK@ -3%; kill -44 $(pidof dwmblocks)") },
 	{ 0,                XF86XK_AudioRaiseVolume,  spawn,          SHCMD("pactl set-sink-mute @DEFAULT_SINK@ false; pactl set-sink-volume @DEFAULT_SINK@ +3%; kill -44 $(pidof dwmblocks)")  },
 
-	{ 0,                XF86XK_MonBrightnessUp,   spawn,          SHCMD("brightnessctl set 5%+; kill -44 $(pidof dwmblocks)") },
-	{ 0,                XF86XK_MonBrightnessDown, spawn,          SHCMD("brightnessctl set 5%-; kill -44 $(pidof dwmblocks)") },
+	{ 0,                XF86XK_MonBrightnessUp,   spawn,          SHCMD("brightnessctl set 5%+; kill -45 $(pidof dwmblocks)") },
+	{ 0,                XF86XK_MonBrightnessDown, spawn,          SHCMD("brightnessctl set 5%-; kill -45 $(pidof dwmblocks)") },
 
 	{ MODKEY,           XK_q,                     quit,           {0} },
 	{ MODKEY|ShiftMask, XK_q,                     spawn,          SHCMD("$HOME/.config/rofi/powermenu.sh") },
