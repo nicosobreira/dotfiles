@@ -12,7 +12,7 @@ vim.opt.autoread = true
 vim.opt.encoding = "utf-8"
 vim.opt.showmode = false
 vim.opt.scrolloff = 10
-vim.opt.backspace = {"indent", "eol", "start"}
+vim.opt.backspace = { "indent", "eol", "start" }
 
 -- Undo
 vim.opt.backup = false
@@ -28,7 +28,7 @@ vim.opt.pumheight = 10
 vim.opt.conceallevel = 2
 
 -- Spell check
-vim.opt.spelllang = {"en", "pt_br"}
+vim.opt.spelllang = { "en", "pt_br" }
 
 -- Indentation
 vim.opt.breakindent = true
