@@ -2,4 +2,4 @@
 
 . "$HOME/suckless/scripts/bar_themes/catppuccin.sh"
 
-printf "^c$main_color^ ^d^%s" "$(date "+%m/%d")"
+printf "^c$main_color^ ^d^%s" "$(date "+%d/%m")"
