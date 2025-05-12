@@ -69,7 +69,7 @@ if command -v nvim &>/dev/null; then
 	export EDITOR="${VISUAL}"
 elif command -v vim &>/dev/null; then
 	export MANPAGER="vim +MANPAGER -"
-	export VISUAL=$(which vim)
+	export VISUAL="$(which vim)"
 	export EDITOR="$VISUAL"
 fi
 
@@ -83,17 +83,17 @@ function dwm-make() {
 
 	echo -e "\tDwmblocks"
 
-	cd "$HOME/suckless/dwmblocks"
-	sudo make clean install
+	cd "$HOME/suckless/dwmblocks" || return
+	sh -c "sudo make clean install"
 	kill -TERM $(pgrep dwmblocks)
 	dwmblocks &>/dev/null &
 
 	echo -e "\tDwm"
 
-	cd "$HOME/suckless/dwm"
-	sudo make clean install
+	cd "$HOME/suckless/dwm" || return
+	sh -c "sudo make clean install"
 
-	cd "$current_dir"
+	cd "$current_dir" || return
 }
 
 # -- Functions --
@@ -168,14 +168,16 @@ function __prompt_command() {
 
 	function nonzero_return() {
 		if [[ "$retval" -ne 0 ]]; then
-			printf " ${red}[${retval}]${reset}"
+			printf " %s[%s]%s" "${red}" "${retval}" "${reset}"
 		fi
 	}
 
 	function git_branch() {
-		local branch=$(git branch --show-current 2>/dev/null)
+		local branch
+		branch=$(git branch --show-current 2>/dev/null)
 		if [[ -n "$branch" ]]; then
-			printf " ${magenta}(${branch})${reset}"
+			printf " %s[%s]%s" "${magenta}" "${branch}" "${reset}"
+
 		fi
 	}
 
