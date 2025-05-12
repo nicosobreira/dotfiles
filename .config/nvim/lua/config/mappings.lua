@@ -91,12 +91,16 @@ end,
 
 vim.keymap.set('x', '<', '<gv')
 vim.keymap.set('x', '>', '>gv')
+
+-- Prettier moves
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
+
+vim.keymap.set('n', 'G', 'Gzz')
 
 -- Lazy
 vim.keymap.set("n", "<leader>ll", "<cmd>Lazy<CR>")
 
--- Autocomple in normal mode
+-- Autocomplete in normal mode
 vim.keymap.set("i", "<C-n>", "<C-x><C-o><C-n>", { noremap = false, silent = true})
 vim.keymap.set("i", "<C-p>", "<C-x><C-o><C-p>", { noremap = false, silent = true})
