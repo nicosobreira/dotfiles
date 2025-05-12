@@ -27,4 +27,15 @@ int func(int n[10]) {
 }
 ```
 
-O [exemplo 1](#exemplo-1) possui $$10^2$$ passos, sendo o `for loops` e `if statment` as **operações básicas**. Nesse exemplo a **operação dominante** é o `if statment`, na quarta linha, que "roda" por $$10^2$$, ou generalizando $$n^2$$.
+O [exemplo 1](#exemplo-1) possui $$10^2$$ passos, sendo o `for loops` e `if statment` as **operações básicas**. Nesse exemplo a **operação dominante** é o `if 
+statment`, na quarta linha, que "roda" por $$10^2$$, ou generalizando $$n^2$$.
+
+## Exercícios
+
+1.1. Certo
+1.2.
+    i - verdadeiro
+    ii - falso, o vetor (ou array) precisa ter um tamanho `n`
+1.3. ??
+1.4
+
