@@ -26,7 +26,6 @@ Thanks to [LukeSmithxyz](https://github.com/LukeSmithxyz/dwmblocks) for the sign
 In the `kill -${code} $(pidof dwmblocks)` add 34 to the `${code}` in below.
 
 | Application | Code |
-| :---------- | :--- |
+| :---------: | :--- |
 | pulseaudio | 10 |
-| brightnessctl | 1 |
-
+| brightnessctl | 11 |
