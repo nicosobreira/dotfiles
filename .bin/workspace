@@ -3,6 +3,11 @@
 set -eou pipefail
 # set -x
 
+if command -v apt-get &>/dev/null; then
+	echo "This script only work on Debian/Ubuntu, check if apt-get is avaible"
+	exit 1
+fi
+
 if [[ "$EUID" == 0 ]]; then
 	PREFIX="/usr"
 else

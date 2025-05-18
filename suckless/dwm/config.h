@@ -134,9 +134,9 @@ static char *colors[][ColCount] = {
  */
 static char *tagicons[][NUMTAGS] =
 {
-	[DEFAULT_TAGS]        = { "", "󰖟", "", "󰺷", "" },
-	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D", "E" },
-	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>" },
+	[DEFAULT_TAGS]        = { "", "󰖟", "󰺷", ""},
+	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D" },
+	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>" },
 };
 
 /* There are two options when it comes to per-client rules:
@@ -173,12 +173,14 @@ static const Rule rules[] = {
 	RULE(.class = "firefox", .tags = 1 << 1)
 	RULE(.class = "Vivaldi", .tags = 1 << 1)
 
-	/* Notes */
-	RULE(.class = "obsidian", .tags = 1 << 2)
-	RULE(.class = "Gimp", .tags = 1 << 2)
-
 	/* Games */
-	RULE(.class = "retroarch", .tags = 1 << 3)
+	RULE(.class = "retroarch", .tags = 1 << 2)
+	RULE(.class = "steam", .tags = 1 << 2)
+
+	/* Notes */
+	RULE(.class = "obsidian", .tags = 1 << 3)
+	RULE(.class = "Gimp", .tags = 1 << 3)
+
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as
@@ -254,7 +256,10 @@ static const Key keys[] = {
 	{ MODKEY,           XK_l,                     setmfact,       {.f = +0.02} },
 	{ MODKEY,           XK_z,                     zoom,           {0} },
 	{ MODKEY,           XK_Tab,                   view,           {0} },
+
 	{ MODKEY,           XK_c,                     killclient,     {0} },
+	{ MODKEY,           XK_F4,                    killclient,     {0} },
+
 	{ MODKEY,           XK_t,                     setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,           XK_f,                     setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,           XK_m,                     setlayout,      {.v = &layouts[2]} },
@@ -286,7 +291,6 @@ static const Key keys[] = {
 	TAGKEYS(            XK_2,                     1)
 	TAGKEYS(            XK_3,                     2)
 	TAGKEYS(            XK_4,                     3)
-	TAGKEYS(            XK_5,                     4)
 };
 
 /* button definitions */
