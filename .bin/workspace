@@ -3,7 +3,7 @@
 set -eou pipefail
 # set -x
 
-if command -v apt-get &>/dev/null; then
+if ! command -v apt-get &>/dev/null; then
 	echo "This script only work on Debian/Ubuntu, check if apt-get is avaible"
 	exit 1
 fi
@@ -36,7 +36,7 @@ get_latest_repo_version() {
 }
 
 check_need_update() {
-	if [[ $# < 3 ]]; then
+	if [[ $# -lt 3 ]]; then
 		echo "Error: Less than three arguments"
 		return 2
 	fi
@@ -79,17 +79,17 @@ install_tmux() {
 	local folder="tmux-${latest}a"
 	local tar_file="${folder}.tar.gz"
 	cd /tmp
-	wget ${WGET_OUTPUT} "https://github.com/tmux/tmux/releases/latest/download/${tar_file}"
-	tar -xf ${tar_file}
-	cd $folder
-	./configure --prefix=${PREFIX}
+	wget "$WGET_OUTPUT" "https://github.com/tmux/tmux/releases/latest/download/${tar_file}"
+	tar -xf "$tar_file"
+	cd "$folder"
+	./configure --prefix="$PREFIX"
 	make && make install
 
 	if [[ -z "${BASH_COMPLETION_VERSINFO+isset}" ]]; then
 		echo "No bash completion version found, may not be installed"
 		return
 	fi
-	if [[ $(echo "${BASH_COMPLETION_VERSIONFO} < 1.2" | bc) ]]; then
+	if [[ $(echo "${BASH_COMPLETION_VERSINFO} < 1.2" | bc) ]]; then
 		echo "The bash completion version is smaller than 1.2"
 		return
 	fi
@@ -112,8 +112,8 @@ install_fzf() {
 	local latest_version=$(get_latest_repo_version "${git_user_name}" "${git_repo}")
 	local tar_file="fzf-${latest_version}-linux_amd64.tar.gz"
 	cd /tmp
-	wget ${WGET_OUTPUT} "https://github.com/${git_user_name}/${git_repo}/releases/latest/download/${tar_file}"
-	tar -xf "${tar_file}"
+	wget "$WGET_OUTPUT" "https://github.com/${git_user_name}/${git_repo}/releases/latest/download/${tar_file}"
+	tar -xf "$tar_file"
 	mv "/tmp/fzf" "$PREFIX/bin"
 }
 

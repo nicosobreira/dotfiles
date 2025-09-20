@@ -71,13 +71,14 @@ vim.opt.wildmenu = true
 vim.opt.wildmode = "longest:full,full"
 vim.opt.wildoptions = "fuzzy"
 
+-- NOTE: This settings are buggy
 -- Netrw settings
-vim.g.netrw_list_hide = "^\\./$,^\\.\\./$"
-vim.g.netrw_browse_split = 0
-vim.g.netrw_hide = 1
-vim.g.netrw_banner = 0
-vim.g.netrw_altfile = 1
-vim.g.netrw_alto = 1
+-- vim.g.netrw_list_hide = "^\\./$,^\\.\\./$"
+-- vim.g.netrw_browse_split = 0
+-- vim.g.netrw_hide = 1
+-- vim.g.netrw_banner = 0
+-- vim.g.netrw_altfile = 1
+-- vim.g.netrw_alto = 1
 
 -- Cursor shape
 vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"

@@ -63,7 +63,7 @@ export LESS="-R"
 export MYVIMRC="$HOME/.vimrc"
 
 if command -v nvim &>/dev/null; then
-	alias vim="nvim"
+	alias v="nvim"
 	export MANPAGER="nvim +Man!"
 	export VISUAL="nvim"
 	export EDITOR="${VISUAL}"
