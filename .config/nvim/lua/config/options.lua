@@ -84,8 +84,9 @@ vim.opt.wildoptions = "fuzzy"
 vim.o.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 
 -- Folding
-vim.opt.foldmethod = "syntax"
 vim.opt.foldlevel = 99
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 -- Custom Tabline
 vim.opt.tabline = "%!v:lua.require('custom.tabline').get()"
