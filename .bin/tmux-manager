@@ -114,19 +114,19 @@ elif [[ $# -eq 1 ]]; then
     SESSION_PATH="$1"
   fi
 else
-  echo "ERROR: More than 2 arguments" >2&
+  echo "ERROR: More than 2 arguments" >&2
   exit 1
 fi
 
 SESSION_NAME="$(get_session_name "$SESSION_PATH")"
 
-if pgrep tmux &>/dev/null; then
-  TMUX_RUNNING="$(pgrep tmux || true)"
+if tmux list-sessions &>/dev/null; then
+  TMUX_RUNNING=0
 else
-  TMUX_RUNNING=""
+  TMUX_RUNNING=1
 fi
 
-if [[ -z ${TMUX+x} ]] && [[ -z ${TMUX_RUNNING+x} ]]; then
+if [[ -z ${TMUX+x} ]] && [[ $TMUX_RUNNING -ne 0 ]]; then
   tmux new-session -s "$SESSION_NAME" -c "$SESSION_PATH"
   create_session_windows "$SESSION_NAME" "$SESSION_PATH"
   exit 0
