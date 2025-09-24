@@ -8,7 +8,6 @@ vim.keymap.set("n", "l", "<CR>", { buffer = true, remap = true, desc = "Open dir
 
 -- File operations
 vim.keymap.set("n", "a", "%", { buffer = true, remap = true, desc = "Create file" })
-vim.keymap.set("n", "d", "D", { buffer = true, remap = true, desc = "Delete file" })
 vim.keymap.set("n", "r", "R", { buffer = true, remap = true, desc = "Rename file" })
 
 -- Quit mapping
