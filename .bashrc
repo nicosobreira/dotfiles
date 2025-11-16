@@ -174,14 +174,14 @@ function __prompt_command() {
 		fi
 	}
 
-	function git_branch() {
-		local branch
-		branch=$(git branch --show-current 2>/dev/null)
-		if [[ -n "$branch" ]]; then
-			printf " %s(%s)%s" "${magenta}" "${branch}" "${reset}"
+function git_branch() {
+	local branch
+	branch=$(git branch --show-current 2>/dev/null)
+	if [[ -n "$branch" ]]; then
+		printf " %s(%s)%s" "${magenta}" "${branch}" "${reset}"
 
-		fi
-	}
+	fi
+}
 
 PS1="\n${blue}\w${reset}"
 PS1+="$(git_branch)"
@@ -192,3 +192,7 @@ PS1+="\n${sep} "
 export PROMPT_COMMAND='__prompt_command'
 
 notes
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

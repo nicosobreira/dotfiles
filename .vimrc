@@ -24,7 +24,6 @@ colorscheme koehler
 set background=dark
 filetype plugin indent on
 
-
 set nocompatible
 
 set omnifunc=syntaxcomplete#Complete
@@ -145,6 +144,7 @@ tmap <C-l> <C-\><C-n><cmd>wincmd l<CR>
 " - Netrw -
 au FileType netrw nmap <buffer> h -
 au FileType netrw nmap <buffer> l <CR>
+au FileType netrw nmap <buffer> % a
 nmap <leader>e <cmd>Explore<CR>
 
 " - Split Navigation -
