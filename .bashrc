@@ -136,7 +136,6 @@ alias dwm-edit='$EDITOR $HOME/suckless/dwm/config.h'
 alias l="lazygit"
 
 alias svim='sudo vim -u $HOME/.vimrc'
-alias make='make -j$(nproc)'
 alias c="clear"
 alias duh="du --human-readable"
 alias mkdir="mkdir -p"
