@@ -133,6 +133,7 @@ function notes() {
 # -- Alias --
 alias dwm-edit='$EDITOR $HOME/suckless/dwm/config.h'
 
+alias tm="tmux-manager"
 alias l="lazygit"
 
 alias svim='sudo vim -u $HOME/.vimrc'
