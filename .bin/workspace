@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -eou pipefail
-# set -x
 
 if ! command -v apt-get &>/dev/null; then
 	echo "This script only work on Debian/Ubuntu, check if apt-get is avaible"
@@ -109,10 +108,10 @@ install_fzf() {
 	if ! check_need_update "fzf" "" ${git_user_name} ${git_repo}; then
 		return
 	fi
-	local latest_version=$(get_latest_repo_version "${git_user_name}" "${git_repo}")
+	local latest_version="$(get_latest_repo_version "${git_user_name}" "${git_repo}")"
 	local tar_file="fzf-${latest_version}-linux_amd64.tar.gz"
 	cd /tmp
-	wget "$WGET_OUTPUT" "https://github.com/${git_user_name}/${git_repo}/releases/latest/download/${tar_file}"
+	wget $WGET_OUTPUT "https://github.com/${git_user_name}/${git_repo}/releases/latest/download/${tar_file}"
 	tar -xf "$tar_file"
 	mv "/tmp/fzf" "$PREFIX/bin"
 }
