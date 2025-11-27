@@ -126,12 +126,9 @@ else
 	TMUX_RUNNING=1
 fi
 
-if [[ $TMUX_RUNNING -ne 0 ]]; then
-	tmux new-session -d -s "$SESSION_NAME" -c "$SESSION_PATH"
-	create_session_windows "$SESSION_NAME" "$SESSION_PATH"
-fi
-
-if ! tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+if  ! tmux list-sessions &>/dev/null || \
+	! tmux has-session -t "$SESSION_NAME" &>/dev/null
+then
 	tmux new-session -d -s "$SESSION_NAME" -c "$SESSION_PATH"
 	create_session_windows "$SESSION_NAME" "$SESSION_PATH"
 fi
