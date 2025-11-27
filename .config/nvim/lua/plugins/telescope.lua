@@ -1,7 +1,6 @@
 return {
 	"nvim-telescope/telescope.nvim",
-	branch = "0.1.x",
-	-- tag = "0.1.8",
+	tag = "v0.1.9",
 	dependencies = {
 		{ 'nvim-lua/plenary.nvim' },
 		{
@@ -18,7 +17,8 @@ return {
 		defaults = {
 			file_ignore_patterns = {
 				"^.git/",
-				"%.o"
+				"%.o",
+				"^build/",
 			}
 		}
 	},
