@@ -41,7 +41,9 @@ done
 # Dircolors setup
 if command -v dircolors &>/dev/null; then
 	if [[ -f ~/.dircolors ]]; then
-		eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+		eval "$(dircolors -b ~/.dircolors)"
+	else
+		eval "$(dircolors -b)"
 	fi
 fi
 
@@ -73,6 +75,7 @@ elif command -v vim &>/dev/null; then
 	export EDITOR="$VISUAL"
 fi
 
+# -- Functions --
 function dwm-make() {
 	if ! command -v dwm &>/dev/null; then
 		echo "Command \"dwm\" not found"
@@ -96,14 +99,6 @@ function dwm-make() {
 	cd "$current_dir" || return
 }
 
-# -- Functions --
-function cht() {
-	local style="dracula"
-	local query="$*"
-	query="${query// /+}"
-	curl -s "cht.sh/${query}?style=${style}" | "$PAGER"
-}
-
 function y() {
 	if ! command -v yazi >/dev/null; then
 		echo "Command \"yazi\" not found"
@@ -124,7 +119,7 @@ function reload() {
 
 function notes() {
 	local notes_file="$HOME/.notes"
-	[[ ! -f "$notes_file" ]] && return  # File not found
+	[[ ! -f "$notes_file" ]] && return
 	[[ ! -s "$notes_file" ]] && return  # File is empty
 	printf "\tNOTES\n"
 	cat "$notes_file"
@@ -150,8 +145,6 @@ alias egrep="egrep --color=auto"
 alias ls="ls -h --color=auto"
 alias la="ls --almost-all --dereference-command-line --color=auto --format=single-column --human-readable --size --group-directories-first --sort=version"
 alias tree="tree -a -C"
-alias ..="cd .."
-alias ...="cd ../.."
 
 # -- Better Prompt --
 function __prompt_command() {
@@ -174,25 +167,21 @@ function __prompt_command() {
 		fi
 	}
 
-function git_branch() {
-	local branch
-	branch=$(git branch --show-current 2>/dev/null)
-	if [[ -n "$branch" ]]; then
-		printf " %s(%s)%s" "${magenta}" "${branch}" "${reset}"
+	function git_branch() {
+		local branch
+		branch=$(git branch --show-current 2>/dev/null)
+		if [[ -n "$branch" ]]; then
+			printf " %s(%s)%s" "${magenta}" "${branch}" "${reset}"
 
-	fi
-}
+		fi
+	}
 
-PS1="\n${blue}\w${reset}"
-PS1+="$(git_branch)"
-PS1+="$(nonzero_return)"
-PS1+="\n${sep} "
+	PS1="\n${blue}\w${reset}"
+	PS1+="$(git_branch)"
+	PS1+="$(nonzero_return)"
+	PS1+="\n${sep} "
 }
 
 export PROMPT_COMMAND='__prompt_command'
 
 notes
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
