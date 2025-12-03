@@ -33,7 +33,7 @@ for _dir in "${_MY_PATH[@]}"; do
 	fi
 done
 
-_SOURCES=(/etc/bashrc /usr/share/bash-completion/bash_completion /etc/bash_completion "$HOME/.cargo/env")
+_SOURCES=("$HOME/.env" /usr/share/bash-completion/bash_completion /etc/bash_completion "$HOME/.cargo/env")
 for _file in "${_SOURCES[@]}"; do
 	[[ -f "${_file}" ]] && source "${_file}"
 done
