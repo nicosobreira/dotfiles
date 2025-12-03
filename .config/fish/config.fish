@@ -38,7 +38,7 @@ set -gx MYVIMRC "$HOME/.vimrc"
 
 # Editor settings
 if command -v nvim >/dev/null
-	alias vim="nvim"
+	alias v="nvim"
 	set -gx MANPAGER "nvim +Man!"
 	set -gx VISUAL "nvim"
 	set -gx EDITOR "$VISUAL"
@@ -70,12 +70,6 @@ function dwm-make
 	sh -c "sudo make clean install"
 
 	cd "$current_dir" || return
-end
-
-function cht
-	set -l style "dracula"
-	set -l query (string join '+' $argv)
-	curl -s "cht.sh/$query?style=$style" | $PAGER
 end
 
 function y
@@ -124,7 +118,5 @@ alias egrep="egrep --color=auto"
 alias ls="ls -h --color=auto"
 alias la="ls --almost-all --dereference-command-line --color=auto --format=single-column --human-readable --size --group-directories-first --sort=version"
 alias tree="tree -a -C"
-alias ..="cd .."
-alias ...="cd ../.."
 
 notes
