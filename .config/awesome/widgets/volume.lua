@@ -21,7 +21,7 @@ local volume_widget = wibox.widget.textbox()
 
 local function update_volume()
 	awful.spawn.easy_async_with_shell("amixer get Master", function(stdout)
-		local line = stdout:match("Front Left:[^\n]*")
+		local line = stdout:match("Front Left:[^\n]*") or ""
 
 		local volume_text = line:match("%[(%d+)%%%]")
 		if volume_text == nil then
