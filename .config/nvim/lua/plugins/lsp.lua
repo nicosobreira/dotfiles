@@ -47,18 +47,33 @@ local servers = {
 	},
 }
 
+NIXOS_FILE = "/etc/NIXOS"
+
 return {
 	"neovim/nvim-lspconfig",
+	-- In NixOS, the lsp are download by the user
 	dependencies = {
-		"williamboman/mason.nvim",
-		"williamboman/mason-lspconfig.nvim",
+		{
+			"williamboman/mason.nvim",
+			enabled = function()
+				return not vim.uv.fs_stat(NIXOS_FILE)
+			end,
+		},
+		{
+			"williamboman/mason-lspconfig.nvim",
+			enabled = function()
+				return not vim.uv.fs_stat(NIXOS_FILE)
+			end,
+		},
 	},
 
 	config = function()
-		require("mason").setup()
-		require("mason-lspconfig").setup({
-			ensure_installed = vim.tbl_keys(servers),
-		})
+		if (not vim.uv.fs_stat(NIXOS_FILE)) then
+			require("mason").setup()
+			require("mason-lspconfig").setup({
+				ensure_installed = vim.tbl_keys(servers),
+			})
+		end
 
 		local capabilities = {}
 
