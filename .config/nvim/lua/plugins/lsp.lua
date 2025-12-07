@@ -1,4 +1,4 @@
-local servers = {
+local SERVERS = {
 	-- Lua language server
 	lua_ls = {
 		settings = {
@@ -71,13 +71,13 @@ return {
 		if (not vim.uv.fs_stat(NIXOS_FILE)) then
 			require("mason").setup()
 			require("mason-lspconfig").setup({
-				ensure_installed = vim.tbl_keys(servers),
+				ensure_installed = vim.tbl_keys(SERVERS),
 			})
 		end
 
 		local capabilities = {}
 
-		for name, config in pairs(servers) do
+		for name, config in pairs(SERVERS) do
 			config.capabilities = capabilities
 			config.on_attach = function(client, bufnr)
 				-- Add your keymaps here
