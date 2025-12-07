@@ -30,9 +30,9 @@ local THEME_NAME = "xresources"
 local INCREASE_WINDOW_FACTOR = 0.05
 
 -- This is used later as the default terminal and editor to run.
-terminal = os.getenv("TERMINAL") or "xterm"
-editor = os.getenv("EDITOR") or "nano"
-browser = os.getenv("BROWSER") or "firefox"
+terminal = os.getenv("TERMINAL") or "kitty"
+editor = os.getenv("EDITOR") or "nvim"
+browser = os.getenv("BROWSER") or "brave"
 editor_cmd = terminal .. " -e " .. editor
 
 -- {{{ Error handling
@@ -554,12 +554,19 @@ awful.rules.rules = {
 		properties = { floating = true },
 	},
 
+	{
+		rule_any = {
+			type = { "dialog", "utility", "popup_menu" }
+		},
+		properties = {
+			floating = true,
+			placement = awful.placement.centered + awful.placement.no_overlap + awful.placement.no_offscreen
+		}
+	},
+
 	-- Add titlebars to normal clients and dialogs
 	{ rule_any = { type = { "normal", "dialog" } }, properties = { titlebars_enabled = false } },
 
-	-- Set Firefox to always map on the tag named "2" on screen 1.
-	-- { rule = { class = "Firefox" },
-	--   properties = { screen = 1, tag = "2" } },
 }
 
 require("config.rules")
