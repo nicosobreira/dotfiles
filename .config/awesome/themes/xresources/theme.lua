@@ -6,9 +6,6 @@ local dpi = xresources.apply_dpi
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
 
-local FONT_NAME = "Caskaydia Cove Nerd Font"
-local FONT_SIZE = 10
-
 local colors = {
 	black = xrdb.color0,
 	red = xrdb.color1,
@@ -22,7 +19,8 @@ local colors = {
 
 local theme = {}
 
-theme.font = string.format("%s %d", FONT_NAME, FONT_SIZE)
+-- theme.font = string.format("%s %d", FONT_NAME, FONT_SIZE)
+theme.font = require("beautiful").font or "sans 10"
 
 theme.bg_normal = colors.black
 theme.bg_focus = theme.bg_normal
@@ -35,7 +33,7 @@ theme.fg_focus = colors.green
 theme.fg_urgent = colors.red
 theme.fg_minimize = colors.green
 
-theme.useless_gap = dpi(0)
+theme.useless_gap = dpi(1)
 theme.border_width = dpi(1)
 theme.border_normal = colors.black
 theme.border_focus = colors.green
@@ -108,8 +106,6 @@ theme.titlebar_maximized_button_focus_inactive = themes_path .. "default/titleba
 theme.titlebar_maximized_button_normal_active = themes_path .. "default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active = themes_path .. "default/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = themes_path .. "default/background.png"
-
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path .. "default/layouts/fairhw.png"
 theme.layout_fairv = themes_path .. "default/layouts/fairvw.png"
@@ -136,5 +132,3 @@ theme.awesome_icon = theme_assets.awesome_icon(theme.menu_height, theme.bg_focus
 theme.icon_theme = nil
 
 return theme
-
--- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

@@ -1,5 +1,4 @@
 local wibox = require("wibox")
-local gears = require("gears")
 local awful = require("awful")
 
 -- Volume control using `amixer`
@@ -8,16 +7,29 @@ local M = {}
 
 local opts = {
 	icons = {
-		mute = "󰝟",
-		low = "󰕿",
-		medium = "󰖀",
-		high = "󰕾",
+		mute = "󰝟 ",
+		low = "󰕿 ",
+		medium = "󰖀 ",
+		high = "󰕾 ",
 	},
 
 	volume_step = "5",
 }
 
-local volume_widget = wibox.widget.textbox()
+local volume_widget = wibox.widget({
+	{
+		id = "icon",
+		text = opts.icons.high,
+		widget = wibox.widget.textbox,
+	},
+	{
+		id = "level",
+		text = "100%",
+		widget = wibox.widget.textbox,
+	},
+	spacing = 5,
+	layout = wibox.layout.fixed.horizontal,
+})
 
 local function update_volume()
 	awful.spawn.easy_async_with_shell("amixer get Master", function(stdout)
@@ -50,12 +62,11 @@ local function update_volume()
 			icon = opts.icons.mute
 		end
 
-		volume_widget.text = string.format("%s %s%%", icon, volume_text)
+		volume_widget.icon.text = icon
+
+		volume_widget.level.text = volume .. "%"
 	end)
 end
-
--- Initial update
-update_volume()
 
 function M.toggle()
 	awful.spawn("amixer set Master toggle", false)
@@ -71,6 +82,9 @@ function M.decrease()
 	awful.spawn.with_shell("amixer set Master unmute && amixer set Master " .. opts.volume_step .. "%-", false)
 	update_volume()
 end
+
+-- Initial update
+update_volume()
 
 M.widget = volume_widget
 

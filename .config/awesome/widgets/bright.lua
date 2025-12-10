@@ -9,7 +9,7 @@ local M = {}
 local backlight = "intel_backlight"
 
 local opts = {
-	icon = "󰃟",
+	icon = "󰃟 ",
 	bright_step = "5",
 	bright_current_file = "/sys/class/backlight/" .. backlight .. "/brightness",
 	bright_max_file = "/sys/class/backlight/" .. backlight .. "/max_brightness",
@@ -18,7 +18,20 @@ local opts = {
 assert(gears.filesystem.file_readable(opts.bright_current_file))
 assert(gears.filesystem.file_readable(opts.bright_max_file))
 
-local bright_widget = wibox.widget.textbox()
+local bright_widget = wibox.widget({
+	{
+		id = "icon",
+		text = opts.icon,
+		widget = wibox.widget.textbox,
+	},
+	{
+		id = "level",
+		text = "100%",
+		widget = wibox.widget.textbox,
+	},
+	spacing = 5,
+	layout = wibox.layout.fixed.horizontal,
+})
 
 local function read_file(file_path)
 	local file = io.open(file_path, "r")
@@ -37,7 +50,7 @@ local function update_bright()
 
 	local percentage = math.ceil((bright_current / bright_max) * 100)
 
-	bright_widget.text = string.format("%s %d%%", opts.icon, percentage)
+	bright_widget.level.text = percentage .. "%"
 end
 
 function M.increase()
