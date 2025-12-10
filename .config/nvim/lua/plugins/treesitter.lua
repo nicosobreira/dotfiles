@@ -35,6 +35,7 @@ return {
 			"vimdoc",
 			"xml",
 			"yaml",
+			"doxygen",
 		},
 	},
 	config = function(_, opts)

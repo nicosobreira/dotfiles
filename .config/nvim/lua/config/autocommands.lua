@@ -80,7 +80,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Automatic create Header Guards
 vim.api.nvim_create_autocmd("BufNewFile", {
 	group = augroup("auto_create_header_guards"),
-	pattern = "*.h",
+	pattern = { "*.h", "*.hpp" },
 	callback = function(args)
 		-- Ask the user if they want a header guard
 		local choice = vim.fn.input("Add header guard? [Y/N]: ")
@@ -90,7 +90,7 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 
 		-- Extract filename without extension (uppercase for guard)
 		local filename = vim.fn.fnamemodify(args.file, ":t:r"):upper()
-		local guard = filename .. "_H"
+		local guard = "_" .. filename .. "_H"
 
 		-- Insert the header guard
 		local lines = {
