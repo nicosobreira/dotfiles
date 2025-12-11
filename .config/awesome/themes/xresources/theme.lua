@@ -19,8 +19,10 @@ local colors = {
 
 local theme = {}
 
--- theme.font = string.format("%s %d", FONT_NAME, FONT_SIZE)
-theme.font = require("beautiful").font or "sans 10"
+-- NOTE: the colors table is not included in AwesomeWM theme
+theme.colors = colors
+
+theme.font = "Caskaydia Cove Nerd Font 10"
 
 theme.bg_normal = colors.black
 theme.bg_focus = theme.bg_normal

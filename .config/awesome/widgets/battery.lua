@@ -1,5 +1,9 @@
 local wibox = require("wibox")
 local gears = require("gears")
+local beautiful = require("beautiful")
+
+local settings = require("settings")
+local ui_utils = require("ui.utils")
 
 -- Default options
 local opts = {
@@ -11,26 +15,43 @@ local opts = {
 		medium = "󱊢 ",
 		high = "󱊣 ",
 	},
+
+	colors = {
+		low = beautiful.colors.red,
+		medium = beautiful.colors.yellow,
+		high = beautiful.colors.green,
+	},
 }
 
 local battery = wibox.widget({
 	{
 		id = "icon",
-		text = opts.icons.high,
+		markup = opts.icons.high,
 		-- font = ui_utils.font_resize(12),
 		widget = wibox.widget.textbox,
 	},
 	{
 		id = "level",
-		text = "100%",
+		markup = "100%",
 		widget = wibox.widget.textbox,
 	},
-	spacing = 5,
+	spacing = settings.spacing,
 	layout = wibox.layout.fixed.horizontal,
 })
 
+local function get_icon(level, low_level, medium_level)
+	if level <= low_level then
+		return ui_utils.markup_with_color(opts.icons.low, opts.colors.low)
+	elseif level <= medium_level then
+		return ui_utils.markup_with_color(opts.icons.medium, opts.colors.medium)
+	else
+		return ui_utils.markup_with_color(opts.icons.high, opts.colors.high)
+	end
+end
+
 local function update_battery()
 	local path = string.format("/sys/class/power_supply/%s/capacity", opts.bat)
+
 	assert(gears.filesystem.file_readable(path))
 
 	local file = io.open(path, "r")
@@ -39,21 +60,15 @@ local function update_battery()
 		return nil
 	end
 
-	local level = file:read()
+	local level_text = file:read()
 
 	file:close()
 
-	local number_level = tonumber(level)
+	local level = tonumber(level_text)
 
-	if number_level <= 30 then
-		battery.icon.text = opts.icons.low
-	elseif number_level <= 60 then
-		battery.icon.text = opts.icons.medium
-	else
-		battery.icon.text = opts.icons.high
-	end
+	battery.icon.markup = get_icon(level, 30, 60)
 
-	battery.level.text = number_level .. "%"
+	battery.level.text = level_text .. "%"
 end
 
 gears.timer({

@@ -1,6 +1,10 @@
 local wibox = require("wibox")
 local gears = require("gears")
 local awful = require("awful")
+local beautiful = require("beautiful")
+
+local settings = require("settings")
+local ui_utils = require("ui.utils")
 
 -- Brightness control using `light`
 
@@ -10,6 +14,7 @@ local backlight = "intel_backlight"
 
 local opts = {
 	icon = "󰃟 ",
+	color = beautiful.colors.white,
 	bright_step = "5",
 	bright_current_file = "/sys/class/backlight/" .. backlight .. "/brightness",
 	bright_max_file = "/sys/class/backlight/" .. backlight .. "/max_brightness",
@@ -21,7 +26,7 @@ assert(gears.filesystem.file_readable(opts.bright_max_file))
 local bright_widget = wibox.widget({
 	{
 		id = "icon",
-		text = opts.icon,
+		markup = ui_utils.markup_with_color(opts.icon, opts.color),
 		widget = wibox.widget.textbox,
 	},
 	{
@@ -29,7 +34,7 @@ local bright_widget = wibox.widget({
 		text = "100%",
 		widget = wibox.widget.textbox,
 	},
-	spacing = 5,
+	spacing = settings.spacing,
 	layout = wibox.layout.fixed.horizontal,
 })
 

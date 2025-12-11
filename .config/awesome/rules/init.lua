@@ -2,7 +2,7 @@ local awful = require("awful")
 local gears = require("gears")
 local beautiful = require("beautiful")
 
-local my_tags = require("config.my_tags")
+local my_tags = require("tags")
 
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
@@ -58,17 +58,16 @@ awful.rules.rules = {
 
 	{
 		rule_any = {
-			type = { "dialog", "utility", "popup_menu" }
+			type = { "dialog", "utility", "popup_menu" },
 		},
 		properties = {
 			floating = true,
-			placement = awful.placement.centered + awful.placement.no_overlap + awful.placement.no_offscreen
-		}
+			placement = awful.placement.centered + awful.placement.no_overlap + awful.placement.no_offscreen,
+		},
 	},
 
 	-- Add titlebars to normal clients and dialogs
 	{ rule_any = { type = { "normal", "dialog" } }, properties = { titlebars_enabled = false } },
-
 }
 
 awful.rules.rules = gears.table.join(

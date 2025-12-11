@@ -12,20 +12,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
--- Custom modules
-local my_tags = require("config.my_tags")
-local my_widgets = require("widgets")
-
 local settings = require("settings")
-
--- Custom variables
-
-local modkey = settings.modkey
-
-require("signals")
-
--- {{{ Variable definitions
--- Themes define colours, icons, font and wallpapers.
 
 local config_dir = gears.filesystem.get_configuration_dir()
 local custom_theme = string.format("%sthemes/%s/theme.lua", config_dir, settings.theme_name)
@@ -40,6 +27,15 @@ if not beautiful.init(custom_theme) then
 	beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 end
 
+-- Custom modules
+local my_tags = require("tags")
+local my_widgets = require("widgets")
+
+-- Custom variables
+local modkey = settings.modkey
+
+require("signals")
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 	awful.layout.suit.tile,
@@ -47,7 +43,6 @@ awful.layout.layouts = {
 	awful.layout.suit.floating,
 	awful.layout.suit.tile.bottom,
 }
--- }}}
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
@@ -142,11 +137,11 @@ local function set_wallpaper(s)
 end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
-screen.connect_signal("property::geometry", set_wallpaper)
+-- screen.connect_signal("property::geometry", set_wallpaper)
 
 awful.screen.connect_for_each_screen(function(s)
 	-- Wallpaper
-	set_wallpaper(s)
+	-- set_wallpaper(s)
 
 	-- Each screen has its own tag table.
 	awful.tag(my_tags.get_all(), s, awful.layout.suit.tile)
@@ -205,6 +200,7 @@ awful.screen.connect_for_each_screen(function(s)
 			layout = wibox.layout.fixed.horizontal,
 			spacing = beautiful.get_font_height(beautiful.font),
 			wibox.widget.systray(),
+			-- my_widgets.pomodoro.widget,
 			my_widgets.bright.widget,
 			my_widgets.volume.widget,
 			my_widgets.battery,

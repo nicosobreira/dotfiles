@@ -1,7 +1,11 @@
+-- Volume control using `amixer`
+
 local wibox = require("wibox")
 local awful = require("awful")
+local beautiful = require("beautiful")
 
--- Volume control using `amixer`
+local settings = require("settings")
+local ui_utils = require("ui.utils")
 
 local M = {}
 
@@ -13,21 +17,27 @@ local opts = {
 		high = "󰕾 ",
 	},
 
-	volume_step = "5",
+	colors = {
+		low = beautiful.colors.red,
+		medium = beautiful.colors.yellow,
+		high = beautiful.colors.green,
+	},
+
+	volume_step = "3",
 }
 
 local volume_widget = wibox.widget({
 	{
 		id = "icon",
-		text = opts.icons.high,
+		markup = opts.icons.high,
 		widget = wibox.widget.textbox,
 	},
 	{
-		id = "level",
-		text = "100%",
+		id = "text",
+		markup = "100%",
 		widget = wibox.widget.textbox,
 	},
-	spacing = 5,
+	spacing = settings.spacing,
 	layout = wibox.layout.fixed.horizontal,
 })
 
@@ -36,6 +46,7 @@ local function update_volume()
 		local line = stdout:match("Front Left:[^\n]*") or ""
 
 		local volume_text = line:match("%[(%d+)%%%]")
+
 		if volume_text == nil then
 			volume_text = "0"
 		end
@@ -50,23 +61,20 @@ local function update_volume()
 
 		local icon = opts.icons.medium
 
-		if not is_mute then
-			if volume <= 25 then
-				icon = opts.icons.low
-			elseif volume <= 55 then
-				icon = opts.icons.medium
-			else
-				icon = opts.icons.high
-			end
-		else
+		if is_mute then
 			icon = opts.icons.mute
+		else
+			icon = get_icon(volume)
 		end
 
-		volume_widget.icon.text = icon
+		volume_widget.icon.markup = icon
 
-		volume_widget.level.text = volume .. "%"
+		volume_widget.text.markup = volume_text .. "%"
 	end)
 end
+
+-- Initial update
+update_volume()
 
 function M.toggle()
 	awful.spawn("amixer set Master toggle", false)
@@ -82,9 +90,6 @@ function M.decrease()
 	awful.spawn.with_shell("amixer set Master unmute && amixer set Master " .. opts.volume_step .. "%-", false)
 	update_volume()
 end
-
--- Initial update
-update_volume()
 
 M.widget = volume_widget
 

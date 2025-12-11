@@ -4,7 +4,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 
 local settings = require("settings")
 local my_widgets = require("widgets")
-local my_tags = require("config.my_tags")
+local my_tags = require("tags")
 local my_menubar = require("ui.menubar")
 
 local modkey = settings.modkey
@@ -149,7 +149,7 @@ globalkeys = gears.table.join(
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
-for i = 1, my_tags.NUM_TAGS do
+for i = 1, my_tags.total do
 	globalkeys = gears.table.join(
 		globalkeys,
 		-- View tag only.
