@@ -37,9 +37,9 @@ theme.fg_minimize = colors.green
 
 theme.useless_gap = dpi(1)
 theme.border_width = dpi(1)
-theme.border_normal = colors.black
-theme.border_focus = colors.green
-theme.border_marked = colors.green
+theme.border_normal = theme.bg_normal
+theme.border_focus = theme.fg_focus
+theme.border_marked = theme.fg_normal
 
 -- There are other variable sets
 -- overriding the default one when
@@ -57,11 +57,11 @@ theme.border_marked = colors.green
 theme.prompt_fg_cursor = colors.white
 theme.prompt_bg_cursor = colors.white
 
--- theme.tasklist_bg_normal = theme.bg_normal
--- theme.tasklist_fg_normal = theme.fg_normal
---
--- theme.tasklist_bg_focus = theme.fg_normal
--- theme.tasklist_fg_focus = theme.bg_normal
+theme.tasklist_bg_normal = theme.bg_normal
+theme.tasklist_fg_normal = theme.fg_normal
+
+theme.tasklist_bg_focus = theme.fg_normal
+theme.tasklist_fg_focus = theme.bg_normal
 
 -- Generate taglist squares:
 local taglist_square_size = dpi(4)

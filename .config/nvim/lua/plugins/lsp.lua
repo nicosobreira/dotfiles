@@ -21,14 +21,16 @@ local SERVERS = {
 
 	-- C/C++ via Clangd
 	clangd = {
-		cmd = {
-			"clangd",
-			"--background-index",
-			"--clang-tidy",
-			"--completion-style=detailed",
-			"--header-insertion=iwyu",
-			"--cross-file-rename",
-			"--compile-commands-dir=build",
+		settings = {
+			cmd = {
+				"clangd",
+				"--background-index",
+				"--clang-tidy",
+				"--completion-style=detailed",
+				"--header-insertion=iwyu",
+				"--cross-file-rename",
+				"--compile-commands-dir=build",
+			},
 		},
 		filetypes = { "c", "cpp", "objc", "objcpp" },
 	},
@@ -47,7 +49,7 @@ local SERVERS = {
 	},
 }
 
-NIXOS_FILE = "/etc/NIXOS"
+IS_NIXOS = vim.uv.fs_stat("/etc/NIXOS")
 
 return {
 	"neovim/nvim-lspconfig",
@@ -56,19 +58,19 @@ return {
 		{
 			"williamboman/mason.nvim",
 			enabled = function()
-				return not vim.uv.fs_stat(NIXOS_FILE)
+				return not IS_NIXOS
 			end,
 		},
 		{
 			"williamboman/mason-lspconfig.nvim",
 			enabled = function()
-				return not vim.uv.fs_stat(NIXOS_FILE)
+				return not IS_NIXOS
 			end,
 		},
 	},
 
 	config = function()
-		if (not vim.uv.fs_stat(NIXOS_FILE)) then
+		if not IS_NIXOS then
 			require("mason").setup()
 			require("mason-lspconfig").setup({
 				ensure_installed = vim.tbl_keys(SERVERS),

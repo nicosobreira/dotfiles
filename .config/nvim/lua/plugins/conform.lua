@@ -5,6 +5,7 @@ return {
 		formatters_by_ft = {
 			nix = { "alejandra" },
 			lua = { "stylua" },
+			c = { "clang-format" },
 		},
 
 		format_on_save = {

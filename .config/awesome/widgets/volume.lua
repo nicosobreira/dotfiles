@@ -1,11 +1,9 @@
 -- Volume control using `amixer`
 
-local wibox = require("wibox")
 local awful = require("awful")
 local beautiful = require("beautiful")
 
-local settings = require("settings")
-local ui_utils = require("ui.utils")
+local indicator = require("widgets.templates.indicator")
 
 local M = {}
 
@@ -26,20 +24,7 @@ local opts = {
 	volume_step = "3",
 }
 
-local volume_widget = wibox.widget({
-	{
-		id = "icon",
-		markup = opts.icons.high,
-		widget = wibox.widget.textbox,
-	},
-	{
-		id = "text",
-		markup = "100%",
-		widget = wibox.widget.textbox,
-	},
-	spacing = settings.spacing,
-	layout = wibox.layout.fixed.horizontal,
-})
+local volume_widget = indicator.new()
 
 local function update_volume()
 	awful.spawn.easy_async_with_shell("amixer get Master", function(stdout)
@@ -64,12 +49,12 @@ local function update_volume()
 		if is_mute then
 			icon = opts.icons.mute
 		else
-			icon = get_icon(volume)
+			icon = indicator.get_icon(volume, 30, 60, opts.icons)
 		end
 
 		volume_widget.icon.markup = icon
 
-		volume_widget.text.markup = volume_text .. "%"
+		volume_widget.level.markup = volume_text .. "%"
 	end)
 end
 

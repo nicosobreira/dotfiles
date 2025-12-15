@@ -6,8 +6,9 @@ return {
 	increase_window_factor = 0.05,
 	spacing = dpi(0),
 
-	terminal = os.getenv("TERMINAL") or "xterm",
-	editor = os.getenv("EDITOR") or "vim",
+	-- FIX: `os.getenv("TERMINAL") doesn't work?
+	terminal = os.getenv("TERMINAL") or "kitty",
+	editor = os.getenv("EDITOR") or "nvim",
 	browser = os.getenv("BROWSER") or "brave",
 
 	theme_name = "xresources",

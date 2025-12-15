@@ -1,16 +1,19 @@
 local beautiful = require("beautiful")
 
-local naughty = require("naughty")
-
 local M = {}
 
+function M.font_get_size()
+	local font = beautiful.font or "sans 10"
+	local size = font:match("%d+") or 10
+
+	return tonumber(size)
+end
+
 function M.font_resize(new_size)
-	-- Match everything up to the last number (the size)
-	local font = beautiful.font or ""
-	local family = font:match("%D+")
+	local font = beautiful.font or "sans 10"
+	local family = font:match("%D+") or "sans "
 
 	if not family then
-		-- If no size found, assume whole string is font family
 		family = font
 	end
 

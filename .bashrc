@@ -1,7 +1,3 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
 # If not running interactively, don't do anything
 case $- in
 	*i*) ;;
@@ -14,13 +10,10 @@ export HISTSIZE=5000
 export HISTFILESIZE=10000
 export HISTCONTROL=erasedups:ignoredups
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
 [[ -x /usr/bin/lesspipe ]] && eval "$(lesspipe)"
 
-# Set Terminal Lang to English
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US
 
@@ -76,58 +69,21 @@ elif command -v vim &>/dev/null; then
 fi
 
 # -- Functions --
-function dwm-make() {
-	if ! command -v dwm &>/dev/null; then
-		echo "Command \"dwm\" not found"
-		return
-	fi
-
-	local current_dir="$PWD"
-
-	echo -e "\tDwmblocks"
-
-	cd "$HOME/suckless/dwmblocks" || return
-	sh -c "sudo make clean install"
-	kill -TERM $(pgrep dwmblocks)
-	dwmblocks &>/dev/null &
-
-	echo -e "\tDwm"
-
-	cd "$HOME/suckless/dwm" || return
-	sh -c "sudo make clean install"
-
-	cd "$current_dir" || return
-}
-
-function y() {
-	if ! command -v yazi >/dev/null; then
-		echo "Command \"yazi\" not found"
-		return
-	fi
-
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		builtin cd -- "$cwd" || return
-	fi
-	rm -f -- "$tmp"
-}
-
 function reload() {
 	[[ -f "$HOME/.profile" ]] && source "$HOME/.profile"
 }
 
 function notes() {
 	local notes_file="$HOME/.notes"
+
 	[[ ! -f "$notes_file" ]] && return
 	[[ ! -s "$notes_file" ]] && return  # File is empty
+
 	printf "\tNOTES\n"
 	cat "$notes_file"
 }
 
 # -- Alias --
-alias dwm-edit='$EDITOR $HOME/suckless/dwm/config.h'
-
 alias tm="tmux-manager"
 alias l="lazygit"
 
@@ -157,17 +113,17 @@ function __prompt_command() {
 	# local yellow="\e[33m"
 	local blue="\e[34m"
 	local magenta="\e[35m"
-	# local cyan="\e[36m"
+	local cyan="\e[36m"
 	# local white="\e[37m"
 	local reset="\e[m"
 
-	function nonzero_return() {
+	function _nonzero_return() {
 		if [[ "$retval" -ne 0 ]]; then
 			printf " %s[%s]%s" "${red}" "${retval}" "${reset}"
 		fi
 	}
 
-	function git_branch() {
+	function _git_branch() {
 		local branch
 		branch=$(git branch --show-current 2>/dev/null)
 		if [[ -n "$branch" ]]; then
@@ -176,10 +132,20 @@ function __prompt_command() {
 		fi
 	}
 
-	PS1="\n${blue}\w${reset}"
-	PS1+="$(git_branch)"
-	PS1+="$(nonzero_return)"
-	PS1+="\n${sep} "
+	function _nix_shell() {
+		if [[ $NIX_BINTOOLS ]]; then
+			printf " %s{%s}%s" "${cyan}" "nix" "${reset}"
+		fi
+	}
+
+	PS1="\n"
+
+	PS1+="${blue}\w${reset}"
+	PS1+="$(_git_branch)"
+	PS1+="$(_nonzero_return)"
+	PS1+="$(_nix_shell)"
+	PS1+="\n"
+	PS1+="${sep} "
 }
 
 export PROMPT_COMMAND='__prompt_command'

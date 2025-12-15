@@ -1,42 +1,12 @@
-local wibox = require("wibox")
+-- Brightness control using `light`
+
 local gears = require("gears")
 local awful = require("awful")
 local beautiful = require("beautiful")
 
-local settings = require("settings")
 local ui_utils = require("ui.utils")
 
--- Brightness control using `light`
-
-local M = {}
-
-local backlight = "intel_backlight"
-
-local opts = {
-	icon = "󰃟 ",
-	color = beautiful.colors.white,
-	bright_step = "5",
-	bright_current_file = "/sys/class/backlight/" .. backlight .. "/brightness",
-	bright_max_file = "/sys/class/backlight/" .. backlight .. "/max_brightness",
-}
-
-assert(gears.filesystem.file_readable(opts.bright_current_file))
-assert(gears.filesystem.file_readable(opts.bright_max_file))
-
-local bright_widget = wibox.widget({
-	{
-		id = "icon",
-		markup = ui_utils.markup_with_color(opts.icon, opts.color),
-		widget = wibox.widget.textbox,
-	},
-	{
-		id = "level",
-		text = "100%",
-		widget = wibox.widget.textbox,
-	},
-	spacing = settings.spacing,
-	layout = wibox.layout.fixed.horizontal,
-})
+local indicator = require("widgets.templates.indicator")
 
 local function read_file(file_path)
 	local file = io.open(file_path, "r")
@@ -48,14 +18,34 @@ local function read_file(file_path)
 	return file:read()
 end
 
-local function update_bright()
-	local bright_current = tonumber(read_file(opts.bright_current_file))
+local M = {}
 
-	local bright_max = tonumber(read_file(opts.bright_max_file))
+local opts = {
+	icon = "󰃟 ",
+	color = beautiful.colors.white,
+	bright_step = "5",
+	backlight = "intel_backlight",
+}
+
+local bright_current_path = "/sys/class/backlight/" .. opts.backlight .. "/brightness"
+
+local bright_max_path = "/sys/class/backlight/" .. opts.backlight .. "/max_brightness"
+
+assert(gears.filesystem.file_readable(bright_current_path))
+assert(gears.filesystem.file_readable(bright_max_path))
+
+local bright_widget = indicator.new()
+
+bright_widget.icon.markup = ui_utils.markup_with_color(opts.icon, opts.color)
+
+local function update_bright()
+	local bright_current = tonumber(read_file(bright_current_path))
+
+	local bright_max = tonumber(read_file(bright_max_path))
 
 	local percentage = math.ceil((bright_current / bright_max) * 100)
 
-	bright_widget.level.text = percentage .. "%"
+	bright_widget.level.markup = percentage .. "%"
 end
 
 function M.increase()

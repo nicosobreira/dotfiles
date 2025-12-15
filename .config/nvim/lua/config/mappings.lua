@@ -4,11 +4,6 @@ vim.g.mapleader = " "
 -- Save
 vim.keymap.set({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<CR><esc>", { desc = "Save File" })
 
--- Map <leader>1 ... 9 to switch to corresponding tabs
-for i = 1, 9 do
-	vim.keymap.set("n", "<leader>" .. i, "<cmd>tabn " .. i .. "<CR>", { desc = "Go to tab " .. i })
-end
-
 -- Swap colon and semicolon
 vim.keymap.set({ "n", "v", "o" }, ";", ":")
 vim.keymap.set({ "n", "v", "o" }, ":", ";")
@@ -63,6 +58,7 @@ for _, map in ipairs(move_maps) do
 	vim.keymap.set("i", map[1], "<Esc>" .. map[2] .. "gi", { silent = true })
 	vim.keymap.set("v", map[1], ":m '>+1<CR>gv=gv", { silent = true })
 end
+
 vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { silent = true })
 
 -- Miscellaneous

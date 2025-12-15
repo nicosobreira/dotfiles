@@ -11,4 +11,4 @@ vim.keymap.set("n", "a", "%", { buffer = true, remap = true, desc = "Create file
 vim.keymap.set("n", "r", "R", { buffer = true, remap = true, desc = "Rename file" })
 
 -- Quit mapping
-vim.keymap.set("n", "q", "<cmd>q<CR>", { buffer = true, remap = true, desc = "Close Netrw" })
+vim.keymap.set("n", "q", "ZQ", { buffer = true, remap = true, desc = "Close Netrw" })
