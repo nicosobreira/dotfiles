@@ -8,6 +8,8 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local hotkeys_popup = require("awful.hotkeys_popup")
 
+local ui_utils = require("ui.utils")
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -70,15 +72,45 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = myma
 
 -- {{{ Wibar
 -- Create a textclock widget
+
 my_calendar = wibox.widget({
-	format = "%d/%m",
-	refresh = 600,
-	widget = wibox.widget.textclock,
+	{
+		id = "icon",
+		font = ui_utils.font_resize(12),
+		markup = " ",
+		align = "center",
+		valing = "center",
+		widget = wibox.widget.textbox,
+	},
+	{
+		id = "date",
+		format = "%d/%m",
+		refresh = 600,
+		widget = wibox.widget.textclock,
+	},
+	spacing = settings.spacing,
+	layout = wibox.layout.fixed.horizontal,
 })
 
+-- 
+
 my_time = wibox.widget({
-	format = "%H:%M",
-	widget = wibox.widget.textclock,
+	{
+		id = "icon",
+		font = ui_utils.font_resize(12),
+		markup = " ",
+		align = "center",
+		valing = "center",
+		widget = wibox.widget.textbox,
+	},
+	{
+		id = "date",
+		format = "%d/%m",
+		format = "%H:%M",
+		widget = wibox.widget.textclock,
+	},
+	spacing = settings.spacing,
+	layout = wibox.layout.fixed.horizontal,
 })
 
 -- Create a wibox for each screen and add it
