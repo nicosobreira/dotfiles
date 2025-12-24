@@ -11,7 +11,7 @@ return {
 	editor = os.getenv("EDITOR") or "nvim",
 	browser = os.getenv("BROWSER") or "brave",
 
-	theme_name = "xresources",
+	theme_name = "xresources-smooth",
 
 	tags = { " ", "󰖟 ", "󰺷 ", " ", " " },
 }

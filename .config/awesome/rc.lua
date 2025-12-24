@@ -16,6 +16,20 @@ require("awful.hotkeys_popup.keys")
 
 local settings = require("settings")
 
+-- Config the default notification preset
+naughty.config.presets.low = {
+	position = "bottom_right"
+}
+
+naughty.config.presets.normal = {
+	position = "bottom_right"
+}
+
+naughty.config.presets.critical = {
+	position = "bottom_right"
+}
+
+-- Theme init
 local config_dir = gears.filesystem.get_configuration_dir()
 local custom_theme = string.format("%sthemes/%s/theme.lua", config_dir, settings.theme_name)
 
@@ -24,7 +38,6 @@ if not beautiful.init(custom_theme) then
 		preset = naughty.config.presets.critical,
 		title = "ERROR while loading custom theme:",
 		text = string.format("Path: %s", custom_theme),
-		position = "bottom_right",
 	})
 	beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 end
@@ -38,6 +51,12 @@ local modkey = settings.modkey
 
 require("signals")
 
+	naughty.notify({
+		preset = naughty.config.presets.critical,
+		title = "Color value",
+		text = beautiful.colors.black,
+	})
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 	awful.layout.suit.tile,
@@ -48,7 +67,7 @@ awful.layout.layouts = {
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
-mymainmenu = awful.menu({
+Mymainmenu = awful.menu({
 	items = {
 		{
 			"hotkeys",
@@ -66,14 +85,14 @@ mymainmenu = awful.menu({
 	},
 })
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = mymainmenu })
+local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = Mymainmenu })
 
 -- }}}
 
 -- {{{ Wibar
 -- Create a textclock widget
 
-my_calendar = wibox.widget({
+local my_calendar = wibox.widget({
 	{
 		id = "icon",
 		font = ui_utils.font_resize(12),
@@ -92,9 +111,7 @@ my_calendar = wibox.widget({
 	layout = wibox.layout.fixed.horizontal,
 })
 
--- 
-
-my_time = wibox.widget({
+local my_time = wibox.widget({
 	{
 		id = "icon",
 		font = ui_utils.font_resize(12),
@@ -105,7 +122,6 @@ my_time = wibox.widget({
 	},
 	{
 		id = "date",
-		format = "%d/%m",
 		format = "%H:%M",
 		widget = wibox.widget.textclock,
 	},
@@ -169,7 +185,7 @@ local function set_wallpaper(s)
 end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
--- screen.connect_signal("property::geometry", set_wallpaper)
+screen.connect_signal("property::geometry", set_wallpaper)
 
 awful.screen.connect_for_each_screen(function(s)
 	-- Wallpaper

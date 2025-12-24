@@ -1,5 +1,7 @@
 local wibox = require("wibox")
+local awful = require("awful")
 local beautiful = require("beautiful")
+local gears = require("gears")
 
 local settings = require("settings")
 local ui_utils = require("ui.utils")
@@ -27,7 +29,7 @@ M.widget = wibox.widget({
 	},
 	{
 		id = "timer",
-		text = "00:00",
+		text = "",
 		widget = wibox.widget.textbox,
 	},
 	spacing = settings.spacing,

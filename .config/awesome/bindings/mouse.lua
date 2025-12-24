@@ -3,15 +3,12 @@ local gears = require("gears")
 
 local settings = require("settings")
 
--- FIX: Fix "Mod4 + p" (menu bar)
--- local menubar = require("config.menubar")
-
 local modkey = settings.modkey
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
 	awful.button({}, 3, function()
-		mymainmenu:toggle()
+		Mymainmenu:toggle()
 	end),
 	awful.button({}, 4, awful.tag.viewnext),
 	awful.button({}, 5, awful.tag.viewprev)

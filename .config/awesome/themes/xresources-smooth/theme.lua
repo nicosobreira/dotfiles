@@ -6,6 +6,8 @@ local dpi = xresources.apply_dpi
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
 
+local ui_colors = require("ui.colors")
+
 local colors = {
 	black = xrdb.color0,
 	red = xrdb.color1,
@@ -30,7 +32,7 @@ theme.bg_urgent = theme.bg_normal
 theme.bg_minimize = theme.bg_normal
 theme.bg_systray = theme.bg_normal
 
-theme.fg_normal = colors.purple
+theme.fg_normal = colors.white
 theme.fg_focus = colors.green
 theme.fg_urgent = colors.red
 theme.fg_minimize = colors.green
@@ -54,6 +56,8 @@ theme.border_marked = theme.fg_normal
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
+theme.taglist_fg_occupied = ui_colors.dim(colors.cyan, 60)
+
 theme.prompt_fg_cursor = colors.white
 theme.prompt_bg_cursor = colors.white
 
@@ -64,9 +68,9 @@ theme.tasklist_bg_focus = theme.fg_normal
 theme.tasklist_fg_focus = theme.bg_normal
 
 -- Generate taglist squares:
-local taglist_square_size = dpi(4)
-theme.taglist_squares_sel = theme_assets.taglist_squares_sel(taglist_square_size, theme.fg_normal)
-theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_size, theme.fg_normal)
+-- local taglist_square_size = dpi(4)
+-- theme.taglist_squares_sel = theme_assets.taglist_squares_sel(taglist_square_size, theme.fg_normal)
+-- theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(taglist_square_size, theme.fg_normal)
 
 -- Variables set for theming notifications:
 -- notification_font

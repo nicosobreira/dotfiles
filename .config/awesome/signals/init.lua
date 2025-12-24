@@ -11,7 +11,6 @@ if awesome.startup_errors then
 		preset = naughty.config.presets.critical,
 		title = "ERROR on startup:",
 		text = awesome.startup_errors,
-		position = "bottom_right",
 	})
 end
 
@@ -29,7 +28,6 @@ do
 			preset = naughty.config.presets.critical,
 			title = "ERROR happened:",
 			text = tostring(err),
-			position = "bottom_right",
 		})
 		in_error = false
 	end)
