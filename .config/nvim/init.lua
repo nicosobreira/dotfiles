@@ -24,7 +24,7 @@ vim.opt.rtp:prepend(lazypath)
 -- Setup lazy.nvim
 require("lazy").setup({
 	spec = { { import = "plugins" } },
-	install = { colorscheme = { "catppuccin-mocha", "habamax" } },
+	install = { colorscheme = { "catppuccin-mocha" } },
 	checker = { enabled = true, notify = false },
 
 	change_detection = {

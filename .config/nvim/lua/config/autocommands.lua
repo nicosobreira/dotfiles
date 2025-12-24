@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 		vim.wo.number = false
 		vim.wo.relativenumber = false
 		vim.wo.spell = false
-	end
+	end,
 })
 
 -- Check if we need to reload the file when it changed
@@ -34,10 +34,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- Set spell depending on the file type
 vim.api.nvim_create_autocmd("FileType", {
 	group = augroup("set_spell"),
-	pattern = {"markdown", "txt", "plaintex"},
+	pattern = { "markdown", "txt", "plaintex" },
 	callback = function()
 		vim.wo.spell = true
-	end
+	end,
 })
 
 -- Fix conceallevel for json files
@@ -69,10 +69,10 @@ vim.api.nvim_create_autocmd("FileType", {
 				vim.cmd("close")
 				pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
 			end, {
-					buffer = event.buf,
-					silent = true,
-					desc = "[q]uit buffer",
-				})
+				buffer = event.buf,
+				silent = true,
+				desc = "[q]uit buffer",
+			})
 		end)
 	end,
 })
@@ -99,14 +99,14 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 			"",
 			"",
 			"",
-			"#endif // " .. guard
+			"#endif // " .. guard,
 		}
 
 		vim.api.nvim_buf_set_lines(0, 0, 0, false, lines)
 
 		-- Place cursor between the guards
-		vim.api.nvim_win_set_cursor(0, {4, 0})
-	end
+		vim.api.nvim_win_set_cursor(0, { 4, 0 })
+	end,
 })
 
 -- Automatic create Shebang
@@ -128,21 +128,21 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 		vim.api.nvim_buf_set_lines(0, 0, 0, false, lines)
 
 		-- Place cursor some spaces  below
-		vim.api.nvim_win_set_cursor(0, {3, 0})
-	end
+		vim.api.nvim_win_set_cursor(0, { 3, 0 })
+	end,
 })
 
 -- Sets the concellevel automatic in markdown files
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "markdown",
+	pattern = { "markdown", "rst" },
 	callback = function()
 		vim.api.nvim_create_autocmd("ModeChanged", {
-			buffer = 0,  -- Only for current buffer
+			buffer = 0, -- Only for current buffer
 			callback = function()
 				vim.wo.conceallevel = (vim.fn.mode() == "i") and 0 or 2
-			end
+			end,
 		})
 		-- Initialize based on current mode
 		vim.wo.conceallevel = (vim.fn.mode() == "i") and 0 or 2
-	end
+	end,
 })

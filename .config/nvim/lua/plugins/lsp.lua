@@ -1,5 +1,4 @@
 local SERVERS = {
-	-- Lua language server
 	lua_ls = {
 		settings = {
 			Lua = {
@@ -19,7 +18,6 @@ local SERVERS = {
 		},
 	},
 
-	-- C/C++ via Clangd
 	clangd = {
 		settings = {
 			cmd = {
@@ -32,10 +30,8 @@ local SERVERS = {
 				"--compile-commands-dir=build",
 			},
 		},
-		filetypes = { "c", "cpp", "objc", "objcpp" },
 	},
 
-	-- Python
 	pyright = {
 		settings = {
 			python = {
@@ -47,13 +43,15 @@ local SERVERS = {
 			},
 		},
 	},
+
+	cmake = {}
 }
 
+-- In NixOS, the lsp are download by the user
 IS_NIXOS = vim.uv.fs_stat("/etc/NIXOS")
 
 return {
 	"neovim/nvim-lspconfig",
-	-- In NixOS, the lsp are download by the user
 	dependencies = {
 		{
 			"williamboman/mason.nvim",
@@ -81,8 +79,8 @@ return {
 
 		for name, config in pairs(SERVERS) do
 			config.capabilities = capabilities
-			config.on_attach = function(client, bufnr)
-				-- Add your keymaps here
+
+			config.on_attach = function(_, bufnr)
 				local opts = { buffer = bufnr }
 
 				vim.keymap.set("n", "<leader>d", vim.diagnostic.setqflist, opts)
@@ -93,7 +91,11 @@ return {
 				vim.keymap.set("n", "grn", vim.lsp.buf.rename, opts)
 			end
 
-			vim.lsp.config(name, config)
+			if config or next(config) ~= nil then
+				vim.lsp.config(name, config)
+			end
+
+			vim.lsp.enable(name)
 		end
 	end,
 }
