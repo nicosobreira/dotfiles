@@ -44,6 +44,10 @@ if command -v fzf &>/dev/null; then
 	eval "$(fzf --bash)"
 fi
 
+if command -v direnv &>/dev/null; then
+	eval "$(direnv hook bash)"
+fi
+
 # -- Variables --
 # `man -P less` have color support
 export LESS_TERMCAP_mb=$'\e[1;31m'
@@ -75,12 +79,13 @@ function reload() {
 
 function notes() {
 	local notes_file="$HOME/.notes"
+	local max_columns=52
 
 	[[ ! -f "$notes_file" ]] && return
 	[[ ! -s "$notes_file" ]] && return  # File is empty
 
 	printf "\tNOTES\n"
-	cat "$notes_file"
+	expand "$notes_file" | fmt -w "$max_columns"
 }
 
 # -- Alias --
