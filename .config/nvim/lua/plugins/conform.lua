@@ -1,12 +1,20 @@
 return {
 	"stevearc/conform.nvim",
-	enabled = false,
 	event = { "BufWritePre" },
+	---@module "conform"
+	---@type conform.setupOpts
 	opts = {
+		formatters = {
+			clang_format = {
+				prepend_args = { "--fallback-style=Microsoft" },
+			},
+		},
+
 		formatters_by_ft = {
 			nix = { "alejandra" },
 			lua = { "stylua" },
-			c = { "clang-format" },
+			c = { "clang_format" },
+			cpp = { "clang_format" },
 		},
 
 		format_on_save = {
@@ -15,17 +23,17 @@ return {
 		},
 	},
 
-	config = function(_, opts)
-		require("conform").setup(opts)
-
-		for _, formatterList in pairs(opts.formatters_by_ft) do
-			for _, formatter in ipairs(formatterList) do
-				require("conform").formatters[formatter] = {
-					command = formatter,
-					args = { "-" },
-					stdin = true,
-				}
-			end
-		end
+	keys = {
+		{
+			"<leader>=",
+			function()
+				require("conform").format({ async = true })
+			end,
+			desc = "Format current buffer",
+		},
+	},
+	init = function()
+		-- If you want the formatexpr, here is the place to set it
+		vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 	end,
 }

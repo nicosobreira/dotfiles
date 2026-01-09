@@ -19,12 +19,13 @@ function M.get()
 			tabline = tabline .. '%#TabLine#'    -- Normal highlight for others
 		end
 
+		tabline = tabline .. ' '
+
 		tabline = tabline .. '[' .. i .. ']'
 
-		-- Add separator between tabs (except after last one)
-		if i < tab_count then
-			tabline = tabline .. ' '
-		end
+		tabline = tabline .. ' '
+
+		tabline = tabline .. '%#TabLineFill#'
 	end
 
 	return tabline

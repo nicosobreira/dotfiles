@@ -3,17 +3,26 @@ return {
 	lazy = false,
 	priority = 1000,
 	config = function()
-		local yaml_parser = require("base16-pro-max.parser")
-
-		local theme = "windows-95"
-		local path = vim.fn.expand("~") .. "/.config/nvim/lua/plugins/colorscheme/" .. theme .. ".yaml"
-
-		-- Basic usage: load colors from a YAML file
-		local colors = yaml_parser.get_base16_colors(path) -- or `yml` extension
+		local colors = require("plugins.colorscheme.windows-96")
 
 		require("base16-pro-max").setup({
 			colors = colors,
 			highlight_groups = {
+				["StatusLine"] = {
+					fg = colors.base01,
+					bg = colors.base05,
+				},
+
+				["StatusLineNC"] = {
+					fg = colors.base03,
+					bg = colors.base01,
+				},
+
+				["TabLineFill"] = {
+					fg = colors.base00,
+					bg = colors.base00,
+				},
+
 				["@markup.strong"] = {
 					bold = true,
 				},

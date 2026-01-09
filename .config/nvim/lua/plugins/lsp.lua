@@ -44,10 +44,10 @@ local SERVERS = {
 		},
 	},
 
-	cmake = {}
+	cmake = {},
 }
 
--- In NixOS, the lsp are download by the user
+--- In NixOS, the lsp are download by the user
 IS_NIXOS = vim.uv.fs_stat("/etc/NIXOS")
 
 return {
@@ -81,12 +81,12 @@ return {
 			config.capabilities = capabilities
 
 			config.on_attach = function(_, bufnr)
-				local opts = { buffer = bufnr }
+				local opts = { buffer = bufnr, silent = true }
 
 				vim.keymap.set("n", "<leader>d", vim.diagnostic.setqflist, opts)
+				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 				vim.keymap.set("n", "grd", vim.lsp.buf.definition, opts)
 				vim.keymap.set("n", "grD", vim.lsp.buf.declaration, opts)
-				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 				vim.keymap.set("n", "gri", vim.lsp.buf.implementation, opts)
 				vim.keymap.set("n", "grn", vim.lsp.buf.rename, opts)
 			end
