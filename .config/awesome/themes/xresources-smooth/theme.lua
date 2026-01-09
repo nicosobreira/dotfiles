@@ -56,7 +56,7 @@ theme.border_marked = theme.fg_normal
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
-theme.taglist_fg_occupied = ui_colors.dim(colors.cyan, 60)
+theme.taglist_fg_occupied = ui_colors.dim(colors.cyan, 40)
 
 theme.prompt_fg_cursor = colors.white
 theme.prompt_bg_cursor = colors.white

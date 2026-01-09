@@ -51,12 +51,6 @@ local modkey = settings.modkey
 
 require("signals")
 
-	naughty.notify({
-		preset = naughty.config.presets.critical,
-		title = "Color value",
-		text = beautiful.colors.black,
-	})
-
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 	awful.layout.suit.tile,
@@ -67,6 +61,7 @@ awful.layout.layouts = {
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
+
 Mymainmenu = awful.menu({
 	items = {
 		{
@@ -144,12 +139,6 @@ local taglist_buttons = gears.table.join(
 		if client.focus then
 			client.focus:toggle_tag(t)
 		end
-	end),
-	awful.button({}, 4, function(t)
-		awful.tag.viewnext(t.screen)
-	end),
-	awful.button({}, 5, function(t)
-		awful.tag.viewprev(t.screen)
 	end)
 )
 
@@ -174,14 +163,19 @@ local tasklist_buttons = gears.table.join(
 
 local function set_wallpaper(s)
 	-- Wallpaper
-	if beautiful.wallpaper then
-		local wallpaper = beautiful.wallpaper
-		-- If wallpaper is a function, call it with the screen
-		if type(wallpaper) == "function" then
-			wallpaper = wallpaper(s)
-		end
-		gears.wallpaper.maximized(wallpaper, s, true)
+	if not beautiful.wallpaper then
+		gears.wallpaper.set(beautiful.bg_normal)
+		return
 	end
+
+	local wallpaper = beautiful.wallpaper
+
+	-- If wallpaper is a function, call it with the screen
+	if type(wallpaper) == "function" then
+		wallpaper = wallpaper(s)
+	end
+
+	gears.wallpaper.maximized(wallpaper, s, true)
 end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
@@ -189,14 +183,13 @@ screen.connect_signal("property::geometry", set_wallpaper)
 
 awful.screen.connect_for_each_screen(function(s)
 	-- Wallpaper
-	-- set_wallpaper(s)
+	set_wallpaper(s)
 
 	-- Each screen has its own tag table.
-	awful.tag(my_tags.get_all(), s, awful.layout.suit.tile)
+	awful.tag(my_tags.get_all(), s, awful.layout.suit.max)
 
-	-- Steam/Games tag
-	s.tags[2].layout = awful.layout.suit.max
-	s.tags[3].layout = awful.layout.suit.max
+	-- Coding in titled
+	s.tags[1].layout = awful.layout.suit.tile
 
 	-- Create a promptbox for each screen
 	s.mypromptbox = awful.widget.prompt()

@@ -1,6 +1,6 @@
 local M = {}
 
---- Function to dim a hex color by a percentage
+--- Dim a hex color by a percentage
 ---@param color string in hex format
 ---@param percent number from 0 to 100
 ---@return string nil new dimmed color or nil
