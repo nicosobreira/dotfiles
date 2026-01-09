@@ -3,17 +3,16 @@
 set -eou pipefail
 
 # Global variables
-
 SEARCH_FOLDERS="$HOME/Code"
 
 # Functions
 show_help()
 {
-cat << EOF
-Usages:
-	tmux-manager path/to/directory
-	tmux-manager -p [Prompt mode]
-	tmux-manager -h [This help]
+	cat <<- EOF
+	Usages:
+		tmux-manager path/to/directory
+		tmux-manager -p [Prompt mode]
+		tmux-manager -h [This help]
 EOF
 }
 
@@ -23,7 +22,7 @@ get_nix_shell_command()
 	session_path="$1"
 
 	if [[ ! -f "$session_path/shell.nix" ]]; then
-		printf "true"
+		return 1
 	fi
 
 	printf "nix-shell"
@@ -77,6 +76,10 @@ get_session_fzf()
 		{
 			echo "--- Tmux Sessions ---"
 			tmux list-sessions -F "#{session_name}" 2>/dev/null
+			echo "--- Hot Directories ---"
+			echo "$HOME/nixos"
+			echo "$HOME/.config/awesome"
+			echo "$HOME/.config/nvim"
 			echo "--- Project Directories ---"
 			find "$SEARCH_FOLDERS" -mindepth 1 -maxdepth 2 -type d 2>/dev/null
 		} | fzf --prompt="Select a directory or session: " --header-first --layout "reverse"
@@ -87,11 +90,11 @@ get_session_fzf()
 	fi
 
 	if [[ "$selection" == ---* ]]; then
-		return 1
+		return 2
 	fi
 
 	if ! validate_session_path "$selection"; then
-		return 1
+		return 3
 	fi
 
 	echo "$selection"
