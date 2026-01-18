@@ -18,15 +18,15 @@ local settings = require("settings")
 
 -- Config the default notification preset
 naughty.config.presets.low = {
-	position = "bottom_right"
+	position = "bottom_right",
 }
 
 naughty.config.presets.normal = {
-	position = "bottom_right"
+	position = "bottom_right",
 }
 
 naughty.config.presets.critical = {
-	position = "bottom_right"
+	position = "bottom_right",
 }
 
 -- Theme init
@@ -187,9 +187,6 @@ awful.screen.connect_for_each_screen(function(s)
 
 	-- Each screen has its own tag table.
 	awful.tag(my_tags.get_all(), s, awful.layout.suit.max)
-
-	-- Coding in titled
-	s.tags[1].layout = awful.layout.suit.tile
 
 	-- Create a promptbox for each screen
 	s.mypromptbox = awful.widget.prompt()

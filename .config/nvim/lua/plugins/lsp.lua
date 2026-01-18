@@ -1,4 +1,5 @@
 local SERVERS = {
+	nixd = {},
 	lua_ls = {
 		settings = {
 			Lua = {
@@ -19,6 +20,7 @@ local SERVERS = {
 	},
 
 	clangd = {
+		filetype = { "c", "cpp", "h", "hpp", "objc", "objcpp", "cuda" },
 		settings = {
 			cmd = {
 				"clangd",
@@ -84,6 +86,7 @@ return {
 				local opts = { buffer = bufnr, silent = true }
 
 				vim.keymap.set("n", "<leader>d", vim.diagnostic.setqflist, opts)
+				vim.keymap.set("n", "gra", vim.lsp.buf.code_action, opts)
 				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 				vim.keymap.set("n", "grd", vim.lsp.buf.definition, opts)
 				vim.keymap.set("n", "grD", vim.lsp.buf.declaration, opts)
