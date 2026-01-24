@@ -5,20 +5,6 @@ local function augroup(name)
 	return vim.api.nvim_create_augroup(prefix .. "_" .. name, { clear = false })
 end
 
--- Terminal options
--- NOTE: I may not need this
---[[
-vim.api.nvim_create_autocmd("TermOpen", {
-	group = augroup("term_options"),
-	callback = function()
-		-- vim.b.number = false
-		-- vim.b.relativenumber = false
-		-- vim.b.spell = false
-	end,
-})
-]]
---
-
 -- Sets the concellevel automatic in markdown files
 vim.api.nvim_create_autocmd("FileType", {
 	group = augroup("set_conceal_level"),

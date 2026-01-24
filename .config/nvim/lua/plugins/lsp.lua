@@ -1,5 +1,11 @@
 local SERVERS = {
 	nixd = {},
+	cmake = {},
+	c3 = {
+		cmd = { "c3-lsp", "-diagnostics-delay", "200" },
+		filetypes = { "c3", "c3i" },
+		root_markers = { "project.json", ".git/" },
+	},
 	lua_ls = {
 		settings = {
 			Lua = {
@@ -25,7 +31,6 @@ local SERVERS = {
 			cmd = {
 				"clangd",
 				"--background-index",
-				"--clang-tidy",
 				"--completion-style=detailed",
 				"--header-insertion=iwyu",
 				"--cross-file-rename",
@@ -45,8 +50,6 @@ local SERVERS = {
 			},
 		},
 	},
-
-	cmake = {},
 }
 
 --- In NixOS, the lsp are download by the user
@@ -87,7 +90,6 @@ return {
 
 				vim.keymap.set("n", "<leader>d", vim.diagnostic.setqflist, opts)
 				vim.keymap.set("n", "gra", vim.lsp.buf.code_action, opts)
-				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 				vim.keymap.set("n", "grd", vim.lsp.buf.definition, opts)
 				vim.keymap.set("n", "grD", vim.lsp.buf.declaration, opts)
 				vim.keymap.set("n", "gri", vim.lsp.buf.implementation, opts)

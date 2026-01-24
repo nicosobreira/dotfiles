@@ -2,19 +2,19 @@ return {
 	"nvim-telescope/telescope.nvim",
 	tag = "v0.1.9",
 	dependencies = {
-		{ 'nvim-lua/plenary.nvim' },
+		{ "nvim-lua/plenary.nvim" },
 	},
 	cmd = { "Telescope" },
 	opts = {
 		defaults = {
 			file_ignore_patterns = {
 				"^.git/",
-				"^build/",
 				"%.o",
+				"^build/",
 				"%.png",
 				"%.jpeg",
-			}
-		}
+			},
+		},
 	},
 	keys = {
 		{
@@ -22,7 +22,7 @@ return {
 			function()
 				require("telescope.builtin").find_files()
 			end,
-			desc = "[f]ind [f]iles"
+			desc = "[f]ind [f]iles",
 		},
 		{
 			"<space>fa",
@@ -36,14 +36,14 @@ return {
 			function()
 				require("telescope.builtin").live_grep()
 			end,
-			desc = "[f]ind [w]ords"
+			desc = "[f]ind [w]ords",
 		},
 		{
 			"<leader>fh",
 			function()
 				require("telescope.builtin").help_tags()
 			end,
-			desc = "[f]ind [h]elp pages"
-		}
-	}
+			desc = "[f]ind [h]elp pages",
+		},
+	},
 }
