@@ -1,10 +1,11 @@
 local SERVERS = {
 	nixd = {},
 	cmake = {},
-	c3 = {
-		cmd = { "c3-lsp", "-diagnostics-delay", "200" },
+	bashls = {},
+	c3_lsp = {
+		cmd = { "c3-lsp" },
 		filetypes = { "c3", "c3i" },
-		root_markers = { "project.json", ".git/" },
+		root_markers = { "project.json", ".git" },
 	},
 	lua_ls = {
 		settings = {
@@ -26,16 +27,14 @@ local SERVERS = {
 	},
 
 	clangd = {
-		filetype = { "c", "cpp", "h", "hpp", "objc", "objcpp", "cuda" },
-		settings = {
-			cmd = {
-				"clangd",
-				"--background-index",
-				"--completion-style=detailed",
-				"--header-insertion=iwyu",
-				"--cross-file-rename",
-				"--compile-commands-dir=build",
-			},
+		filetypes = { "c", "cpp", "h", "hpp", "objc", "objcpp", "cuda" },
+		cmd = {
+			"clangd",
+			"--clang-tidy",
+			"--background-index",
+			"--header-insertion=iwyu",
+			"--cross-file-rename",
+			"--compile-commands-dir=build",
 		},
 	},
 
@@ -80,9 +79,13 @@ return {
 			})
 		end
 
+		vim.lsp.set_log_level("off")
+
 		local capabilities = {}
 
 		for name, config in pairs(SERVERS) do
+			config = config or {}
+
 			config.capabilities = capabilities
 
 			config.on_attach = function(_, bufnr)
@@ -96,9 +99,7 @@ return {
 				vim.keymap.set("n", "grn", vim.lsp.buf.rename, opts)
 			end
 
-			if config or next(config) ~= nil then
-				vim.lsp.config(name, config)
-			end
+			vim.lsp.config(name, config)
 
 			vim.lsp.enable(name)
 		end
