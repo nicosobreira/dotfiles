@@ -45,5 +45,12 @@ return {
 			end,
 			desc = "[f]ind [h]elp pages",
 		},
+		{
+			"z=",
+			function()
+				require("telescope.builtin").spell_suggest()
+			end,
+			desc = "Spell suggestions",
+		},
 	},
 }
