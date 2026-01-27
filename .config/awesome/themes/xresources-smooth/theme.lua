@@ -40,7 +40,7 @@ theme.fg_minimize = colors.green
 theme.useless_gap = dpi(1)
 theme.border_width = dpi(1)
 theme.border_normal = theme.bg_normal
-theme.border_focus = theme.fg_focus
+theme.border_focus = colors.white
 theme.border_marked = theme.fg_normal
 
 -- There are other variable sets
