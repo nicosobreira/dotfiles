@@ -13,7 +13,7 @@ return {
 				transparency = true,
 			},
 			plugins = {
-				enable_all = true,
+				nvim_telescope_telescope_nvim = true,
 			},
 			highlight_groups = {
 				["StatusLine"] = {
