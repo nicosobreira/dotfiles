@@ -1,11 +1,10 @@
 # Dotfiles
 
-Meus dotfiles no linux.
-
 ## Usage
 
-Execute o comando abaixo
-
-```bash
-curl -sSfL https://raw.githubusercontent.com/nicosobreira/dotfiles/main/.bin/install-workspace | bash
+``` sh
+# Must be on the `~` home folder.
+git clone https://github.com/nicosobreira/dotfiles.git
+cd dotfiles
+stow -R .
 ```
