@@ -22,6 +22,7 @@ vim.opt.undofile = true
 vim.opt.undolevels = 10000
 
 -- "Ominfunc" help size
+vim.opt.helpheight = 999
 vim.opt.pumheight = 10
 
 -- Conceal (hide) `*` and `**`
@@ -32,11 +33,11 @@ vim.opt.spellsuggest = "best,9"
 vim.opt.spelllang = { "en", "pt_br" }
 
 -- Indentation
+vim.opt.expandtab = true
 vim.opt.breakindent = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.smartindent = true
-vim.opt.expandtab = false
 
 -- Visual whitespace
 vim.opt.list = true

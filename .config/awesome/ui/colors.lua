@@ -9,9 +9,9 @@ function M.dim(color, percent)
 	color = color:gsub("#", "")
 
 	-- Convert hex to decimal
-	local r = tonumber(color:sub(1,2), 16)
-	local g = tonumber(color:sub(3,4), 16)
-	local b = tonumber(color:sub(5,6), 16)
+	local r = tonumber(color:sub(1, 2), 16)
+	local g = tonumber(color:sub(3, 4), 16)
+	local b = tonumber(color:sub(5, 6), 16)
 
 	-- Apply dimming
 	local factor = (100 - percent) / 100

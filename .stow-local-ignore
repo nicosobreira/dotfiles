@@ -1,5 +1,7 @@
 .*\.(bak|tmp|old)
 
+\.editorconfig
+
 \.tmux
 RCS
 .+,v

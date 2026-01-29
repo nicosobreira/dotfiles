@@ -1,31 +1,31 @@
 local M = {}
 
 function M.get()
-	local tab_count = vim.fn.tabpagenr('$')
+	local tab_count = vim.fn.tabpagenr("$")
 
 	-- Return empty string if only one tab exists
 	if tab_count <= 1 then
 		-- vim.opt.showtabline = 0
-		return ''
+		return ""
 	end
 
-	local tabline = ''
+	local tabline = ""
 	local current_tab = vim.fn.tabpagenr()
 
 	for i = 1, tab_count do
 		if i == current_tab then
-			tabline = tabline .. '%#TabLineSel#' -- Highlight current tab
+			tabline = tabline .. "%#TabLineSel#" -- Highlight current tab
 		else
-			tabline = tabline .. '%#TabLine#'    -- Normal highlight for others
+			tabline = tabline .. "%#TabLine#" -- Normal highlight for others
 		end
 
-		tabline = tabline .. ' '
+		tabline = tabline .. " "
 
-		tabline = tabline .. '[' .. i .. ']'
+		tabline = tabline .. "[" .. i .. "]"
 
-		tabline = tabline .. ' '
+		tabline = tabline .. " "
 
-		tabline = tabline .. '%#TabLineFill#'
+		tabline = tabline .. "%#TabLineFill#"
 	end
 
 	return tabline

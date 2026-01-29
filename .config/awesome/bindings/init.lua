@@ -1,4 +1,3 @@
-require "bindings.keyboard"
+require("bindings.keyboard")
 
-require "bindings.mouse"
-
+require("bindings.mouse")

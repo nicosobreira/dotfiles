@@ -5,11 +5,9 @@ local settings = require("settings")
 
 local modkey = settings.modkey
 
-root.buttons(gears.table.join(
-	awful.button({}, 3, function()
-		Mymainmenu:toggle()
-	end)
-))
+root.buttons(gears.table.join(awful.button({}, 3, function()
+	Mymainmenu:toggle()
+end)))
 
 clientbuttons = gears.table.join(
 	awful.button({}, 1, function(c)

@@ -1,5 +1,5 @@
 local SERVERS = {
-	nixd = {},
+	nil_ls = {},
 	cmake = {},
 	bashls = {},
 	c3_lsp = {

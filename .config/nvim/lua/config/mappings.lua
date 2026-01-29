@@ -71,19 +71,17 @@ vim.keymap.set("n", "<leader>s", function()
 	print("Spell check is " .. (vim.opt.spell:get() and "on" or "off"))
 end)
 
-vim.keymap.set('n', '<leader>=', function()
+vim.keymap.set("n", "<leader>=", function()
 	-- Save current cursor position
 	local save_pos = vim.api.nvim_win_get_cursor(0)
 
-	vim.cmd('undojoin')
+	vim.cmd("undojoin")
 
-	vim.cmd('normal! gg=G')
+	vim.cmd("normal! gg=G")
 
 	-- Return cursor position
 	vim.api.nvim_win_set_cursor(0, save_pos)
-end,
-	{ desc = 'Format file and return to position' }
-)
+end, { desc = "Format file and return to position" })
 
 vim.keymap.set("x", "<", "<gv")
 vim.keymap.set("x", ">", ">gv")

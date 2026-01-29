@@ -7,7 +7,7 @@ return {
 			function()
 				vim.cmd("Obsession! Session.vim")
 			end,
-			desc = "New [o]bsession"
-		}
-	}
+			desc = "New [o]bsession",
+		},
+	},
 }

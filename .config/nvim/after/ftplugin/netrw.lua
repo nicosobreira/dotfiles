@@ -15,4 +15,3 @@ require("custom.ftclose").setup()
 -- vim.g.netrw_banner = 0
 -- vim.g.netrw_altfile = 1
 -- vim.g.netrw_alto = 1
-
