@@ -1,5 +1,6 @@
 return {
 	"tpope/vim-obsession",
+	enabled = false,
 	cmd = { "Obsession" },
 	keys = {
 		{

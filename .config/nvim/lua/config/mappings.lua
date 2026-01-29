@@ -98,3 +98,35 @@ vim.keymap.set("n", "<leader>ll", "<cmd>Lazy<CR>")
 -- Autocomplete in normal mode
 vim.keymap.set("i", "<C-n>", "<C-x><C-o><C-n>", { noremap = false, silent = true })
 vim.keymap.set("i", "<C-p>", "<C-x><C-o><C-p>", { noremap = false, silent = true })
+
+-- Open .h from .c or .c from .h
+
+local function file_exists(path)
+	local stat = vim.loop.fs_stat(path)
+	return stat and stat.type == "file" or false
+end
+
+--- If the current buffer is source
+local function open_header_or_source()
+	local HEADER = "h"
+	local SOURCE = "c"
+
+	--- File name without extension
+	local root = vim.fn.expand("%:r")
+
+	local extension = vim.fn.expand("%:e")
+
+	local oposite = ""
+	if extension == HEADER then
+		oposite = SOURCE
+	elseif extension == SOURCE then
+		oposite = HEADER
+	else
+		return
+	end
+
+	local oposite_file = root .. "." .. oposite
+	vim.api.nvim_command("edit " .. oposite_file)
+end
+
+vim.keymap.set("n", "<leader>o", open_header_or_source)
