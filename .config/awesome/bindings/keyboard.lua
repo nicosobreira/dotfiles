@@ -143,6 +143,10 @@ globalkeys = gears.table.join(
 		{ description = "decrease audio", group = "control" }
 	),
 
+	awful.key({}, "Print", function()
+		awful.spawn("flameshot gui")
+	end, { description = "take a screenshot", group = "control" }),
+
 	awful.key({}, "XF86AudioMute", my_widgets.volume.toggle, { description = "toggle audio mute", group = "control" })
 )
 
