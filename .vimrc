@@ -12,8 +12,8 @@
 "              ---`-'                   "
 " == CONFIG ==
 if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+	let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+	let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
 syntax on
@@ -54,10 +54,10 @@ autocmd FileType markdown,txt setlocal spell
 
 " - Indentation -
 set breakindent
-set tabstop=4	"Sets indent size of tabs
-set shiftwidth=4	"Sets auto indent size
-set autoindent	"Turns on auto indenting
-set smartindent	"Remembers previous indent when creating new lines
+set tabstop=4       "Sets indent size of tabs
+set shiftwidth=4    "Sets auto indent size
+set autoindent      "Turns on auto indenting
+set smartindent     "Remembers previous indent when creating new lines
 
 set list
 set listchars=tab:\|\ ,trail:*
@@ -97,9 +97,9 @@ set wildoptions=fuzzy
 
 " - Netrw -
 " Hide './' and '../'
-let g:netrw_list_hide = '^\./$,^\.\./$'
-let g:netrw_hide = 1
-let g:netrw_banner = 0
+" let g:netrw_list_hide = '^\./$,^\.\./$'
+" let g:netrw_hide = 1
+" let g:netrw_banner = 0
 let g:netrw_altfile = 1  " Better behavior when toggling
 let g:netrw_alto = 1     " Makes splits open to the right (instead of left)
 
@@ -119,16 +119,8 @@ let mapleader = " "
 nmap <C-s> <cmd>w<CR>
 
 " - Remap space -
-nnoremap ; :
-nnoremap : ;
-
-" Visual mode
-vnoremap ; :
-vnoremap : ;
-
-" Operator-pending mode
-onoremap ; :
-onoremap : ;
+map ; :
+map : ;
 
 " Move to the end/beggining of the line
 nnoremap H _
