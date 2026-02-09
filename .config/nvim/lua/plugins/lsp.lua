@@ -1,5 +1,16 @@
 local SERVERS = {
-	nil_ls = {},
+	zls = {},
+	nil_ls = {
+		settings = {
+			["nil"] = {
+				nix = {
+					flake = {
+						autoArchive = true,
+					},
+				},
+			},
+		},
+	},
 	cmake = {},
 	bashls = {},
 	c3_lsp = {
