@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
 
 set -eou pipefail
-# set -x
 
-SCRIPT_FILE=$(realpath $0)
+SCRIPT_FILE="$(realpath "$0")"
 
-WGET_OUTPUT="-q --show-progress"
+declare -r WGET_OUTPUT="-q --show-progress"
 
-PREFIX="$HOME/.local"
-OBSIDIAN="$PREFIX/obsidian-app"
+declare -r PREFIX="$HOME/.local"
+declare -r OBSIDIAN="$PREFIX/obsidian-app"
 
-NAME="Obsidian-App"
-ICON="$OBSIDIAN/icon.svg"
-CURRENT_VERSION_FILE="$OBSIDIAN/current-version.txt"
-APP_IMAGE="$OBSIDIAN/Obsidian.AppImage"
-DESKTOP="$PREFIX/share/applications/obsidian-app.desktop"
+declare -r NAME="Obsidian-App"
+declare -r ICON="$OBSIDIAN/icon.svg"
+declare -r CURRENT_VERSION_FILE="$OBSIDIAN/current-version.txt"
+declare -r APP_IMAGE="$OBSIDIAN/Obsidian.AppImage"
+declare -r DESKTOP="$PREFIX/share/applications/obsidian-app.desktop"
 
 get_latest_repo_version() {
-	local git_user_name=$1
-	local git_repo=$2
-	local tag_name_pre=${3:-"v"}
+	local git_user_name="$1"
+	local git_repo="$2"
+	local tag_name_pre="${3:-"v"}"
+
 	curl -s "https://api.github.com/repos/${git_user_name}/${git_repo}/releases/latest" | \
 		grep -oP "\"tag_name\": \"${tag_name_pre}\K[0-9.]+" | \
 		head -1
@@ -29,6 +29,7 @@ check_dependencies() {
 	if command -v curl &>/dev/null && command -v wget &>/dev/null; then
 		return
 	fi
+
 	echo "Need to install the dependencies"
 	show_help
 	exit 3
@@ -38,6 +39,7 @@ init_folders() {
 	if [[ ! -d $OBSIDIAN ]]; then
 		mkdir -p "$OBSIDIAN"
 	fi
+
 	if [[ ! -d $PREFIX/share/applications ]]; then
 		mkdir -p "$PREFIX/share/applications"
 	fi
@@ -56,10 +58,12 @@ get_icon () {
 get_obsidian() {
 	check_dependencies
 	init_folders
-	local latest_version=$(get_latest_repo_version "obsidianmd" "obsidian-releases" "v")
-	local current_version=$(cat "$CURRENT_VERSION_FILE" 2>/dev/null)
 
-	if [[ $latest_version == $current_version ]]; then
+    local latest_version current_version
+	latest_version="$(get_latest_repo_version "obsidianmd" "obsidian-releases" "v")"
+	current_version="$(cat "$CURRENT_VERSION_FILE" 2>/dev/null)"
+
+	if [[ $latest_version == "$current_version" ]]; then
 		echo -e "\tAlready update"
 		return
 	fi
@@ -72,7 +76,7 @@ get_obsidian() {
 
 	create_desktop
 
-	echo $latest_version > "$CURRENT_VERSION_FILE"
+	echo "$latest_version" > "$CURRENT_VERSION_FILE"
 }
 
 create_desktop() {
@@ -85,14 +89,16 @@ Exec=$SCRIPT_FILE run
 Icon=$ICON
 Terminal=false
 EOF
-	chmod u+x $DESKTOP
+
+	chmod u+x "$DESKTOP"
 }
 
 get_user_choice() {
-	message=$1
+	local message="$1"
 	local input
+
 	while true; do
-		read -p "$message [Y/N] " input
+		read -r -p "$message [Y/N] " input
 		case "$input" in
 			[Yy]) return 0;;
 			[Nn]) return 1;;
@@ -103,12 +109,13 @@ get_user_choice() {
 
 show_help() {
 	cat << EOF
+Install the official Obsidian AppImage
 Usage: obsidian-app [ARGUMENTS]
 
 ARGUMENTS:
-        run               Run Obsidian AppImage
+        run               Run Obsidian
         update/install    Update Obsidian
-        remove            Remove ceartain folders
+        remove            Remove Obsidian
         help              Show help
 
 Dependencies:
@@ -130,16 +137,16 @@ case "$1" in
 	run)
 		get_obsidian
 		echo "Running \"$APP_IMAGE\""
-		nohup $APP_IMAGE &>/dev/null
+		nohup "$APP_IMAGE" &>/dev/null
 		;;
 	install|update) get_obsidian;;
 	help) show_help;;
 	remove)
 		if get_user_choice "Remove $OBSIDIAN?"; then
-			rm -rf $OBSIDIAN
+			rm -rf "$OBSIDIAN"
 		fi
 		if get_user_choice "Remove $DESKTOP?"; then
-			rm -f $DESKTOP
+			rm -f "$DESKTOP"
 		fi
 		;;
 	*)
