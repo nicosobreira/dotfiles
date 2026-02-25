@@ -1,6 +1,7 @@
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local xrdb = xresources.get_current_theme()
+
 local dpi = xresources.apply_dpi
 
 local gfs = require("gears.filesystem")

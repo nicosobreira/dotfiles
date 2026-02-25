@@ -6,12 +6,14 @@ local settings = require("settings")
 local M = {}
 
 function M.new()
-	local bigger_font = ui_utils.font_get_size() + 2
+	local bigger_font_size = ui_utils.font_get_size() + 2
+	local bigger_font = ui_utils.font_resize(bigger_font_size)
+
 	return wibox.widget({
 		{
 			id = "icon",
 			widget = wibox.widget.textbox,
-			font = ui_utils.font_resize(bigger_font),
+			font = bigger_font,
 			markup = "icon",
 			align = "center",
 			valing = "center",
