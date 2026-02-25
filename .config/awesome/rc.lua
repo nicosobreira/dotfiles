@@ -86,44 +86,6 @@ local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu 
 
 -- {{{ Wibar
 -- Create a textclock widget
-
-local my_calendar = wibox.widget({
-	{
-		id = "icon",
-		font = ui_utils.font_resize(12),
-		markup = " ",
-		align = "center",
-		valing = "center",
-		widget = wibox.widget.textbox,
-	},
-	{
-		id = "date",
-		format = "%d/%m",
-		refresh = 600,
-		widget = wibox.widget.textclock,
-	},
-	spacing = settings.spacing,
-	layout = wibox.layout.fixed.horizontal,
-})
-
-local my_time = wibox.widget({
-	{
-		id = "icon",
-		font = ui_utils.font_resize(12),
-		markup = " ",
-		align = "center",
-		valing = "center",
-		widget = wibox.widget.textbox,
-	},
-	{
-		id = "date",
-		format = "%H:%M",
-		widget = wibox.widget.textclock,
-	},
-	spacing = settings.spacing,
-	layout = wibox.layout.fixed.horizontal,
-})
-
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
 	awful.button({}, 1, function(t)
@@ -238,12 +200,11 @@ awful.screen.connect_for_each_screen(function(s)
 			layout = wibox.layout.fixed.horizontal,
 			spacing = beautiful.get_font_height(beautiful.font),
 			wibox.widget.systray(),
-			-- my_widgets.pomodoro.widget,
 			my_widgets.bright.widget,
 			my_widgets.volume.widget,
 			my_widgets.battery,
-			my_calendar,
-			my_time,
+			my_widgets.calendar,
+			my_widgets.time,
 			s.mylayoutbox,
 		},
 	})
