@@ -1,13 +1,15 @@
--- Volume control using `amixer`
-
 local awful = require("awful")
-local beautiful = require("beautiful")
 
 local indicator = require("widgets.templates.indicator")
 
 local M = {}
 
 local opts = {
+	levels = {
+		low = 30,
+		medium = 60,
+	},
+
 	icons = {
 		mute = "󰝟 ",
 		low = "󰕿 ",
@@ -15,18 +17,38 @@ local opts = {
 		high = "󰕾 ",
 	},
 
-	colors = {
-		low = beautiful.colors.red,
-		medium = beautiful.colors.yellow,
-		high = beautiful.colors.green,
-	},
-
 	volume_step = "3",
+	max_volume = "1.0",
+
+	mixer_cmd = "pwvucontrol --tab=1",
 }
 
 local volume_widget = indicator.new()
 
-local function update_volume()
+-------------------------------------------------
+-- UI UPDATE
+-------------------------------------------------
+
+local function update_ui(volume, mute)
+	local icon = ""
+
+	if mute then
+		icon = opts.icons.mute
+	else
+		-- stylua: ignore
+		icon = indicator.get_icon(
+			volume,
+			opts.levels.low,
+			opts.levels.medium,
+			opts.icons
+		)
+	end
+
+	volume_widget.icon.markup = icon
+	volume_widget.level.markup = volume .. "%"
+end
+
+local function update()
 	awful.spawn.easy_async_with_shell("wpctl get-volume @DEFAULT_AUDIO_SINK@", function(stdout)
 		-- stdout = "Volume: 0.42 [MUTED]"
 		-- stdout = "Volume: 0.94"
@@ -39,24 +61,15 @@ local function update_volume()
 
 		local volume = tonumber(volume_text) * 100
 
-		local is_mute = false
-		if stdout:match("%[(.-)%]") then
-			is_mute = true
-		end
+		local mute = stdout:match("%[MUTED%]") ~= nil
 
-		local icon = opts.icons.medium
-
-		if is_mute then
-			icon = opts.icons.mute
-		else
-			icon = indicator.get_icon(volume, 30, 60, opts.icons)
-		end
-
-		volume_widget.icon.markup = icon
-
-		volume_widget.level.markup = volume .. "%"
+		update_ui(volume, mute)
 	end)
 end
+
+-------------------------------------------------
+-- ACTIONS (wpctl control)
+-------------------------------------------------
 
 local function unmute()
 	local command = "wpctl set-mute @DEFAULT_AUDIO_SINK@ 0"
@@ -65,33 +78,30 @@ local function unmute()
 end
 
 function M.toggle()
-	local command = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-
-	awful.spawn(command, false)
-
-	update_volume()
+	awful.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle", false)
+	update()
 end
 
 function M.increase()
 	unmute()
+	awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ " .. opts.volume_step .. "%+ --limit " .. opts.max_volume, false)
 
-	local command = "wpctl set-volume @DEFAULT_AUDIO_SINK@ " .. opts.volume_step .. "%+"
-	awful.spawn(command, false)
-
-	update_volume()
+	update()
 end
 
 function M.decrease()
 	unmute()
+	awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ " .. opts.volume_step .. "%- --limit " .. opts.max_volume, false)
 
-	local command = "wpctl set-volume @DEFAULT_AUDIO_SINK@ " .. opts.volume_step .. "%-"
-	awful.spawn(command, false)
-
-	update_volume()
+	update()
 end
 
-volume_widget:buttons(awful.util.table.join(awful.button({}, 1, function()
-	awful.spawn("pwvucontrol --tab=1", {
+-------------------------------------------------
+-- BUTTONS
+-------------------------------------------------
+
+local function open_mixer()
+	awful.spawn(opts.mixer_cmd, {
 		floating = true,
 		ontop = true,
 		placement = awful.placement.top_right,
@@ -103,11 +113,19 @@ volume_widget:buttons(awful.util.table.join(awful.button({}, 1, function()
 			height = math.floor(wa.height / 2),
 		})
 	end)
-end)))
+end
+
+volume_widget:buttons(
+	awful.util.table.join(
+		awful.button({}, 1, open_mixer),
+		awful.button({}, 4, M.increase),
+		awful.button({}, 5, M.decrease),
+		awful.button({}, 3, M.toggle)
+	)
+)
 
 M.widget = volume_widget
 
--- Initial update
-update_volume()
+update()
 
 return M
