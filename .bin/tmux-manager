@@ -2,91 +2,144 @@
 
 set -eou pipefail
 
-if [[ -t 2 && -z "${NO_COLOR:-}" ]]; then
-  if command -v tput &>/dev/null && \
-	  tput colors &>/dev/null; then
-    RED="$(tput setaf 1)"
-    BOLD="$(tput bold)"
-    RESET="$(tput sgr0)"
-  fi
-fi
+# ------------------------------------------------------------
+# Initial setup
+# ------------------------------------------------------------
 
-error() {
-  local msg="$1"
-  local code="${2:-1}"
-
-  local error_string="ERROR"
-
-  if [[ -n "${RED:-}" ]]; then
-    printf '%s%s%s:%s %s\n' "$BOLD" "$RED" "$error_string" "$RESET" "$msg" >&2
-  else
-    printf '%s: %s\n' "$error_string" "$msg" >&2
-  fi
-
-  exit "$code"
+command_exists()
+{
+    command -v "$1" &>/dev/null
 }
 
-if ! command -v tmux &>/dev/null; then
+if [[ -t 2 && -z "${NO_COLOR:-}" ]]; then
+    if command_exists tput && tput colors &>/dev/null; then
+        RED="$(tput setaf 1)"
+        BOLD="$(tput bold)"
+        RESET="$(tput sgr0)"
+    fi
+fi
+
+error()
+{
+    local msg="$1"
+    local code="${2:-1}"
+
+    local error_string="ERROR"
+
+    if [[ -n "${RED:-}" ]]; then
+        printf '%s%s%s:%s %s\n' "$BOLD" "$RED" "$error_string" "$RESET" "$msg" >&2
+    else
+        printf '%s: %s\n' "$error_string" "$msg" >&2
+    fi
+
+    exit "$code"
+}
+
+if ! command_exists tmux; then
 	error "Tmux executable not found" 3
 fi
 
+# ------------------------------------------------------------
 # Global variables
-SEARCH_FOLDERS="$HOME/code"
+# ------------------------------------------------------------
 
+RECURSIVE_SEARCH_FOLDERS="$HOME/code"
+HOT_FOLDERS=("$HOME/nixos" "$HOME/.config/awesome" "$HOME/.config/nvim")
+WINDOW_NAMES=("code" "run")
+
+# ------------------------------------------------------------
 # Functions
+# ------------------------------------------------------------
+
 show_help()
 {
 	cat <<- EOF
 	Usages:
+		tmux-manager [Fzf mode]
+		tmux-manager . [Current directory]
 		tmux-manager path/to/directory
 		tmux-manager -p [Prompt mode]
 		tmux-manager -h [This help]
 EOF
 }
 
+check_if_nixos()
+{
+    if [[ -r /etc/os-release ]]; then
+        if grep -q "ID=nixos" /etc/os-release; then
+            return 0
+        fi
+
+        return 1
+    fi
+
+    return 1
+}
+
 nix_shell_hook()
 {
-	local session_path
-	session_path="$1"
+	local session_name="$1"
+	local session_path="$2"
 
-	if [[ -f "$session_path/shell.nix" ]]; then
-		local hook_command='send-keys "nix-shell" C-m'
-		
-		tmux set-hook after-new-window "$hook_command"
-		tmux set-hook after-rename-window "$hook_command"
-	fi
+    if ! check_if_nixos; then
+        return 0
+    fi
+
+    local nix_shell_cmd=""
+
+    if [[ -f "$session_path/shell.nix" ]]; then
+        nix_shell_cmd="nix-shell"
+    elif [[ -f "$session_path/flake.nix" && ! -f "$session_path/configuration.nix" ]]; then
+        nix_shell_cmd="nix develop"
+    else
+        return 0
+    fi
+
+    for index in "${!WINDOW_NAMES[@]}"; do
+        local key=$(( index + 1 ))
+        local win="${WINDOW_NAMES[index]}"
+
+        if tmux list-windows -t "$session_name" 2>/dev/null | grep -q "$win"; then
+            tmux send-keys -t "$session_name:$win" "$nix_shell_cmd" C-m
+        fi
+    done
 }
 
 create_session_windows()
 {
-	local session_name session_path
-	session_name="$1"
-	session_path="$2"
+	local session_name="$1"
+	local session_path="$2"
 	
-	nix_shell_hook "$session_path"
-	
-	tmux new-window -c "$session_path" -t "$session_name:1" -d -n "code" &>/dev/null || tmux rename-window -t "$session_name:1" "code"
-	tmux new-window -c "$session_path" -t "$session_name:2" -d -n "run" &>/dev/null || tmux rename-window -t "$session_name:2" "run"
+    for index in "${!WINDOW_NAMES[@]}"; do
+        local key=$(( index + 1 ))
+        local win="${WINDOW_NAMES[index]}"
+
+        if ! tmux list-windows -t "$session_name" 2>/dev/null | grep -q "$win"; then
+            tmux new-window -c "$session_path" -t "$session_name:$key" -d -n "$win" &>/dev/null || tmux rename-window -t "$session_name:$key" "$win"
+        fi
+    done
+
+	nix_shell_hook "$session_name" "$session_path"
 }
 
 get_session_name()
 {
-	local session_path
-	session_path="$1"
+	local session_path="$1"
+
+    session_path="${session_path%/}"
 
 	basename "$session_path" | tr . _
 }
 
-# If session_path is valid return 0 (TRUE), else return 1 (FALSE) and echo error message to stderr
 validate_session_path()
 {
-	local session_path
-	session_path="$1"
+	local session_path="$1"
 
 	if [[ -d "$session_path" ]]; then
 		return 0
 	fi
 
+    local session_name
 	session_name="$(get_session_name "$session_path")"
 
 	if tmux has-session -t "$session_name" 2>/dev/null; then
@@ -98,34 +151,42 @@ validate_session_path()
 
 get_session_fzf()
 {
-	local selection
+    if ! command_exists fzf; then
+        show_help
+        error "Fzf executable not found. Try using a option above." 3
+    fi
 
-	selection=$(
+	local session_path
+	session_path=$(
 		{
 			echo "--- Tmux Sessions ---"
 			tmux list-sessions -F "#{session_name}" 2>/dev/null
+
 			echo "--- Hot Directories ---"
-			echo "$HOME/nixos"
-			echo "$HOME/.config/awesome"
-			echo "$HOME/.config/nvim"
+            for folder in "${HOT_FOLDERS[@]}"; do
+                echo "$folder"
+            done
+
 			echo "--- Project Directories ---"
-			find "$SEARCH_FOLDERS" -mindepth 1 -maxdepth 2 -type d 2>/dev/null
-		} | fzf --prompt="Select a directory or session: " --header-first --layout "reverse"
+			find "$RECURSIVE_SEARCH_FOLDERS" -mindepth 1 -maxdepth 2 -type d 2>/dev/null
+		} | fzf --prompt="Select a directory or session: " \
+            --header-first \
+            --layout "reverse"
 	)
 
-	if [[ -z ${selection+x} ]]; then
-		return 1
+	if [[ -z "$session_path" ]]; then
+        error "No selection made."
 	fi
 
-	if [[ "$selection" == ---* ]]; then
+	if [[ "$session_path" == ---* ]]; then
 		return 2
 	fi
 
-	if ! validate_session_path "$selection"; then
+	if ! validate_session_path "$session_path"; then
 		return 3
 	fi
 
-	echo "$selection"
+	echo "$session_path"
 }
 
 input_work_folder()
@@ -133,14 +194,14 @@ input_work_folder()
 	local input_path session_path
 	while :
 	do
-		read -r -e -p "Enter a directory/session: [None to fzf] " input_path
+		read -r -e -p "Enter a directory/session: [None for fzf] " input_path
 
 		if [[ -z $input_path ]]; then
 			session_path="$(get_session_fzf)"
 			break
 		fi
 
-		session_path="${input_path/#\~/"$HOME"}"
+        session_path="$(realpath -m "${input_path/#\~/"$HOME"}")"
 
 		if validate_session_path "$session_path"; then
 			break
@@ -151,6 +212,10 @@ input_work_folder()
 
 	echo "$session_path"
 }
+
+# ------------------------------------------------------------
+# User interaction
+# ------------------------------------------------------------
 
 SESSION_PATH=""
 SESSION_NAME=""
@@ -178,7 +243,13 @@ else
 	error "More than 2 arguments"
 fi
 
+SESSION_PATH="${SESSION_PATH%/}"
+
 SESSION_NAME="$(get_session_name "$SESSION_PATH")"
+
+# ------------------------------------------------------------
+# Tmux session/window creation
+# ------------------------------------------------------------
 
 if  ! tmux list-sessions &>/dev/null || \
 	! tmux has-session -t "$SESSION_NAME" &>/dev/null
