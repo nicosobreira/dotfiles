@@ -10,9 +10,11 @@ return {
 	-- end,
 	cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
 	opts = {
+		auto_install = true,
 		highlight = { enable = true },
 		indent = { enable = true },
 		ensure_installed = {
+			"rust",
 			"bash",
 			"c",
 			"c3",

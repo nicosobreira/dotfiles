@@ -1,5 +1,12 @@
 local SERVERS = {
 	zls = {},
+
+	rust_analyzer = {
+		settings = {
+			check = { command = "clippy" },
+		},
+	},
+
 	nil_ls = {
 		settings = {
 			["nil"] = {
