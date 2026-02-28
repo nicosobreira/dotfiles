@@ -69,31 +69,36 @@ local SERVERS = {
 	},
 }
 
+local function on_attach(_, bufnr)
+	local opts = { buffer = bufnr, silent = true }
+
+	vim.keymap.set("n", "<leader>d", vim.diagnostic.setqflist, opts)
+	vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+	vim.keymap.set("n", "gra", vim.lsp.buf.code_action, opts)
+	vim.keymap.set("n", "grd", vim.lsp.buf.definition, opts)
+	vim.keymap.set("n", "grD", vim.lsp.buf.declaration, opts)
+	vim.keymap.set("n", "gri", vim.lsp.buf.implementation, opts)
+	vim.keymap.set("n", "grn", vim.lsp.buf.rename, opts)
+end
+
 --- In NixOS, the lsp are download by the user
-IS_NIXOS = vim.uv.fs_stat("/etc/NIXOS")
+local is_nixos = vim.uv.fs_stat("/etc/NIXOS")
+
+local use_mason = not is_nixos
 
 return {
 	"neovim/nvim-lspconfig",
-	dependencies = {
-		{
-			"williamboman/mason.nvim",
-			enabled = function()
-				return not IS_NIXOS
-			end,
-		},
-		{
-			"williamboman/mason-lspconfig.nvim",
-			enabled = function()
-				return not IS_NIXOS
-			end,
-		},
-	},
+	dependencies = use_mason and {
+		{ "williamboman/mason.nvim" },
+		{ "williamboman/mason-lspconfig.nvim" },
+	} or {},
 
 	config = function()
-		if not IS_NIXOS then
+		if use_mason then
 			require("mason").setup()
 			require("mason-lspconfig").setup({
 				ensure_installed = vim.tbl_keys(SERVERS),
+				automatic_installation = true,
 			})
 		end
 
@@ -101,22 +106,10 @@ return {
 
 		local capabilities = {}
 
+		local default_config = { on_attach = on_attach, capabilities = capabilities }
+
 		for name, config in pairs(SERVERS) do
-			config = config or {}
-
-			config.capabilities = capabilities
-
-			config.on_attach = function(_, bufnr)
-				local opts = { buffer = bufnr, silent = true }
-
-				vim.keymap.set("n", "<leader>d", vim.diagnostic.setqflist, opts)
-				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-				vim.keymap.set("n", "gra", vim.lsp.buf.code_action, opts)
-				vim.keymap.set("n", "grd", vim.lsp.buf.definition, opts)
-				vim.keymap.set("n", "grD", vim.lsp.buf.declaration, opts)
-				vim.keymap.set("n", "gri", vim.lsp.buf.implementation, opts)
-				vim.keymap.set("n", "grn", vim.lsp.buf.rename, opts)
-			end
+			config = vim.tbl_deep_extend("force", default_config, config or {})
 
 			vim.lsp.config(name, config)
 			vim.lsp.enable(name)
