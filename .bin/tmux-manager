@@ -95,9 +95,10 @@ nix_shell_hook()
         return 0
     fi
 
+	local i
     for i in "${!WINDOW_NAMES[@]}"; do
+		local win="${WINDOW_NAMES[i]}"
         local index=$(( i + 1 ))
-        local win="${WINDOW_NAMES[index]}"
 
         if tmux list-windows -t "$session_name" 2>/dev/null | grep -q "$win"; then
             tmux send-keys -t "$session_name:$win" "$nix_shell_cmd" C-m
@@ -110,9 +111,10 @@ create_session_windows()
 	local session_name="$1"
 	local session_path="$2"
 	
+	local i
     for i in "${!WINDOW_NAMES[@]}"; do
+		local win="${WINDOW_NAMES[i]}"
         local index=$(( i + 1 ))
-        local win="${WINDOW_NAMES[index]}"
 
         if ! tmux list-windows -t "$session_name" 2>/dev/null | grep -q "$win"; then
             tmux new-window -c "$session_path" -t "$session_name:$index" -d -n "$win" &>/dev/null || tmux rename-window -t "$session_name:$index" "$win"
