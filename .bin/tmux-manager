@@ -55,11 +55,11 @@ show_help()
 {
 	cat <<- EOF
 	Usages:
-		tmux-manager [Fzf mode]
-		tmux-manager . [Current directory]
+		tmux-manager                    [Fzf mode]
+		tmux-manager .                  [Current directory]
 		tmux-manager path/to/directory
-		tmux-manager -p [Prompt mode]
-		tmux-manager -h [This help]
+		tmux-manager -p                 [Prompt mode]
+		tmux-manager -h                 [This help]
 EOF
 }
 
@@ -95,8 +95,8 @@ nix_shell_hook()
         return 0
     fi
 
-    for index in "${!WINDOW_NAMES[@]}"; do
-        local key=$(( index + 1 ))
+    for i in "${!WINDOW_NAMES[@]}"; do
+        local index=$(( i + 1 ))
         local win="${WINDOW_NAMES[index]}"
 
         if tmux list-windows -t "$session_name" 2>/dev/null | grep -q "$win"; then
@@ -110,12 +110,12 @@ create_session_windows()
 	local session_name="$1"
 	local session_path="$2"
 	
-    for index in "${!WINDOW_NAMES[@]}"; do
-        local key=$(( index + 1 ))
+    for i in "${!WINDOW_NAMES[@]}"; do
+        local index=$(( i + 1 ))
         local win="${WINDOW_NAMES[index]}"
 
         if ! tmux list-windows -t "$session_name" 2>/dev/null | grep -q "$win"; then
-            tmux new-window -c "$session_path" -t "$session_name:$key" -d -n "$win" &>/dev/null || tmux rename-window -t "$session_name:$key" "$win"
+            tmux new-window -c "$session_path" -t "$session_name:$index" -d -n "$win" &>/dev/null || tmux rename-window -t "$session_name:$index" "$win"
         fi
     done
 
@@ -126,38 +126,18 @@ get_session_name()
 {
 	local session_path="$1"
 
-    session_path="${session_path%/}"
-
 	basename "$session_path" | tr . _
 }
 
-validate_session_path()
-{
-	local session_path="$1"
-
-	if [[ -d "$session_path" ]]; then
-		return 0
-	fi
-
-    local session_name
-	session_name="$(get_session_name "$session_path")"
-
-	if tmux has-session -t "$session_name" 2>/dev/null; then
-		return 0
-	fi
-
-	error "The directory \"$session_path\" or session \"$session_name\" does not exist"
-}
-
-get_session_fzf()
+get_session_data_fzf()
 {
     if ! command_exists fzf; then
         show_help
         error "Fzf executable not found. Try using a option above." 3
     fi
 
-	local session_path
-	session_path=$(
+	local session_data
+	session_data=$(
 		{
 			echo "--- Tmux Sessions ---"
 			tmux list-sessions -F "#{session_name}" 2>/dev/null
@@ -174,78 +154,77 @@ get_session_fzf()
             --layout "reverse"
 	)
 
-	if [[ -z "$session_path" ]]; then
+	if [[ -z "$session_data" ]]; then
         error "No selection made."
 	fi
 
-	if [[ "$session_path" == ---* ]]; then
+	if [[ "$session_data" == ---* ]]; then
 		return 2
 	fi
 
-	if ! validate_session_path "$session_path"; then
-		return 3
-	fi
-
-	echo "$session_path"
+	echo "$session_data"
 }
 
-input_work_folder()
+# FIX: This function should validate either a tmux session name or a folder path
+get_session_data_prompt()
 {
-	local input_path session_path
+	local input_path session_data
 	while :
 	do
 		read -r -e -p "Enter a directory/session: [None for fzf] " input_path
 
 		if [[ -z $input_path ]]; then
-			session_path="$(get_session_fzf)"
+			session_data="$(get_session_data_fzf)"
 			break
 		fi
 
-        session_path="$(realpath -m "${input_path/#\~/"$HOME"}")"
-
-		if validate_session_path "$session_path"; then
-			break
-		fi
+        session_data="$(realpath -m "${input_path/#\~/"$HOME"}")"
 
 		echo "Please try again" >&2
 	done
 
-	echo "$session_path"
+	echo "$session_data"
 }
 
 # ------------------------------------------------------------
 # User interaction
 # ------------------------------------------------------------
 
-SESSION_PATH=""
-SESSION_NAME=""
+# Can be either a tmux session name or a folder path
+SESSION_DATA=""
 
 if [[ $# -eq 0 ]]; then
-	SESSION_PATH="$(get_session_fzf)"
+	SESSION_DATA="$(get_session_data_fzf)"
 elif [[ $# -eq 1 ]]; then
 	if [[ $1 == -p ]]; then
-		SESSION_PATH="$(input_work_folder)"
+		echo
+		# SESSION_DATA="$(get_session_data_prompt)"
 	elif [[ $1 == -h ]]; then
 		show_help
 		exit 0
 	elif [[ $1 == . ]]; then
-		SESSION_PATH="$PWD"
+		SESSION_DATA="$PWD"
 	else
-		if ! validate_session_path "$1"; then
-			show_help
-			exit 2
-		fi
-
-		SESSION_PATH="$1"
+		SESSION_DATA="$1"
 	fi
 else
 	show_help
 	error "More than 2 arguments"
 fi
 
-SESSION_PATH="${SESSION_PATH%/}"
+SESSION_PATH=""
+SESSION_NAME=""
 
-SESSION_NAME="$(get_session_name "$SESSION_PATH")"
+# TODO: This if statment should be in a function
+if tmux has-session -t "$SESSION_DATA" &>/dev/null; then
+	SESSION_PATH="NONE"
+	SESSION_NAME="$SESSION_DATA"
+elif [[ -d "$SESSION_DATA" ]]; then
+	SESSION_PATH="${SESSION_DATA%/}"
+	SESSION_NAME="$(get_session_name "$SESSION_PATH")"
+else
+	error "No session or folder named \"$SESSION_DATA\" exists"
+fi
 
 # ------------------------------------------------------------
 # Tmux session/window creation
