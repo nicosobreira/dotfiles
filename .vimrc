@@ -59,8 +59,9 @@ set shiftwidth=4    "Sets auto indent size
 set autoindent      "Turns on auto indenting
 set smartindent     "Remembers previous indent when creating new lines
 
-set list
-set listchars=tab:\|\ ,trail:*
+"set list
+"set listchars=trail:*
+"set listchars=tab:\|\ ,trail:*
 highlight SpecialKey ctermfg=darkgray guifg=gray70
 
 " - Use system clipboard -
@@ -119,8 +120,8 @@ let mapleader = " "
 nmap <C-s> <cmd>w<CR>
 
 " - Remap space -
-map ; :
-map : ;
+nnoremap : ;
+nnoremap ; :
 
 " Move to the end/beggining of the line
 nnoremap H _
