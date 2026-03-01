@@ -19,7 +19,7 @@ endif
 syntax on
 set termguicolors
 
-colorscheme koehler
+colorscheme default
 
 set background=dark
 filetype plugin indent on
@@ -120,8 +120,8 @@ let mapleader = " "
 nmap <C-s> <cmd>w<CR>
 
 " - Remap space -
-nnoremap : ;
-nnoremap ; :
+noremap : ;
+noremap ; :
 
 " Move to the end/beggining of the line
 nnoremap H _
