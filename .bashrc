@@ -133,7 +133,6 @@ function __prompt_command() {
 		branch=$(git branch --show-current 2>/dev/null)
 		if [[ -n "$branch" ]]; then
 			printf " %s(%s)%s" "${magenta}" "${branch}" "${reset}"
-
 		fi
 	}
 
