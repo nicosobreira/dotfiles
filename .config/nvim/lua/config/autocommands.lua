@@ -7,17 +7,30 @@ end
 
 -- Sets the concellevel automatic in markdown files
 vim.api.nvim_create_autocmd("FileType", {
-	group = augroup("set_conceal_level"),
+	group = augroup("markdown_conceal_toggle"),
 	pattern = { "markdown", "rst" },
 	callback = function()
 		vim.api.nvim_create_autocmd("ModeChanged", {
 			buffer = 0, -- Only for current buffer
 			callback = function()
-				vim.b.conceallevel = (vim.fn.mode() == "i") and 0 or 2
+				local mode = vim.api.nvim_get_mode().mode
+				mode = mode:sub(1, 1)
+
+				if mode == "n" then
+					-- Normal mode → conceal enabled
+					vim.opt_local.conceallevel = 2
+				elseif mode == "i" or mode == "v" or mode == "V" then
+					-- Insert mode → conceal disabled
+					vim.opt_local.conceallevel = 0
+				end
 			end,
 		})
+
+		local mode = vim.api.nvim_get_mode().mode
+		mode = mode:sub(1, 1)
+
 		-- Initialize based on current mode
-		vim.b.conceallevel = (vim.fn.mode() == "i") and 0 or 2
+		vim.opt_local.conceallevel = (mode == "i") and 0 or 2
 	end,
 })
 

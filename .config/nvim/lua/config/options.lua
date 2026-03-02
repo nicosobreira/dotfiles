@@ -25,9 +25,6 @@ vim.opt.undolevels = 10000
 vim.opt.helpheight = 999
 vim.opt.pumheight = 10
 
--- Conceal (hide) `*` and `**`
-vim.opt.conceallevel = 2
-
 -- Spell check
 vim.opt.spellsuggest = "best,9"
 vim.opt.spelllang = { "en", "pt_br" }
