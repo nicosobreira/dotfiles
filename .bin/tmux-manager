@@ -147,22 +147,23 @@ normalize_session_path()
 # Get a session name with "parent/folder" format
 get_session_name()
 {
-	local session_path="$1"
+    local session_path="$1"
 
-	local parent name
-	parent="$(basename "$(dirname "$session_path")")"
-	name="$(basename "$session_path")"
+    readonly ignore_parent=("$HOME" "/")
+    readonly separator="/"
 
-	local final_name=""
-	if [[ $parent == "/" || $parent == "$HOME" ]]; then
-		final_name="$name"
-	else
-		local separator="/"
-		final_name="$parent$separator$name"
-	fi
+    local parent name
+    parent="$(basename "$(dirname "$session_path")")"
+    name="$(basename "$session_path")"
 
-	final_name="$(normalize_dots "$final_name")"
-	echo "$final_name"
+    if [[ " ${ignore_parent[*]} " =~ $(dirname "$session_path") ]]; then
+        final_name="$name"
+    else
+        final_name="$parent$separator$name"
+    fi
+
+    final_name="$(normalize_dots "$final_name")"
+    echo "$final_name"
 }
 
 get_session_data_fzf()
