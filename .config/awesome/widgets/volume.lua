@@ -84,14 +84,20 @@ end
 
 function M.increase()
 	unmute()
-	awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ " .. opts.volume_step .. "%+ --limit " .. opts.max_volume, false)
+	awful.spawn(
+		"wpctl set-volume @DEFAULT_AUDIO_SINK@ " .. opts.volume_step .. "%+ " .. "--limit " .. opts.max_volume,
+		false
+	)
 
 	update()
 end
 
 function M.decrease()
 	unmute()
-	awful.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ " .. opts.volume_step .. "%- --limit " .. opts.max_volume, false)
+	awful.spawn(
+		"wpctl set-volume @DEFAULT_AUDIO_SINK@ " .. opts.volume_step .. "%- " .. "--limit " .. opts.max_volume,
+		false
+	)
 
 	update()
 end
