@@ -43,9 +43,10 @@ fi
 # Global variables
 # ------------------------------------------------------------
 
-RECURSIVE_SEARCH_FOLDERS="$HOME/code"
-HOT_FOLDERS=("$HOME/nixos" "$HOME/.config/awesome" "$HOME/.config/nvim")
-WINDOW_NAMES=("code" "run")
+readonly -a IGNORE_PARENT=("$HOME" "/" "$HOME/.config")
+readonly -a WINDOW_NAMES=("code" "run")
+readonly -a HOT_FOLDERS=("$HOME/nixos" "$HOME/.config/awesome" "$HOME/.config/nvim")
+readonly RECURSIVE_SEARCH_FOLDERS="$HOME/code"
 
 # ------------------------------------------------------------
 # Functions
@@ -149,21 +150,21 @@ get_session_name()
 {
     local session_path="$1"
 
-    readonly ignore_parent=("$HOME" "/")
     readonly separator="/"
 
     local parent name
     parent="$(basename "$(dirname "$session_path")")"
     name="$(basename "$session_path")"
 
-    if [[ " ${ignore_parent[*]} " =~ $(dirname "$session_path") ]]; then
-        final_name="$name"
-    else
-        final_name="$parent$separator$name"
-    fi
+	final_name="$parent$separator$name"
+	for ignore in "${IGNORE_PARENT[@]}"; do
+		if [[ "$parent" == "$(basename "$ignore")" ]]; then
+			final_name="$name"
+			break
+		fi
+	done
 
-    final_name="$(normalize_dots "$final_name")"
-    echo "$final_name"
+    normalize_dots "$final_name"
 }
 
 get_session_data_fzf()
