@@ -34,6 +34,16 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
+	group = augroup("auto_create_dir"),
+	callback = function(args)
+		local file = vim.api.nvim_buf_get_name(args.buf)
+		if not file:match("://") then
+			vim.fn.mkdir(vim.fs.dirname(file), "p")
+		end
+	end,
+})
+
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 	group = augroup("checktime"),
