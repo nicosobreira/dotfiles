@@ -3,6 +3,9 @@ vim.g.mapleader = " "
 
 vim.keymap.set({ "i", "x", "n", "s" }, "<C-s>", "<cmd>write<CR><esc>", { desc = "Save File" })
 
+vim.keymap.set({ "n", "v", "o" }, "n", "nzz")
+vim.keymap.set({ "n", "v", "o" }, "N", "Nzz")
+
 -- Swap colon and semicolon
 vim.keymap.set({ "n", "v", "o" }, ";", ":")
 vim.keymap.set({ "n", "v", "o" }, ":", ";")
@@ -98,13 +101,6 @@ vim.keymap.set("n", "<leader>ll", "<cmd>Lazy<CR>")
 vim.keymap.set("i", "<C-n>", "<C-x><C-o><C-n>", { noremap = false, silent = true })
 vim.keymap.set("i", "<C-p>", "<C-x><C-o><C-p>", { noremap = false, silent = true })
 
--- Open .h from .c or .c from .h
-
-local function file_exists(path)
-	local stat = vim.loop.fs_stat(path)
-	return stat and stat.type == "file" or false
-end
-
 --- If the current buffer is source
 local function open_header_or_source()
 	local HEADER = "h"
@@ -112,7 +108,6 @@ local function open_header_or_source()
 
 	--- File name without extension
 	local root = vim.fn.expand("%:r")
-
 	local extension = vim.fn.expand("%:e")
 
 	local oposite = ""
