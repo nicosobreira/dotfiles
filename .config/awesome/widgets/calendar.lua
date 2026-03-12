@@ -1,4 +1,6 @@
 local wibox = require("wibox")
+local awful = require("awful")
+local gears = require("gears")
 
 local ui_utils = require("ui.utils")
 local settings = require("settings")
@@ -21,5 +23,26 @@ local calendar = wibox.widget({
 	spacing = settings.spacing,
 	layout = wibox.layout.fixed.horizontal,
 })
+
+-- popup calendar
+local calendar_popup = awful.widget.calendar_popup.month()
+
+-- toggle popup on click
+calendar:buttons(gears.table.join(
+	awful.button({}, 1, function()
+		calendar_popup:toggle()
+	end),
+
+	awful.button({}, 4, function()
+		calendar_popup:call_calendar(1)
+	end),
+
+	awful.button({}, 5, function()
+		calendar_popup:call_calendar(-1)
+	end)
+))
+
+-- attach popup to widget position
+calendar_popup:attach(calendar, "tr")
 
 return calendar
