@@ -56,31 +56,6 @@ awful.layout.layouts = {
 	awful.layout.suit.tile,
 }
 
--- {{{ Menu
--- Create a launcher widget and a main menu
-
-Mymainmenu = awful.menu({
-	items = {
-		{
-			"hotkeys",
-			function()
-				hotkeys_popup.show_help(nil, awful.screen.focused())
-			end,
-		},
-		{ "restart", awesome.restart },
-		{
-			"quit",
-			function()
-				awesome.quit()
-			end,
-		},
-	},
-})
-
-local mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon, menu = Mymainmenu })
-
--- }}}
-
 -- {{{ Wibar
 -- Create a textclock widget
 -- Create a wibox for each screen and add it
@@ -188,7 +163,6 @@ awful.screen.connect_for_each_screen(function(s)
 		layout = wibox.layout.align.horizontal,
 		{ -- Left widgets
 			layout = wibox.layout.fixed.horizontal,
-			mylauncher,
 			s.mytaglist,
 			s.mypromptbox,
 		},
