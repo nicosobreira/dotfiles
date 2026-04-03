@@ -8,31 +8,31 @@ set -eou pipefail
 
 command_exists()
 {
-    command -v "$1" &>/dev/null
+	command -v "$1" &>/dev/null
 }
 
 if [[ -t 1 ]]; then
-    if tput colors &>/dev/null; then
-        RED="$(tput setaf 1)"
-        BOLD="$(tput bold)"
-        RESET="$(tput sgr0)"
+	if tput colors &>/dev/null; then
+		RED="$(tput setaf 1)"
+		BOLD="$(tput bold)"
+		RESET="$(tput sgr0)"
 	else
-        RED=""
-        BOLD=""
-        RESET=""
-    fi
+		RED=""
+		BOLD=""
+		RESET=""
+	fi
 fi
 
 error()
 {
-    local msg="$1"
-    local code="${2:-1}"
+	local msg="$1"
+	local code="${2:-1}"
 
-    local prefix="ERROR: "
+	local prefix="ERROR: "
 
 	printf '%s%s%s%s%s\n' "$BOLD" "$RED" "$prefix" "$RESET" "$msg" >&2
 
-    exit "$code"
+	exit "$code"
 }
 
 if ! command_exists tmux; then
@@ -75,15 +75,15 @@ normalize_dots()
 
 check_if_nixos()
 {
-    if [[ -r /etc/os-release ]]; then
-        if grep -q "ID=nixos" /etc/os-release; then
-            return 0
-        fi
+	if [[ -r /etc/os-release ]]; then
+		if grep -q "ID=nixos" /etc/os-release; then
+			return 0
+		fi
 
-        return 1
-    fi
+		return 1
+	fi
 
-    return 1
+	return 1
 }
 
 nix_shell_hook()
@@ -91,45 +91,45 @@ nix_shell_hook()
 	local session_name="$1"
 	local session_path="$2"
 
-    if ! check_if_nixos; then
-        return 0
-    fi
+	if ! check_if_nixos; then
+		return 0
+	fi
 
-    local nix_shell_cmd=""
+	local nix_shell_cmd=""
 
-    if [[ -f "$session_path/shell.nix" ]]; then
-        nix_shell_cmd="nix-shell"
-    elif [[ -f "$session_path/flake.nix" && ! -f "$session_path/configuration.nix" ]]; then
-        nix_shell_cmd="nix develop"
-    else
-        return 0
-    fi
+	if [[ -f "$session_path/shell.nix" ]]; then
+		nix_shell_cmd="nix-shell"
+	elif [[ -f "$session_path/flake.nix" && ! -f "$session_path/configuration.nix" ]]; then
+		nix_shell_cmd="nix develop"
+	else
+		return 0
+	fi
 
 	local i
-    for i in "${!WINDOW_NAMES[@]}"; do
+	for i in "${!WINDOW_NAMES[@]}"; do
 		local win="${WINDOW_NAMES[i]}"
-        local index=$(( i + 1 ))
+		local index=$(( i + 1 ))
 
-        if tmux list-windows -t "$session_name" 2>/dev/null | grep -q "$win"; then
-            tmux send-keys -t "$session_name:$win" "$nix_shell_cmd" C-m
-        fi
-    done
+		if tmux list-windows -t "$session_name" 2>/dev/null | grep -q "$win"; then
+			tmux send-keys -t "$session_name:$win" "$nix_shell_cmd" C-m
+		fi
+	done
 }
 
 create_session_windows()
 {
 	local session_name="$1"
 	local session_path="$2"
-	
-	local i
-    for i in "${!WINDOW_NAMES[@]}"; do
-		local win="${WINDOW_NAMES[i]}"
-        local index=$(( i + 1 ))
 
-        if ! tmux list-windows -t "$session_name" 2>/dev/null | grep -q "$win"; then
-            tmux new-window -c "$session_path" -t "$session_name:$index" -d -n "$win" &>/dev/null || tmux rename-window -t "$session_name:$index" "$win"
-        fi
-    done
+	local i
+	for i in "${!WINDOW_NAMES[@]}"; do
+		local win="${WINDOW_NAMES[i]}"
+		local index=$(( i + 1 ))
+
+		if ! tmux list-windows -t "$session_name" 2>/dev/null | grep -q "$win"; then
+			tmux new-window -c "$session_path" -t "$session_name:$index" -d -n "$win" &>/dev/null || tmux rename-window -t "$session_name:$index" "$win"
+		fi
+	done
 
 	nix_shell_hook "$session_name" "$session_path"
 }
@@ -148,13 +148,13 @@ normalize_session_path()
 # Get a session name with "parent/folder" format
 get_session_name()
 {
-    local session_path="$1"
+	local session_path="$1"
 
-    readonly separator="/"
+	readonly separator="/"
 
-    local parent name
-    parent="$(basename "$(dirname "$session_path")")"
-    name="$(basename "$session_path")"
+	local parent name
+	parent="$(basename "$(dirname "$session_path")")"
+	name="$(basename "$session_path")"
 
 	final_name="$parent$separator$name"
 	for ignore in "${IGNORE_PARENT[@]}"; do
@@ -164,15 +164,15 @@ get_session_name()
 		fi
 	done
 
-    normalize_dots "$final_name"
+	normalize_dots "$final_name"
 }
 
 get_session_data_fzf()
 {
-    if ! command_exists fzf; then
-        show_help
-        error "Fzf executable not found. Try using a option above." 3
-    fi
+	if ! command_exists fzf; then
+		show_help
+		error "Fzf executable not found. Try using a option above." 3
+	fi
 
 	local session_data
 	session_data=$(
@@ -181,45 +181,38 @@ get_session_data_fzf()
 			tmux list-sessions -F "#{session_name}" 2>/dev/null
 
 			echo "--- Hot Directories ---"
-            for folder in "${HOT_FOLDERS[@]}"; do
-                echo "$folder"
-            done
+			for folder in "${HOT_FOLDERS[@]}"; do
+				echo "$folder"
+			done
 
 			echo "--- Project Directories ---"
 			find "$RECURSIVE_SEARCH_FOLDERS" -mindepth 1 -maxdepth 2 -type d 2>/dev/null
 		} | fzf --prompt="Select a directory or session: " \
-            --header-first \
-            --layout "reverse"
-	)
+			--header-first \
+			--layout "reverse"
+		)
 
-	if [[ -z "$session_data" ]]; then
-        error "No selection made."
-	fi
-
-	if [[ "$session_data" == ---* ]]; then
-		return 2
-	fi
-
-	echo "$session_data"
-}
-
-# FIX: This function should validate either a tmux session name or a folder path
-get_session_data_prompt()
-{
-	local input_path session_data
-	while :
-	do
-		read -r -e -p "Enter a directory/session: [None for fzf] " input_path
-
-		if [[ -z $input_path ]]; then
-			session_data="$(get_session_data_fzf)"
-			break
+		if [[ -z "$session_data" ]]; then
+			error "No selection made."
 		fi
 
-        session_data="$(realpath -m "${input_path/#\~/"$HOME"}")"
+		if [[ "$session_data" == ---* ]]; then
+			return 2
+		fi
 
-		echo "Please try again" >&2
-	done
+		echo "$session_data"
+	}
+
+get_session_data_prompt()
+{
+	local input session_data
+	read -r -e -p "Enter a directory/session: [None for fzf] " input
+
+	if [[ -z $input ]]; then
+		session_data="$(get_session_data_fzf)"
+	else
+		session_data="$input"
+	fi
 
 	echo "$session_data"
 }
@@ -235,8 +228,7 @@ if [[ $# -eq 0 ]]; then
 	SESSION_DATA="$(get_session_data_fzf)"
 elif [[ $# -eq 1 ]]; then
 	if [[ $1 == -p ]]; then
-		echo "Fixing this"
-		# SESSION_DATA="$(get_session_data_prompt)"
+		SESSION_DATA="$(get_session_data_prompt)"
 	elif [[ $1 == -h ]]; then
 		show_help
 		exit 0
