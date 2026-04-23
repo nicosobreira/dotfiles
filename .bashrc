@@ -91,6 +91,7 @@ function notes() {
 # -- Alias --
 alias tm="tmux-manager"
 alias l="lazygit"
+alias calc="qalc"
 
 alias svim='sudo vim -u $HOME/.vimrc'
 alias c="clear"
