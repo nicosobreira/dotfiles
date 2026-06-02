@@ -60,7 +60,7 @@ local SERVERS = {
 		settings = {
 			python = {
 				analysis = {
-					typeCheckingMode = "strict", -- or "strict"
+					typeCheckingMode = "basic", -- or "strict"
 					autoSearchPaths = true,
 					useLibraryCodeForTypes = true,
 				},
