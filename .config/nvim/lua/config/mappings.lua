@@ -124,3 +124,60 @@ local function open_header_or_source()
 end
 
 vim.keymap.set("n", "<leader>o", open_header_or_source)
+
+vim.keymap.set("n", "<leader>rp", function()
+	vim.cmd("write")
+
+	local python_file = vim.fn.expand("%:p")
+
+	local possible_inputs = {
+		vim.fn.expand("%:p:h") .. "/input.txt",
+		vim.fn.getcwd() .. "/input.txt",
+	}
+
+	local final_input = nil
+	for _, path in ipairs(possible_inputs) do
+		if vim.fn.filereadable(path) == 1 then
+			final_input = path
+			break
+		end
+	end
+
+	local python_cmd = "python3"
+	local venv_python = vim.fn.getcwd() .. "/.venv/bin/python3"
+	if vim.fn.executable(venv_python) == 1 then
+		python_cmd = venv_python
+	end
+
+	local stats = vim.api.nvim_list_uis()[1]
+	local width = math.floor(stats.width * 0.8)
+	local height = math.floor(stats.height * 0.8)
+
+	local row = math.floor((stats.height - height) / 2)
+	local col = math.floor((stats.width - width) / 2)
+
+	local buf = vim.api.nvim_create_buf(false, true)
+
+	local win_opts = {
+		relative = "editor",
+		width = width,
+		height = height,
+		row = row,
+		col = col,
+		style = "minimal",
+		border = "rounded",
+	}
+
+	local _ = vim.api.nvim_open_win(buf, true, win_opts)
+
+	local cmd = python_cmd .. " " .. vim.fn.shellescape(python_file)
+	if final_input then
+		cmd = cmd .. " < " .. vim.fn.shellescape(final_input)
+	end
+
+	vim.fn.termopen(cmd)
+
+	if not final_input then
+		vim.cmd("startinsert")
+	end
+end, { desc = "[R]un [P]ython in rounded floating window" })
