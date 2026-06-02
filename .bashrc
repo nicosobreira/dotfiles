@@ -138,7 +138,7 @@ function __prompt_command() {
 	}
 
 	function _nix_shell() {
-		if [[ $NIX_BINTOOLS ]]; then
+		if [[ -n "$IN_NIX_SHELL" ]]; then
 			printf " %s{%s}%s" "${cyan}" "nix" "${reset}"
 		fi
 	}
