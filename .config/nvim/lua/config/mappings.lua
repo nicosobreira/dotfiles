@@ -180,4 +180,4 @@ vim.keymap.set("n", "<leader>rp", function()
 	if not final_input then
 		vim.cmd("startinsert")
 	end
-end, { desc = "[R]un [P]ython in rounded floating window" })
+end, { desc = "[R]un [P]ython" })
