@@ -49,10 +49,9 @@ local modkey = settings.modkey
 
 require("signals")
 
--- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 	awful.layout.suit.max,
-	awful.layout.suit.floating,
+	-- awful.layout.suit.floating,
 	awful.layout.suit.tile,
 }
 
