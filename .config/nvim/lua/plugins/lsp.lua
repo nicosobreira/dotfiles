@@ -72,7 +72,7 @@ local SERVERS = {
 local function on_attach(_, bufnr)
 	local opts = { buffer = bufnr, silent = true }
 
-	vim.keymap.set("n", "<leader>d", vim.diagnostic.setqflist, opts)
+	vim.keymap.set("n", "<leader>D", vim.diagnostic.setqflist, opts)
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 	vim.keymap.set("n", "gra", vim.lsp.buf.code_action, opts)
 	vim.keymap.set("n", "grd", vim.lsp.buf.definition, opts)
