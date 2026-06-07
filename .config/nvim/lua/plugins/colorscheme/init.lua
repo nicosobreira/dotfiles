@@ -8,7 +8,7 @@ return {
 		require("base16-pro-max").setup({
 			colors = colors,
 			styles = {
-				italic = true,
+				italic = false,
 				bold = true,
 				transparency = true,
 			},
