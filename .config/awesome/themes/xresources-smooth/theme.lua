@@ -25,7 +25,7 @@ local theme = {}
 -- NOTE: the colors table is not included in AwesomeWM theme
 theme.colors = colors
 
-theme.font = "Caskaydia Cove Nerd Font 10"
+theme.font = "Caskaydia Cove Nerd Font 9"
 
 theme.bg_normal = colors.black
 theme.bg_focus = theme.bg_normal
