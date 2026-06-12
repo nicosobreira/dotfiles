@@ -74,7 +74,7 @@ awful.rules.rules = gears.table.join(
 	awful.rules.rules,
 	-- Browsers
 	{
-		rule_any = { class = { "Firefox", "Vivaldi", "Chromium", "Browser", "Brave" } },
+		rule_any = { class = { "Firefox", "Vivaldi", "Chromium", "Browser", "Brave", "Zen Browser" } },
 		properties = { screen = 1, tag = my_tags.get(2) },
 	},
 
