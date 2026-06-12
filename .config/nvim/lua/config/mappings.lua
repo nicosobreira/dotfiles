@@ -10,10 +10,6 @@ vim.keymap.set({ "n", "v", "o" }, "N", "Nzz")
 vim.keymap.set({ "n", "v", "o" }, ";", ":")
 vim.keymap.set({ "n", "v", "o" }, ":", ";")
 
--- Line navigation
-vim.keymap.set({ "n", "v" }, "H", "_")
-vim.keymap.set({ "n", "v" }, "L", "$")
-
 -- Terminal mappings
 vim.keymap.set("t", "<ESC><ESC>", "<C-\\><C-n>")
 vim.keymap.set("t", "<C-h>", "<C-\\><C-n><cmd>wincmd h<CR>")
