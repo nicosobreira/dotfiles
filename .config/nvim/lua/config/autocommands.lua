@@ -1,8 +1,7 @@
 --- Creates an augroup with a prefix
 ---@param name string
 local function augroup(name)
-	local prefix = "custom"
-	return vim.api.nvim_create_augroup(prefix .. "_" .. name, { clear = false })
+	return vim.api.nvim_create_augroup(name, { clear = true })
 end
 
 -- Sets the concellevel automatic in markdown files
