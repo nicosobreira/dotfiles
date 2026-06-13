@@ -4,37 +4,43 @@ local function augroup(name)
 	return vim.api.nvim_create_augroup(name, { clear = true })
 end
 
+local markdown_group = augroup("MarkdownConceal")
+
 -- Sets the concellevel automatic in markdown files
 vim.api.nvim_create_autocmd("FileType", {
-	group = augroup("markdown_conceal_toggle"),
-	pattern = { "markdown", "rst" },
-	callback = function()
-		vim.api.nvim_create_autocmd("ModeChanged", {
-			buffer = 0, -- Only for current buffer
-			callback = function()
-				local mode = vim.api.nvim_get_mode().mode
-				mode = mode:sub(1, 1)
+	group = markdown_group,
+	pattern = "markdown",
+	callback = function(args)
+		local bufnr = args.buf
 
-				if mode == "n" then
-					-- Normal mode → conceal enabled
-					vim.opt_local.conceallevel = 2
-				elseif mode == "i" or mode == "v" or mode == "V" then
-					-- Insert mode → conceal disabled
-					vim.opt_local.conceallevel = 0
-				end
-			end,
+		local function set_normal_mode()
+			vim.opt_local.conceallevel = 2
+			vim.opt_local.list = false
+		end
+
+		local function set_insert_mode()
+			vim.opt_local.conceallevel = 0
+			vim.opt_local.list = true
+		end
+
+		set_normal_mode()
+
+		vim.api.nvim_create_autocmd("InsertEnter", {
+			group = markdown_group,
+			buffer = bufnr,
+			callback = set_insert_mode,
 		})
 
-		local mode = vim.api.nvim_get_mode().mode
-		mode = mode:sub(1, 1)
-
-		-- Initialize based on current mode
-		vim.opt_local.conceallevel = (mode == "i") and 0 or 2
+		vim.api.nvim_create_autocmd("InsertLeave", {
+			group = markdown_group,
+			buffer = bufnr,
+			callback = set_normal_mode,
+		})
 	end,
 })
 
 vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
-	group = augroup("auto_create_dir"),
+	group = augroup("CreateDirectorysRecursive"),
 	callback = function(args)
 		local file = vim.api.nvim_buf_get_name(args.buf)
 		if not file:match("://") then
@@ -45,7 +51,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
 
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-	group = augroup("checktime"),
+	group = augroup("CheckTime"),
 	callback = function()
 		if vim.opt_local.buftype ~= "nofile" then
 			vim.cmd("checktime")
@@ -55,24 +61,15 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
-	group = augroup("highlight_yank"),
+	group = augroup("HightLightYank"),
 	callback = function()
 		(vim.hl or vim.highlight).on_yank()
 	end,
 })
 
--- Set spell depending on the file type
-vim.api.nvim_create_autocmd("FileType", {
-	group = augroup("set_spell"),
-	pattern = { "markdown", "txt", "plaintex" },
-	callback = function()
-		vim.b.spell = true
-	end,
-})
-
 -- Automatic create Header Guards
 vim.api.nvim_create_autocmd("BufNewFile", {
-	group = augroup("file_prepend"),
+	group = augroup("FilePrepend"),
 	pattern = { "*.h", "*.hpp" },
 	callback = function(args)
 		local lines = { "" }
@@ -114,7 +111,7 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 
 -- Automatic create Shebang
 vim.api.nvim_create_autocmd("BufNewFile", {
-	group = augroup("file_prepend"),
+	group = augroup("Shebang"),
 	pattern = "*.sh",
 	callback = function(_)
 		local shell = vim.fn.input("Add Shebang [press ENTER to NONE]: ")
@@ -132,28 +129,5 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 
 		-- Place cursor some spaces  below
 		vim.api.nvim_win_set_cursor(0, { 3, 0 })
-	end,
-})
-
-vim.api.nvim_create_autocmd("BufNewFile", {
-	group = augroup("file_prepend"),
-	pattern = { "shell.nix" },
-	callback = function(_)
-		-- Insert the header guard
-		local lines = {
-			"{pkgs ? import <nixpkgs> {}}:",
-			"pkgs.mkShell {",
-			"  strictDeps = true;",
-			"  # Tools",
-			"  nativeBuildInputs = with pkgs; [",
-			"  ];",
-			"",
-			"  # Libraries",
-			"  buildInputs = with pkgs; [",
-			"  ];",
-			"}",
-		}
-
-		vim.api.nvim_buf_set_lines(0, 0, 0, false, lines)
 	end,
 })
