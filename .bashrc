@@ -29,11 +29,13 @@ for _dir in "${_MY_PATH[@]}"; do
         export PATH="${_dir}:${PATH}"
     fi
 done
+unset _dir
 
 _SOURCES=("$HOME/.env" /usr/share/bash-completion/bash_completion /etc/bash_completion "$HOME/.cargo/env")
 for _file in "${_SOURCES[@]}"; do
     [[ -f "${_file}" ]] && source "${_file}"
 done
+unset _file
 
 # Dircolors setup
 if command -v dircolors &>/dev/null; then
@@ -113,7 +115,6 @@ alias egrep="egrep --color=auto"
 
 alias ls="ls -h --color=auto"
 alias la="ls --almost-all --dereference-command-line --color=auto --format=single-column --human-readable --size --group-directories-first --sort=version"
-alias tree="tree -a -C"
 
 # -- Better Prompt --
 function __prompt_command() {
