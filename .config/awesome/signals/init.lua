@@ -98,3 +98,8 @@ end)
 client.connect_signal("unfocus", function(c)
 	c.border_color = beautiful.border_normal
 end)
+
+-- Floating windows stay on top
+client.connect_signal("property::floating", function(c)
+	c.ontop = c.floating and not c.fullscreen
+end)
