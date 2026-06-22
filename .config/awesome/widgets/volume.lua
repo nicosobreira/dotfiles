@@ -29,25 +29,6 @@ local volume_widget = indicator.new()
 -- UI UPDATE
 -------------------------------------------------
 
-local function update_ui(volume, mute)
-	local icon = ""
-
-	if mute then
-		icon = opts.icons.mute
-	else
-		-- stylua: ignore
-		icon = indicator.get_icon(
-			volume,
-			opts.levels.low,
-			opts.levels.medium,
-			opts.icons
-		)
-	end
-
-	volume_widget.icon.markup = icon
-	volume_widget.level.markup = volume .. "%"
-end
-
 local function update()
 	awful.spawn.easy_async_with_shell("wpctl get-volume @DEFAULT_AUDIO_SINK@", function(stdout)
 		-- stdout = "Volume: 0.42 [MUTED]"
@@ -63,7 +44,15 @@ local function update()
 
 		local mute = stdout:match("%[MUTED%]") ~= nil
 
-		update_ui(volume, mute)
+		local icon = ""
+		if mute then
+			icon = opts.icons.mute
+		else
+			icon = indicator.get_icon(volume, opts.levels.low, opts.levels.medium, opts.icons)
+		end
+
+		volume_widget.icon.markup = icon
+		volume_widget.level.markup = volume .. "%"
 	end)
 end
 
