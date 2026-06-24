@@ -16,7 +16,7 @@ end
 
 -- Loading config and mappings before lazygit
 require("config.options")
-require("config.mappings")
+require("config.keymaps")
 require("config.autocommands")
 
 vim.opt.rtp:prepend(lazypath)
