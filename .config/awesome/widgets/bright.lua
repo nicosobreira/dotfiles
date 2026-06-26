@@ -23,7 +23,7 @@ local M = {}
 local opts = {
 	icon = "󰃟 ",
 	color = beautiful.colors.white,
-	bright_step = "5",
+	step = "5",
 	backlight = "intel_backlight",
 }
 
@@ -49,12 +49,13 @@ local function update_bright()
 end
 
 function M.increase()
-	awful.spawn("light -A " .. opts.bright_step)
+	-- brightnessctl set 10%-
+	awful.spawn("brightnessctl set " .. opts.step .. "%+")
 	update_bright()
 end
 
 function M.decrease()
-	awful.spawn("light -U " .. opts.bright_step)
+	awful.spawn("brightnessctl set " .. opts.step .. "%-")
 	update_bright()
 end
 
