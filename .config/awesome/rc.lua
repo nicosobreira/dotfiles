@@ -183,3 +183,7 @@ end)
 require("bindings")
 
 require("rules")
+
+local startup_sound_file = gears.filesystem.get_configuration_dir() .. "sounds/windows-7-startup.mp3"
+
+awful.spawn("pw-play " .. startup_sound_file, false)
