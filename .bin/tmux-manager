@@ -2,9 +2,7 @@
 
 set -eou pipefail
 
-# ------------------------------------------------------------
-# Initial setup
-# ------------------------------------------------------------
+# -- Inicial Setup ----------------------------------------------
 
 command_exists()
 {
@@ -39,18 +37,14 @@ if ! command_exists tmux; then
 	error "Tmux executable not found" 3
 fi
 
-# ------------------------------------------------------------
-# Global variables
-# ------------------------------------------------------------
+# -- Global Variables -------------------------------------------
 
 readonly -a IGNORE_PARENT=("$HOME" "/" "$HOME/.config")
 readonly -a WINDOW_NAMES=("code" "run")
 readonly -a HOT_FOLDERS=("$HOME/nixos" "$HOME/.config/awesome" "$HOME/.config/nvim")
 readonly RECURSIVE_SEARCH_FOLDERS="$HOME/code"
 
-# ------------------------------------------------------------
-# Functions
-# ------------------------------------------------------------
+# -- Function ---------------------------------------------------
 
 show_help()
 {
@@ -217,9 +211,7 @@ get_session_data_prompt()
 	echo "$session_data"
 }
 
-# ------------------------------------------------------------
-# User interaction
-# ------------------------------------------------------------
+# -- User Interaction -------------------------------------------
 
 # Can be either a tmux session name or a folder path
 SESSION_DATA=""
@@ -256,9 +248,7 @@ else
 	error "No session or folder named \"$SESSION_DATA\" exists"
 fi
 
-# ------------------------------------------------------------
-# Tmux session/window creation
-# ------------------------------------------------------------
+# -- Tmux Session / Window Cration ------------------------------
 
 if ! tmux has-session -t "$SESSION_NAME" &>/dev/null; then
 	tmux new-session -d -s "$SESSION_NAME" -c "$SESSION_PATH"
