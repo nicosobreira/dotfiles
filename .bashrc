@@ -50,10 +50,6 @@ if command -v fzf &>/dev/null; then
     eval "$(fzf --bash)"
 fi
 
-if command -v direnv &>/dev/null; then
-    eval "$(direnv hook bash)"
-fi
-
 # -- Variables --
 # `man -P less` have color support
 export LESS_TERMCAP_mb=$'\e[1;31m'
@@ -160,5 +156,10 @@ function __prompt_command() {
 }
 
 export PROMPT_COMMAND='history -a; __prompt_command'
+
+# NOTE: The direnv eval should be after the prompt command
+if command -v direnv &>/dev/null; then
+    eval "$(direnv hook bash)"
+fi
 
 notes
