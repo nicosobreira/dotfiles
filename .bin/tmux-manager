@@ -44,7 +44,7 @@ readonly -a WINDOW_NAMES=("code" "run")
 readonly -a HOT_FOLDERS=("$HOME/nixos" "$HOME/.config/awesome" "$HOME/.config/nvim")
 readonly RECURSIVE_SEARCH_FOLDERS="$HOME/code"
 
-# -- Function ---------------------------------------------------
+# -- Functions ---------------------------------------------------
 
 show_help()
 {
@@ -55,7 +55,7 @@ show_help()
 		tmux-manager path/to/directory
 		tmux-manager -p                 [Prompt mode]
 		tmux-manager -h                 [This help]
-EOF
+	EOF
 }
 
 normalize_dots()
