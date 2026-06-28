@@ -125,7 +125,7 @@ create_session_windows()
 		fi
 	done
 
-	nix_shell_hook "$session_name" "$session_path"
+	# nix_shell_hook "$session_name" "$session_path"
 }
 
 normalize_session_path()
