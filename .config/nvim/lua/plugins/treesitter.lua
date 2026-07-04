@@ -40,6 +40,7 @@ return {
 			"xml",
 			"yaml",
 			"doxygen",
+			"latex",
 		},
 	},
 	config = function(_, opts)

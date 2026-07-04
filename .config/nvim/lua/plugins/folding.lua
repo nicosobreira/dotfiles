@@ -12,12 +12,4 @@ return {
 		vim.opt.foldlevel = 99
 		vim.opt.foldlevelstart = 99
 	end,
-
-	keys = {
-		{
-			"<CR>",
-			"za",
-			desc = "Unfold all",
-		},
-	},
 }

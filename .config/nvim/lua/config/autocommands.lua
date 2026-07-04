@@ -7,37 +7,37 @@ end
 local markdown_group = augroup("MarkdownConceal")
 
 -- Sets the concellevel automatic in markdown files
-vim.api.nvim_create_autocmd("FileType", {
-	group = markdown_group,
-	pattern = "markdown",
-	callback = function(args)
-		local bufnr = args.buf
-
-		local function set_normal_mode()
-			vim.opt_local.conceallevel = 2
-			vim.opt_local.list = false
-		end
-
-		local function set_insert_mode()
-			vim.opt_local.conceallevel = 0
-			vim.opt_local.list = true
-		end
-
-		set_normal_mode()
-
-		vim.api.nvim_create_autocmd("InsertEnter", {
-			group = markdown_group,
-			buffer = bufnr,
-			callback = set_insert_mode,
-		})
-
-		vim.api.nvim_create_autocmd("InsertLeave", {
-			group = markdown_group,
-			buffer = bufnr,
-			callback = set_normal_mode,
-		})
-	end,
-})
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	group = markdown_group,
+-- 	pattern = "markdown",
+-- 	callback = function(args)
+-- 		local bufnr = args.buf
+--
+-- 		local function set_normal_mode()
+-- 			vim.opt_local.conceallevel = 2
+-- 			vim.opt_local.list = false
+-- 		end
+--
+-- 		local function set_insert_mode()
+-- 			vim.opt_local.conceallevel = 0
+-- 			vim.opt_local.list = true
+-- 		end
+--
+-- 		set_normal_mode()
+--
+-- 		vim.api.nvim_create_autocmd("InsertEnter", {
+-- 			group = markdown_group,
+-- 			buffer = bufnr,
+-- 			callback = set_insert_mode,
+-- 		})
+--
+-- 		vim.api.nvim_create_autocmd("InsertLeave", {
+-- 			group = markdown_group,
+-- 			buffer = bufnr,
+-- 			callback = set_normal_mode,
+-- 		})
+-- 	end,
+-- })
 
 vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
 	group = augroup("CreateDirectorysRecursive"),
