@@ -129,28 +129,28 @@ function __prompt_command() {
 
     function _nonzero_return() {
         if [[ "$retval" -ne 0 ]]; then
-            printf " %s[%s]%s" "${red}" "${retval}" "${reset}"
+            printf "%s[%s]%s" "${red}" "${retval}" "${reset}"
         fi
     }
 
     function _git_branch() {
         local branch
         branch=$(git symbolic-ref --short HEAD 2>/dev/null) || return
-        printf " %s(%s)%s" "${magenta}" "${branch}" "${reset}"
+        printf "%s(%s)%s" "${magenta}" "${branch}" "${reset}"
     }
 
     function _nix_shell() {
         if [[ -n "$IN_NIX_SHELL" ]]; then
-            printf " %s{%s}%s" "${cyan}" "nix" "${reset}"
+            printf "%s{%s}%s" "${cyan}" "nix" "${reset}"
         fi
     }
 
     PS1="\n"
 
     PS1+="${blue}\w${reset}"
-    PS1+="$(_git_branch)"
-    PS1+="$(_nonzero_return)"
-    PS1+="$(_nix_shell)"
+    PS1+=" $(_git_branch)"
+    PS1+=" $(_nonzero_return)"
+    PS1+=" $(_nix_shell)"
     PS1+="\n"
     PS1+="${sep} "
 }
