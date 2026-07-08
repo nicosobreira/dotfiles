@@ -84,8 +84,6 @@ local function update_battery()
 	)
 
 	battery.level.text = level_text .. "%"
-
-	battery_warning(level)
 end
 
 ---
